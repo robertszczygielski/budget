@@ -1,33 +1,24 @@
 package com.forbusypeople.budget.controllers;
 
+import com.forbusypeople.budget.services.AssetsServices;
+import com.forbusypeople.budget.services.dtos.AssetsDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-
-import static java.util.Arrays.asList;
 
 @RestController
 @RequestMapping("/assets")
 public class AssetsController {
 
+    private final AssetsServices assetsServices;
+
+    public AssetsController(AssetsServices assetsServices) {
+        this.assetsServices = assetsServices;
+    }
+
     @GetMapping
-    public Dto getAssets() {
-        var dto = new Dto();
-        dto.setAssets(asList(1, 3, 5));
-        return dto;
+    public AssetsDto getAssets() {
+        return assetsServices.getAllAssets();
     }
 
-    private class Dto {
-        private List<Integer> assets;
-
-        public List<Integer> getAssets() {
-            return assets;
-        }
-
-        public void setAssets(List<Integer> assets) {
-            this.assets = assets;
-        }
-    }
 }
