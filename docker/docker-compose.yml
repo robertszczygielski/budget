@@ -1,0 +1,12 @@
+version: '3.2'
+
+services:
+  postgress:
+    image: postgres:13
+    container_name: postgres_for_budget
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: budgetuser
+      POSTGRES_PASSWORD: budgetpasswd
+      POSTGRES_DB: budget_main_db
