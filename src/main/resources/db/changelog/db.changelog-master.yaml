@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/001-assetsSchema.yaml

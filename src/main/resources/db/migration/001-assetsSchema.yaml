@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-assets-schema
+      author: rs
+      changes:
+        - createTable:
+            tableName: assets
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: amount
+                  type: numeric
