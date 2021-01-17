@@ -1,15 +1,20 @@
 package com.forbusypeople.budget.services;
 
+import com.forbusypeople.budget.mappers.AssetsMapper;
+import com.forbusypeople.budget.repositories.AssetsRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class AssetsServicesTest {
 
+    private AssetsRepository assetsRepository = new FakeAssetsRepository();
+    private AssetsMapper assetsMapper = new AssetsMapper();
+
     @Test
     void shouldSaveAssetAndReturnListWithOneElementIfThereWasNoSavedAssetsBefore() {
         // given
         var asset = 1;
-        var service = new AssetsServices();
+        var service = new AssetsServices(assetsRepository, assetsMapper);
         service.setAsset(asset);
 
         // when
@@ -27,7 +32,7 @@ class AssetsServicesTest {
         // given
         var assetOne = 1;
         var assetTwo = 2;
-        var service = new AssetsServices();
+        var service = new AssetsServices(assetsRepository, assetsMapper);
         service.setAsset(assetOne);
         service.setAsset(assetTwo);
 
