@@ -1,9 +1,11 @@
 package com.forbusypeople.budget.services;
 
+import com.forbusypeople.budget.builders.AssetDtoBuilder;
 import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
+import com.forbusypeople.budget.services.dtos.AssetDto;
 import liquibase.pro.packaged.B;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,13 +83,16 @@ class AssetsServiceTest {
     @Test
     void shouldVerityIfTheRepositorySaveWasCalledOneTime() {
         // given
-        int asset = 1;
+        BigDecimal asset = BigDecimal.ONE;
+        AssetDto dto = new AssetDtoBuilder()
+                .withAmount(asset)
+                .build();
         AssetEntity entity = new AssetEntityBuilder()
-                .withAmount(new BigDecimal(asset))
+                .withAmount(asset)
                 .build();
 
         // when
-        service.setAsset(asset);
+        service.setAsset(dto);
 
         // then
         Mockito.verify(assetsRepository, Mockito.times(1)).save(entity);

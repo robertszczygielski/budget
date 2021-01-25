@@ -1,6 +1,7 @@
 package com.forbusypeople.budget.controllers;
 
 import com.forbusypeople.budget.services.AssetsService;
+import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.services.dtos.AssetsDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,14 @@ public class AssetsController {
         return assetsService.getAllAssets();
     }
 
-    @PostMapping("/{asset}")
-    public void  setAsset(@PathVariable("asset") int asset) {
-        assetsService.setAsset(asset);
+    @PostMapping
+    public void  setAsset(@RequestBody AssetDto dto) {
+        assetsService.setAsset(dto);
+    }
+
+    @DeleteMapping
+    public void deleteAsset(@RequestBody AssetDto dto) {
+        assetsService.deleteAsset(dto);
     }
 
 }

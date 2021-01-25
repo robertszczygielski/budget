@@ -31,11 +31,14 @@ public class AssetsService {
 
     }
 
-    public void setAsset(int asset) {
-        var dot = new AssetDto();
-        dot.setAmount(new BigDecimal(asset));
-        var entity = assetsMapper.fromDtoToEntity(dot);
+    public void setAsset(AssetDto dto) {
+        var entity = assetsMapper.fromDtoToEntity(dto);
 
         assetsRepository.save(entity);
+    }
+
+    public void deleteAsset(AssetDto dto) {
+        var entity = assetsMapper.fromDtoToEntity(dto);
+        assetsRepository.delete(entity);
     }
 }
