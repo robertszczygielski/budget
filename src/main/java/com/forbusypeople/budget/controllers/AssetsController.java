@@ -1,6 +1,6 @@
 package com.forbusypeople.budget.controllers;
 
-import com.forbusypeople.budget.services.AssetsServices;
+import com.forbusypeople.budget.services.AssetsService;
 import com.forbusypeople.budget.services.dtos.AssetsDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/assets")
 public class AssetsController {
 
-    private final AssetsServices assetsServices;
+    private final AssetsService assetsService;
 
-    public AssetsController(AssetsServices assetsServices) {
-        this.assetsServices = assetsServices;
+    public AssetsController(AssetsService assetsService) {
+        this.assetsService = assetsService;
     }
 
     @GetMapping
     public AssetsDto getAssets() {
-        return assetsServices.getAllAssets();
+        return assetsService.getAllAssets();
     }
 
     @PostMapping("/{asset}")
     public void  setAsset(@PathVariable("asset") int asset) {
-        assetsServices.setAsset(asset);
+        assetsService.setAsset(asset);
     }
 
 }

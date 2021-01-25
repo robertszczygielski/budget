@@ -10,12 +10,12 @@ import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
 @Service
-public class AssetsServices {
+public class AssetsService {
 
     private AssetsRepository assetsRepository;
     private AssetsMapper assetsMapper;
 
-    public AssetsServices(AssetsRepository assetsRepository, AssetsMapper assetsMapper) {
+    public AssetsService(AssetsRepository assetsRepository, AssetsMapper assetsMapper) {
         this.assetsRepository = assetsRepository;
         this.assetsMapper = assetsMapper;
     }
