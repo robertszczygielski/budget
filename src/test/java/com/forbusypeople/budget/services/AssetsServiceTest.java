@@ -2,11 +2,13 @@ package com.forbusypeople.budget.services;
 
 import com.forbusypeople.budget.builders.AssetDtoBuilder;
 import com.forbusypeople.budget.builders.AssetEntityBuilder;
+import com.forbusypeople.budget.enums.ValidatorsAssetEnum;
+import com.forbusypeople.budget.excetpions.AssertIncompleteException;
 import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
 import com.forbusypeople.budget.services.dtos.AssetDto;
-import liquibase.pro.packaged.B;
+import com.forbusypeople.budget.validators.AssertValidator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,19 +22,23 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class AssetsServiceTest {
 
     @Mock
     private AssetsRepository assetsRepository;
+
+    private AssertValidator assertValidator = new AssertValidator();
     private AssetsMapper assetsMapper = new AssetsMapper();
 
     private AssetsService service;
 
     @BeforeEach
     public void init() {
-        service = new AssetsService(assetsRepository, assetsMapper);
+        service = new AssetsService(assetsRepository, assetsMapper, assertValidator);
     }
 
     @Test
@@ -96,6 +102,20 @@ class AssetsServiceTest {
 
         // then
         Mockito.verify(assetsRepository, Mockito.times(1)).save(entity);
+
+    }
+
+    @Test
+    void shouldThrowExceptionWhenAmountInAssetDtoIsNull() {
+        // given
+        AssetDto dto = new AssetDto();
+
+        // when
+        var result = assertThrows(AssertIncompleteException.class,
+                () -> service.setAsset(dto));
+
+        // then
+        assertEquals(ValidatorsAssetEnum.NO_AMOUNT.getMessage(), result.getMessage());
 
     }
 }
