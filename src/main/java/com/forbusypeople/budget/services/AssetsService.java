@@ -4,10 +4,9 @@ import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.services.dtos.AssetsDto;
-import com.forbusypeople.budget.validators.AssertValidator;
+import com.forbusypeople.budget.validators.AssetValidator;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,12 +14,12 @@ public class AssetsService {
 
     private AssetsRepository assetsRepository;
     private AssetsMapper assetsMapper;
-    private AssertValidator assertValidator;
+    private AssetValidator assetValidator;
 
-    public AssetsService(AssetsRepository assetsRepository, AssetsMapper assetsMapper, AssertValidator assertValidator) {
+    public AssetsService(AssetsRepository assetsRepository, AssetsMapper assetsMapper, AssetValidator assetValidator) {
         this.assetsRepository = assetsRepository;
         this.assetsMapper = assetsMapper;
-        this.assertValidator = assertValidator;
+        this.assetValidator = assetValidator;
     }
 
     public AssetsDto getAllAssets() {
@@ -35,7 +34,7 @@ public class AssetsService {
     }
 
     public void setAsset(AssetDto dto) {
-        assertValidator.validate(dto);
+        assetValidator.validate(dto);
         var entity = assetsMapper.fromDtoToEntity(dto);
 
         assetsRepository.save(entity);
