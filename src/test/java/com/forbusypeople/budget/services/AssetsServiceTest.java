@@ -3,12 +3,12 @@ package com.forbusypeople.budget.services;
 import com.forbusypeople.budget.builders.AssetDtoBuilder;
 import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.enums.ValidatorsAssetEnum;
-import com.forbusypeople.budget.excetpions.AssertIncompleteException;
+import com.forbusypeople.budget.excetpions.AssetIncompleteException;
 import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
 import com.forbusypeople.budget.services.dtos.AssetDto;
-import com.forbusypeople.budget.validators.AssertValidator;
+import com.forbusypeople.budget.validators.AssetValidator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,14 +31,14 @@ class AssetsServiceTest {
     @Mock
     private AssetsRepository assetsRepository;
 
-    private AssertValidator assertValidator = new AssertValidator();
+    private AssetValidator assetValidator = new AssetValidator();
     private AssetsMapper assetsMapper = new AssetsMapper();
 
     private AssetsService service;
 
     @BeforeEach
     public void init() {
-        service = new AssetsService(assetsRepository, assetsMapper, assertValidator);
+        service = new AssetsService(assetsRepository, assetsMapper, assetValidator);
     }
 
     @Test
@@ -111,7 +111,7 @@ class AssetsServiceTest {
         AssetDto dto = new AssetDto();
 
         // when
-        var result = assertThrows(AssertIncompleteException.class,
+        var result = assertThrows(AssetIncompleteException.class,
                 () -> service.setAsset(dto));
 
         // then
