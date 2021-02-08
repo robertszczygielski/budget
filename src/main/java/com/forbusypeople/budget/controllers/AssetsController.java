@@ -2,8 +2,9 @@ package com.forbusypeople.budget.controllers;
 
 import com.forbusypeople.budget.services.AssetsService;
 import com.forbusypeople.budget.services.dtos.AssetDto;
-import com.forbusypeople.budget.services.dtos.AssetsDto;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/assets")
@@ -16,18 +17,23 @@ public class AssetsController {
     }
 
     @GetMapping
-    public AssetsDto getAssets() {
+    public List<AssetDto> getAssets() {
         return assetsService.getAllAssets();
     }
 
     @PostMapping
-    public void  setAsset(@RequestBody AssetDto dto) {
+    public void setAsset(@RequestBody AssetDto dto) {
         assetsService.setAsset(dto);
     }
 
     @DeleteMapping
     public void deleteAsset(@RequestBody AssetDto dto) {
         assetsService.deleteAsset(dto);
+    }
+
+    @PutMapping
+    public void updateAsset(@RequestBody AssetDto dto) {
+        assetsService.updateAsset(dto);
     }
 
 }
