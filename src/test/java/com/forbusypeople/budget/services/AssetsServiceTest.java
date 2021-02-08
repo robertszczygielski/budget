@@ -20,10 +20,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class AssetsServiceTest {
@@ -44,9 +46,9 @@ class AssetsServiceTest {
     @Test
     void shouldReturnListWithOneElementIfThereIsOneElementInDatabase() {
         // given
-        var asset = 1;
+        var asset = BigDecimal.ONE;
         AssetEntity assetEntity = new AssetEntityBuilder()
-                .withAmount(new BigDecimal(asset))
+                .withAmount(asset)
                 .build();
         List<AssetEntity> assetList = Collections.singletonList(assetEntity);
         Mockito.when(assetsRepository.findAll()).thenReturn(assetList);
@@ -55,22 +57,21 @@ class AssetsServiceTest {
         var result = service.getAllAssets();
 
         // then
-        var listOfAss = result.getAssets();
-        Assertions.assertThat(listOfAss)
+        Assertions.assertThat(result)
                 .hasSize(1)
-                .containsExactly(asset);
+                .contains(new AssetDtoBuilder().withAmount(asset).build());
     }
 
     @Test
     void shouldReturnListWithTwoElementsIfThereWasTwoElementsInDatabase() {
         // given
-        var assetOne = 1;
-        var assetTwo = 2;
+        var assetOne = BigDecimal.ONE;
+        var assetTwo = new BigDecimal("2");
         AssetEntity entityOne = new AssetEntityBuilder()
-                .withAmount(new BigDecimal(assetOne))
+                .withAmount(assetOne)
                 .build();
         AssetEntity entityTwo = new AssetEntityBuilder()
-                .withAmount(new BigDecimal(assetTwo))
+                .withAmount(assetTwo)
                 .build();
         List<AssetEntity> assetsEntity = asList(entityOne, entityTwo);
 
@@ -80,14 +81,16 @@ class AssetsServiceTest {
         var result = service.getAllAssets();
 
         // then
-        var listOfAss = result.getAssets();
-        Assertions.assertThat(listOfAss)
+        Assertions.assertThat(result)
                 .hasSize(2)
-                .containsExactly(assetOne, assetTwo);
+                .containsExactly(
+                        new AssetDtoBuilder().withAmount(assetOne).build(),
+                        new AssetDtoBuilder().withAmount(assetTwo).build()
+                );
     }
 
     @Test
-    void shouldVerityIfTheRepositorySaveWasCalledOneTime() {
+    void shouldVerifyIfTheRepositorySaveWasCalledOneTime() {
         // given
         BigDecimal asset = BigDecimal.ONE;
         AssetDto dto = new AssetDtoBuilder()
@@ -103,6 +106,21 @@ class AssetsServiceTest {
         // then
         Mockito.verify(assetsRepository, Mockito.times(1)).save(entity);
 
+    }
+
+    @Test
+    void shouldVerifyIfTheRepositoryUpdateWasCalled() {
+        // given
+        BigDecimal asset = BigDecimal.ONE;
+        var dto = new AssetDtoBuilder().withAmount(asset).build();
+        var entity = new AssetEntityBuilder().withAmount(asset).build();
+        Mockito.when(assetsRepository.findById(any())).thenReturn(Optional.of(entity));
+
+        // when
+        service.updateAsset(dto);
+
+        // then
+        Mockito.verify(assetsRepository, Mockito.times(1)).saveAndFlush(entity);
     }
 
     @Test

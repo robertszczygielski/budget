@@ -3,10 +3,10 @@ package com.forbusypeople.budget.services;
 import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.services.dtos.AssetDto;
-import com.forbusypeople.budget.services.dtos.AssetsDto;
 import com.forbusypeople.budget.validators.AssetValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,15 +22,10 @@ public class AssetsService {
         this.assetValidator = assetValidator;
     }
 
-    public AssetsDto getAllAssets() {
-        var assetsEntity = assetsRepository.findAll();
-        var assetsAmount = assetsEntity.stream()
-                .map(entity -> entity.getAmount().intValue())
+    public List<AssetDto> getAllAssets() {
+        return assetsRepository.findAll().stream()
+                .map(entity -> assetsMapper.fromEntityToDto(entity))
                 .collect(Collectors.toList());
-        var dto = new AssetsDto();
-        dto.setAssets(assetsAmount);
-        return dto;
-
     }
 
     public void setAsset(AssetDto dto) {
@@ -43,5 +38,13 @@ public class AssetsService {
     public void deleteAsset(AssetDto dto) {
         var entity = assetsMapper.fromDtoToEntity(dto);
         assetsRepository.delete(entity);
+    }
+
+    public void updateAsset(AssetDto dto) {
+        var entity = assetsRepository.findById(dto.getId());
+        entity.ifPresent(e -> {
+            e.setAmount(dto.getAmount());
+            assetsRepository.saveAndFlush(e);
+        });
     }
 }
