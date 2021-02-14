@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-assets-schema-add-income-date
+      author: rs
+      changes:
+        - addColumn:
+            tableName: assets
+            columns:
+              - column:
+                  name: income_date
+                  type: timestamp
+                  defaultValue: 2020-01-01T00:00:01Z
+                  constraints:
+                    nullable: false

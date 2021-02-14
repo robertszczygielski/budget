@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/migration/001-assetsSchema.yaml
+  - include:
+      file: db/migration/002-assetsSchemaAddIncomeDate.yaml

@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -22,6 +23,8 @@ public class AssetEntity {
 
     private BigDecimal amount;
 
+    private Instant incomeDate;
+
     public UUID getId() {
         return id;
     }
@@ -36,6 +39,14 @@ public class AssetEntity {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public Instant getIncomeDate() {
+        return incomeDate;
+    }
+
+    public void setIncomeDate(Instant incomeDate) {
+        this.incomeDate = incomeDate;
     }
 
     @Override
@@ -56,6 +67,7 @@ public class AssetEntity {
         return "AssetEntity{" +
                 "id=" + id +
                 ", amount=" + amount +
+                ", incomeDate=" + incomeDate +
                 '}';
     }
 }

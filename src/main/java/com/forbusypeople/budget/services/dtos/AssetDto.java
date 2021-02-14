@@ -1,6 +1,7 @@
 package com.forbusypeople.budget.services.dtos;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ public class AssetDto {
 
     private UUID id;
     private BigDecimal amount;
+    private Instant incomeDate;
 
     public UUID getId() {
         return id;
@@ -23,6 +25,14 @@ public class AssetDto {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public Instant getIncomeDate() {
+        return incomeDate;
+    }
+
+    public void setIncomeDate(Instant incomeDate) {
+        this.incomeDate = incomeDate;
     }
 
     @Override
@@ -43,6 +53,7 @@ public class AssetDto {
         return "AssetDto{" +
                 "id=" + id +
                 ", amount=" + amount +
+                ", incomeDate=" + incomeDate +
                 '}';
     }
 }
