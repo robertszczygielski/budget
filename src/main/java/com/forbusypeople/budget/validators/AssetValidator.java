@@ -14,6 +14,9 @@ public class AssetValidator {
         if (Objects.isNull(dto.getAmount())) {
             throw new AssetIncompleteException(ValidatorsAssetEnum.NO_AMOUNT.getMessage(), "EE48A612F34E402AAFA0871F66BB8F51");
         }
+        if (Objects.isNull(dto.getIncomeDate())) {
+            throw new AssetIncompleteException(ValidatorsAssetEnum.NO_INCOME_DATE.getMessage(), "C6589CAF5CB648BF9990E78800AA5E03");
+        }
     }
 
 }
