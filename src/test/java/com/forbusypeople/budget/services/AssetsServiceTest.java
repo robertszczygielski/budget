@@ -130,7 +130,9 @@ class AssetsServiceTest {
     @Test
     void shouldThrowExceptionWhenAmountInAssetDtoIsNull() {
         // given
-        AssetDto dto = new AssetDto();
+        AssetDto dto = new AssetDtoBuilder()
+                .withIncomeDate(Instant.now())
+                .build();
 
         // when
         var result = assertThrows(AssetIncompleteException.class,
@@ -154,6 +156,24 @@ class AssetsServiceTest {
 
         // then
         assertEquals(ValidatorsAssetEnum.NO_INCOME_DATE.getMessage(), result.getMessage());
+
+    }
+
+    @Test
+    void shouldThrowExceptionWhenIncomeDateAndAmountInAssetDtoIsNull() {
+        // given
+        AssetDto dto = new AssetDto();
+        String messageSeparator = "; ";
+        String expectedMessage = ValidatorsAssetEnum.NO_AMOUNT.getMessage()
+                + messageSeparator
+                + ValidatorsAssetEnum.NO_INCOME_DATE.getMessage();
+
+        // when
+        var result = assertThrows(AssetIncompleteException.class,
+                () -> service.setAsset(dto));
+
+        // then
+        assertEquals(expectedMessage, result.getMessage());
 
     }
 }
