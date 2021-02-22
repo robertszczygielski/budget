@@ -1,5 +1,6 @@
 package com.forbusypeople.budget.repositories.entities;
 
+import com.forbusypeople.budget.enums.AssetCategory;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -25,6 +26,8 @@ public class AssetEntity {
 
     private Instant incomeDate;
 
+    private AssetCategory category;
+
     public UUID getId() {
         return id;
     }
@@ -49,6 +52,14 @@ public class AssetEntity {
         this.incomeDate = incomeDate;
     }
 
+    public AssetCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(AssetCategory category) {
+        this.category = category;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,6 +79,7 @@ public class AssetEntity {
                 "id=" + id +
                 ", amount=" + amount +
                 ", incomeDate=" + incomeDate +
+                ", category=" + category +
                 '}';
     }
 }
