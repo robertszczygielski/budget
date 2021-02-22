@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-assets-schema-add-category
+      author: rs
+      changes:
+        - addColumn:
+            tableName: assets
+            columns:
+              - column:
+                  name: category
+                  type: text

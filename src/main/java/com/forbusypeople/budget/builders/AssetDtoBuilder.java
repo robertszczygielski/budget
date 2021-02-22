@@ -1,5 +1,6 @@
 package com.forbusypeople.budget.builders;
 
+import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ public class AssetDtoBuilder {
     private UUID id;
     private BigDecimal amount;
     private Instant incomeDate;
+    private AssetCategory category;
 
     public AssetDtoBuilder withId(UUID id) {
         this.id = id;
@@ -27,11 +29,17 @@ public class AssetDtoBuilder {
         return this;
     }
 
+    public AssetDtoBuilder withCategory(AssetCategory category) {
+        this.category = category;
+        return this;
+    }
+
     public AssetDto build() {
         var dto = new AssetDto();
         dto.setAmount(this.amount);
         dto.setId(this.id);
         dto.setIncomeDate(this.incomeDate);
+        dto.setCategory(this.category);
         return dto;
     }
 
