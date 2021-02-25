@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-assets-schema-update-category-in-database
+      author: rs
+      changes:
+        - update:
+            tableName: assets
+            column:
+              name: category
+              value: SALARY
+            where: category='0'
+        - update:
+            tableName: assets
+            column:
+              name: category
+              value: BONUS
+            where: category='1'
+        - update:
+            tableName: assets
+            column:
+              name: category
+              value: LOAN_RETURNED
+            where: category='2'
+        - update:
+            tableName: assets
+            column:
+              name: category
+              value: RENT
+            where: category='3'
+        - update:
+            tableName: assets
+            column:
+              name: category
+              value: OTHER
+            where: category='4'

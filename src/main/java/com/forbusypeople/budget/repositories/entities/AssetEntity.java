@@ -26,6 +26,7 @@ public class AssetEntity {
 
     private Instant incomeDate;
 
+    @Enumerated(EnumType.STRING)
     private AssetCategory category;
 
     public UUID getId() {
