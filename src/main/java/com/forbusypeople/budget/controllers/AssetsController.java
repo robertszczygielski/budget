@@ -1,9 +1,11 @@
 package com.forbusypeople.budget.controllers;
 
+import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.services.AssetsService;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -34,6 +36,11 @@ public class AssetsController {
     @PutMapping
     public void updateAsset(@RequestBody AssetDto dto) {
         assetsService.updateAsset(dto);
+    }
+
+    @GetMapping("/find")
+    public List<AssetDto> getAllAssetsByCategory(@PathParam("category") String category) {
+        return assetsService.getAssetsByCategory(AssetCategory.valueOf(category.toUpperCase()));
     }
 
 }

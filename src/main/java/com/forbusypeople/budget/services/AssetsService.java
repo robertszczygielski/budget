@@ -1,5 +1,6 @@
 package com.forbusypeople.budget.services;
 
+import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.services.dtos.AssetDto;
@@ -60,5 +61,12 @@ public class AssetsService {
             assetsRepository.saveAndFlush(e);
         });
         LOGGER.info("Asset updated");
+    }
+
+    public List<AssetDto> getAssetsByCategory(AssetCategory category) {
+        return assetsRepository.getAssetEntitiesByCategory(category)
+                .stream()
+                .map(entity -> assetsMapper.fromEntityToDto(entity))
+                .collect(Collectors.toList());
     }
 }
