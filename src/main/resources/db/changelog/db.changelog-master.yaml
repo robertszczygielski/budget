@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/migration/003-assetsSchemaAddCategory.yaml
   - include:
       file: db/migration/004-assetsSchemaUpdateCategoryInDatabase.yaml
+  - include:
+      file: db/migration/005-userSchema.yaml
