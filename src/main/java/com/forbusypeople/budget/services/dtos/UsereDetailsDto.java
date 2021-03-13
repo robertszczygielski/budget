@@ -1,6 +1,6 @@
 package com.forbusypeople.budget.services.dtos;
 
-public class AuthenticationUserDto {
+public class UsereDetailsDto {
 
     private String username;
     private String password;
