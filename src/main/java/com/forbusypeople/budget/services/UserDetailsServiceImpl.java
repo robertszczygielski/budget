@@ -1,5 +1,7 @@
 package com.forbusypeople.budget.services;
 
+import com.forbusypeople.budget.excetpions.BudgetUserAlreadyExistsInDatabaseException;
+import com.forbusypeople.budget.excetpions.BudgetUserNotFoundException;
 import com.forbusypeople.budget.mappers.UserMapper;
 import com.forbusypeople.budget.repositories.UserRepository;
 import com.forbusypeople.budget.services.dtos.UsereDetailsDto;
@@ -32,17 +34,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         LOGGER.info("Searching user = " + username);
         var entity = userRepository
                 .findByUsername(username)
-                // TODO: make exception BudgetUserNotFoundException
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(BudgetUserNotFoundException::new);
 
         return new User(entity.getUsername(), entity.getPassword(), Collections.emptyList());
     }
 
     public UUID saveUser(UsereDetailsDto usereDetailsDto) {
+        validateIfUserExists(usereDetailsDto);
         var entity = userMapper.fromDtoToEntity(usereDetailsDto);
         var savedEntity = userRepository.save(entity);
         LOGGER.info("User saved = " + savedEntity);
 
         return savedEntity.getId();
+    }
+
+    private void validateIfUserExists(UsereDetailsDto usereDetailsDto) {
+        var entity = userRepository.findByUsername(usereDetailsDto.getUsername());
+
+        if (entity.isPresent()) {
+            throw new BudgetUserAlreadyExistsInDatabaseException();
+        }
     }
 }
