@@ -10,6 +10,7 @@ import com.forbusypeople.budget.services.dtos.AssetDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @SpringBootTest
 @Transactional
+@WithMockUser
 public class AssetServiceIntegrationTest {
 
     @Autowired

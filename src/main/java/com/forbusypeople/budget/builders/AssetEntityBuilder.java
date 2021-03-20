@@ -2,6 +2,7 @@ package com.forbusypeople.budget.builders;
 
 import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -13,6 +14,7 @@ public class AssetEntityBuilder {
     private BigDecimal amount;
     private Instant incomeDate;
     private AssetCategory category;
+    private UserEntity userEntity;
 
     public AssetEntityBuilder withId(UUID id) {
         this.id = id;
@@ -34,13 +36,18 @@ public class AssetEntityBuilder {
         return this;
     }
 
+    public AssetEntityBuilder withUser(UserEntity userEntity) {
+        this.userEntity = userEntity;
+        return this;
+    }
+
     public AssetEntity build() {
         var entity = new AssetEntity();
         entity.setAmount(this.amount);
         entity.setId(this.id);
         entity.setIncomeDate(this.incomeDate);
         entity.setCategory(category);
+        entity.setUser(this.userEntity);
         return entity;
     }
-
 }

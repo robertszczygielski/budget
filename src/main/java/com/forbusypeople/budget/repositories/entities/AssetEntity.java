@@ -21,10 +21,10 @@ public class AssetEntity {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private UUID id;
-
     private BigDecimal amount;
-
     private Instant incomeDate;
+    @Transient
+    private UserEntity user;
 
     @Enumerated(EnumType.STRING)
     private AssetCategory category;
@@ -61,17 +61,25 @@ public class AssetEntity {
         this.category = category;
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AssetEntity that = (AssetEntity) o;
-        return Objects.equals(id, that.id);
+        AssetEntity entity = (AssetEntity) o;
+        return Objects.equals(id, entity.id) && Objects.equals(user, entity.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, user);
     }
 
     @Override
@@ -80,6 +88,7 @@ public class AssetEntity {
                 "id=" + id +
                 ", amount=" + amount +
                 ", incomeDate=" + incomeDate +
+                ", user=" + user +
                 ", category=" + category +
                 '}';
     }

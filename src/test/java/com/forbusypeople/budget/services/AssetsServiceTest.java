@@ -33,15 +33,20 @@ class AssetsServiceTest {
 
     @Mock
     private AssetsRepository assetsRepository;
+    @Mock
+    private UserLogInfoService userLogInfoService;
 
-    private AssetValidator assetValidator = new AssetValidator();
-    private AssetsMapper assetsMapper = new AssetsMapper();
+    private final AssetValidator assetValidator = new AssetValidator();
+    private final AssetsMapper assetsMapper = new AssetsMapper();
 
     private AssetsService service;
 
     @BeforeEach
     public void init() {
-        service = new AssetsService(assetsRepository, assetsMapper, assetValidator);
+        service = new AssetsService(assetsRepository,
+                assetsMapper,
+                assetValidator,
+                userLogInfoService);
     }
 
     @Test

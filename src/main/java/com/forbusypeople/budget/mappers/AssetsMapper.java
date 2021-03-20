@@ -3,6 +3,7 @@ package com.forbusypeople.budget.mappers;
 import com.forbusypeople.budget.builders.AssetDtoBuilder;
 import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ import java.util.Objects;
 @Component
 public class AssetsMapper {
 
-    public AssetEntity fromDtoToEntity(AssetDto dto) {
+    public AssetEntity fromDtoToEntity(AssetDto dto, UserEntity user) {
 
         if (Objects.isNull(dto)) {
             return null;
@@ -33,6 +34,10 @@ public class AssetsMapper {
 
         if (Objects.nonNull(dto.getCategory())) {
             entityBuilder.withCategory(dto.getCategory());
+        }
+
+        if (Objects.nonNull(user)) {
+            entityBuilder.withUser(user);
         }
 
         return entityBuilder.build();
