@@ -23,7 +23,7 @@ public class AssetEntity {
     private UUID id;
     private BigDecimal amount;
     private Instant incomeDate;
-    @Transient
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 
     @Enumerated(EnumType.STRING)

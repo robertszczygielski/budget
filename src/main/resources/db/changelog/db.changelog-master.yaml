@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/migration/004-assetsSchemaUpdateCategoryInDatabase.yaml
   - include:
       file: db/migration/005-userSchema.yaml
+  - include:
+      file: db/migration/006-assetsSchemaAddUserId.sql

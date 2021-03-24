@@ -4,7 +4,9 @@ import com.forbusypeople.budget.builders.AssetDtoBuilder;
 import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.repositories.AssetsRepository;
+import com.forbusypeople.budget.repositories.UserRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.AssetsService;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import org.junit.jupiter.api.Test;
@@ -21,14 +23,15 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @SpringBootTest
 @Transactional
-@WithMockUser
+@WithMockUser(username = "user123", password = "123user")
 public class AssetServiceIntegrationTest {
 
     @Autowired
     private AssetsRepository repository;
     @Autowired
     private AssetsService service;
-
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     void shouldReturnListWithThreeElements() {
@@ -46,6 +49,7 @@ public class AssetServiceIntegrationTest {
     @Test
     void shouldAddAssetToDB() {
         // given
+        initUserInDatabase();
         AssetDto dto = new AssetDtoBuilder()
                 .withAmount(new BigDecimal(11))
                 .withIncomeDate(Instant.now())
@@ -80,21 +84,33 @@ public class AssetServiceIntegrationTest {
         assertThat(entity.getCategory()).isEqualTo(category);
     }
 
+    private UserEntity initUserInDatabase() {
+        var user = new UserEntity();
+        user.setUsername("user123");
+        user.setPassword("123user");
+
+        return userRepository.save(user);
+    }
+
     private void initDataBase() {
+        var userEntity = initUserInDatabase();
         AssetEntity entity1 = new AssetEntityBuilder()
                 .withAmount(new BigDecimal(1))
                 .withIncomeDate(Instant.now())
                 .withCategory(AssetCategory.OTHER)
+                .withUser(userEntity)
                 .build();
         AssetEntity entity2 = new AssetEntityBuilder()
                 .withAmount(new BigDecimal(3))
                 .withIncomeDate(Instant.now())
                 .withCategory(AssetCategory.SALARY)
+                .withUser(userEntity)
                 .build();
         AssetEntity entity3 = new AssetEntityBuilder()
                 .withAmount(new BigDecimal(5))
                 .withIncomeDate(Instant.now())
                 .withCategory(AssetCategory.RENT)
+                .withUser(userEntity)
                 .build();
 
         repository.saveAll(asList(entity1, entity2, entity3));
