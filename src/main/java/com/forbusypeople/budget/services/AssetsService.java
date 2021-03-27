@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,10 @@ public class AssetsService {
 
     public List<AssetDto> getAllAssets() {
         LOGGER.debug("Get all assets");
-        return assetsRepository.findAll().stream()
+        var user = getUserEntity();
+
+        return assetsRepository.getAssetEntitiesByUser(user)
+                .stream()
                 .map(entity -> assetsMapper.fromEntityToDto(entity))
                 .collect(Collectors.toList());
     }

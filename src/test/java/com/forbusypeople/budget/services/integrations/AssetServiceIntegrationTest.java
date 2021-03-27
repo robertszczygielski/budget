@@ -27,7 +27,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 public class AssetServiceIntegrationTest {
 
     @Autowired
-    private AssetsRepository repository;
+    private AssetsRepository assetsRepository;
     @Autowired
     private AssetsService service;
     @Autowired
@@ -36,7 +36,8 @@ public class AssetServiceIntegrationTest {
     @Test
     void shouldReturnListWithThreeElements() {
         // given
-        initDataBase();
+        initDataBaseByDefaultMockUserAndHisAssets();
+        initDataBaseBySecondMockUserAndHisAssets();
 
         // when
         var allAssetsInDB = service.getAllAssets();
@@ -49,7 +50,7 @@ public class AssetServiceIntegrationTest {
     @Test
     void shouldAddAssetToDB() {
         // given
-        initUserInDatabase();
+        initDefaultMockUserInDatabase();
         AssetDto dto = new AssetDtoBuilder()
                 .withAmount(new BigDecimal(11))
                 .withIncomeDate(Instant.now())
@@ -60,7 +61,7 @@ public class AssetServiceIntegrationTest {
         service.setAsset(dto);
 
         // then
-        var allAssetInDB = repository.findAll();
+        var allAssetInDB = assetsRepository.findAll();
         assertThat(allAssetInDB).hasSize(1);
         var entity = allAssetInDB.get(0);
         assertThat(entity.getCategory()).isEqualTo(dto.getCategory());
@@ -72,7 +73,7 @@ public class AssetServiceIntegrationTest {
     @Test
     void shouldReturnListOnlyWithOneCategory() {
         // given
-        initDataBase();
+        initDataBaseByDefaultMockUserAndHisAssets();
         var category = AssetCategory.OTHER;
 
         // when
@@ -84,7 +85,7 @@ public class AssetServiceIntegrationTest {
         assertThat(entity.getCategory()).isEqualTo(category);
     }
 
-    private UserEntity initUserInDatabase() {
+    private UserEntity initDefaultMockUserInDatabase() {
         var user = new UserEntity();
         user.setUsername("user123");
         user.setPassword("123user");
@@ -92,8 +93,8 @@ public class AssetServiceIntegrationTest {
         return userRepository.save(user);
     }
 
-    private void initDataBase() {
-        var userEntity = initUserInDatabase();
+    private void initDataBaseByDefaultMockUserAndHisAssets() {
+        var userEntity = initDefaultMockUserInDatabase();
         AssetEntity entity1 = new AssetEntityBuilder()
                 .withAmount(new BigDecimal(1))
                 .withIncomeDate(Instant.now())
@@ -113,6 +114,38 @@ public class AssetServiceIntegrationTest {
                 .withUser(userEntity)
                 .build();
 
-        repository.saveAll(asList(entity1, entity2, entity3));
+        assetsRepository.saveAll(asList(entity1, entity2, entity3));
+    }
+
+    private UserEntity initSecondMockUserInDatabase() {
+        var user = new UserEntity();
+        user.setUsername("secondUser123");
+        user.setPassword("123SecondUser");
+
+        return userRepository.save(user);
+    }
+
+    private void initDataBaseBySecondMockUserAndHisAssets() {
+        var userEntity = initSecondMockUserInDatabase();
+        AssetEntity entity1 = new AssetEntityBuilder()
+                .withAmount(new BigDecimal(1))
+                .withIncomeDate(Instant.now())
+                .withCategory(AssetCategory.OTHER)
+                .withUser(userEntity)
+                .build();
+        AssetEntity entity2 = new AssetEntityBuilder()
+                .withAmount(new BigDecimal(3))
+                .withIncomeDate(Instant.now())
+                .withCategory(AssetCategory.SALARY)
+                .withUser(userEntity)
+                .build();
+        AssetEntity entity3 = new AssetEntityBuilder()
+                .withAmount(new BigDecimal(5))
+                .withIncomeDate(Instant.now())
+                .withCategory(AssetCategory.RENT)
+                .withUser(userEntity)
+                .build();
+
+        assetsRepository.saveAll(asList(entity1, entity2, entity3));
     }
 }
