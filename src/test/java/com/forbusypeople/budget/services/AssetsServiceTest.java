@@ -57,7 +57,7 @@ class AssetsServiceTest {
                 .withAmount(asset)
                 .build();
         List<AssetEntity> assetList = Collections.singletonList(assetEntity);
-        Mockito.when(assetsRepository.findAll()).thenReturn(assetList);
+        Mockito.when(assetsRepository.getAssetEntitiesByUser(any())).thenReturn(assetList);
 
         // when
         var result = service.getAllAssets();
@@ -81,7 +81,7 @@ class AssetsServiceTest {
                 .build();
         List<AssetEntity> assetsEntity = asList(entityOne, entityTwo);
 
-        Mockito.when(assetsRepository.findAll()).thenReturn(assetsEntity);
+        Mockito.when(assetsRepository.getAssetEntitiesByUser(any())).thenReturn(assetsEntity);
 
         // when
         var result = service.getAllAssets();

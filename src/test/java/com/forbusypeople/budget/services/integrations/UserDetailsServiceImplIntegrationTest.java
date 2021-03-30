@@ -6,7 +6,7 @@ import com.forbusypeople.budget.excetpions.BudgetUserNotFoundException;
 import com.forbusypeople.budget.repositories.UserRepository;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.UserDetailsServiceImpl;
-import com.forbusypeople.budget.services.dtos.UsereDetailsDto;
+import com.forbusypeople.budget.services.dtos.UserDetailsDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,7 +48,7 @@ class UserDetailsServiceImplIntegrationTest {
     @Test
     void shouldSaveUserInToDatabase() {
         // given
-        UsereDetailsDto dto = new UsereDetailsDto();
+        UserDetailsDto dto = new UserDetailsDto();
         dto.setUsername(USER_NAME);
         dto.setPassword(USER_PASSWORD);
         var bCryptPrefix = "$2a$10$";
@@ -85,7 +85,7 @@ class UserDetailsServiceImplIntegrationTest {
     void shouldThrowExceptionWhenUserAlreadyExistsInDatabase() {
         // given
         initDatabase();
-        UsereDetailsDto dto = new UsereDetailsDto();
+        UserDetailsDto dto = new UserDetailsDto();
         dto.setPassword(USER_PASSWORD);
         dto.setUsername(USER_NAME);
 

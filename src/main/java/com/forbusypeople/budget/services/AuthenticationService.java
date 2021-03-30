@@ -1,7 +1,7 @@
 package com.forbusypeople.budget.services;
 
 import com.forbusypeople.budget.services.dtos.AuthenticationJwtToken;
-import com.forbusypeople.budget.services.dtos.UsereDetailsDto;
+import com.forbusypeople.budget.services.dtos.UserDetailsDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,13 +22,13 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthenticationJwtToken createAuthenticationToken(UsereDetailsDto usereDetailsDto) {
+    public AuthenticationJwtToken createAuthenticationToken(UserDetailsDto userDetailsDto) {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                usereDetailsDto.getUsername(), usereDetailsDto.getPassword()
+                userDetailsDto.getUsername(), userDetailsDto.getPassword()
         ));
 
-        var userDetails = userDetailsService.loadUserByUsername(usereDetailsDto.getUsername());
+        var userDetails = userDetailsService.loadUserByUsername(userDetailsDto.getUsername());
         var jwtToken = jwtService.generateJWTToken(userDetails);
 
         return new AuthenticationJwtToken(jwtToken);

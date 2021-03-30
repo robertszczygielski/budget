@@ -4,7 +4,7 @@ import com.forbusypeople.budget.excetpions.BudgetUserAlreadyExistsInDatabaseExce
 import com.forbusypeople.budget.excetpions.BudgetUserNotFoundException;
 import com.forbusypeople.budget.mappers.UserMapper;
 import com.forbusypeople.budget.repositories.UserRepository;
-import com.forbusypeople.budget.services.dtos.UsereDetailsDto;
+import com.forbusypeople.budget.services.dtos.UserDetailsDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.User;
@@ -39,17 +39,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new User(entity.getUsername(), entity.getPassword(), Collections.emptyList());
     }
 
-    public UUID saveUser(UsereDetailsDto usereDetailsDto) {
-        validateIfUserExists(usereDetailsDto);
-        var entity = userMapper.fromDtoToEntity(usereDetailsDto);
+    public UUID saveUser(UserDetailsDto userDetailsDto) {
+        validateIfUserExists(userDetailsDto);
+        var entity = userMapper.fromDtoToEntity(userDetailsDto);
         var savedEntity = userRepository.save(entity);
         LOGGER.info("User saved = " + savedEntity);
 
         return savedEntity.getId();
     }
 
-    private void validateIfUserExists(UsereDetailsDto usereDetailsDto) {
-        var entity = userRepository.findByUsername(usereDetailsDto.getUsername());
+    private void validateIfUserExists(UserDetailsDto userDetailsDto) {
+        var entity = userRepository.findByUsername(userDetailsDto.getUsername());
 
         if (entity.isPresent()) {
             throw new BudgetUserAlreadyExistsInDatabaseException();

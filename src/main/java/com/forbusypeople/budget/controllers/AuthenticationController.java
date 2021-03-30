@@ -3,7 +3,7 @@ package com.forbusypeople.budget.controllers;
 import com.forbusypeople.budget.services.AuthenticationService;
 import com.forbusypeople.budget.services.UserDetailsServiceImpl;
 import com.forbusypeople.budget.services.dtos.AuthenticationJwtToken;
-import com.forbusypeople.budget.services.dtos.UsereDetailsDto;
+import com.forbusypeople.budget.services.dtos.UserDetailsDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,13 +21,13 @@ public class AuthenticationController {
     }
 
     @GetMapping
-    public AuthenticationJwtToken getAuthenticationToken(@RequestBody UsereDetailsDto usereDetailsDto) {
-        return authenticationService.createAuthenticationToken(usereDetailsDto);
+    public AuthenticationJwtToken getAuthenticationToken(@RequestBody UserDetailsDto userDetailsDto) {
+        return authenticationService.createAuthenticationToken(userDetailsDto);
     }
 
     @PostMapping
-    public UUID setUserDetails(@RequestBody UsereDetailsDto usereDetailsDto) {
-        return userDetailsService.saveUser(usereDetailsDto);
+    public UUID setUserDetails(@RequestBody UserDetailsDto userDetailsDto) {
+        return userDetailsService.saveUser(userDetailsDto);
     }
 
 }
