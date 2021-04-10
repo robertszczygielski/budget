@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,6 +79,10 @@ public class AssetsService {
                 .stream()
                 .map(entity -> assetsMapper.fromEntityToDto(entity))
                 .collect(Collectors.toList());
+    }
+
+    public void deleteAssetByUser(UserEntity userEntity) {
+        assetsRepository.deleteAllByUser(userEntity);
     }
 
     private UserEntity getUserEntity() {

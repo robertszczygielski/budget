@@ -7,8 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class UserLogInfoService {
 
@@ -20,7 +18,7 @@ public class UserLogInfoService {
 
     public UserEntity getLoggedUserEntity() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        var username = ((User)authentication.getPrincipal()).getUsername();
+        var username = ((User) authentication.getPrincipal()).getUsername();
 
         return userRepository.findByUsername(username)
                 .orElseThrow(BudgetUserNotFoundException::new);
