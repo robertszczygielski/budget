@@ -4,6 +4,7 @@ import com.forbusypeople.budget.excetpions.BudgetUserAlreadyExistsInDatabaseExce
 import com.forbusypeople.budget.excetpions.BudgetUserNotFoundException;
 import com.forbusypeople.budget.mappers.UserMapper;
 import com.forbusypeople.budget.repositories.UserRepository;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.dtos.UserDetailsDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -23,10 +25,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final UserLogInfoService userLogInfoService;
+    private final AssetsService assetsService;
 
-    public UserDetailsServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserDetailsServiceImpl(UserRepository userRepository, UserMapper userMapper, UserLogInfoService userLogInfoService, AssetsService assetsService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.userLogInfoService = userLogInfoService;
+        this.assetsService = assetsService;
     }
 
     @Override
@@ -46,6 +52,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         LOGGER.info("User saved = " + savedEntity);
 
         return savedEntity.getId();
+    }
+
+    @Transactional
+    public void deleteUser() {
+        UserEntity userEntity = userLogInfoService.getLoggedUserEntity();
+        assetsService.deleteAssetByUser(userEntity);
+        userRepository.delete(userEntity);
     }
 
     private void validateIfUserExists(UserDetailsDto userDetailsDto) {
