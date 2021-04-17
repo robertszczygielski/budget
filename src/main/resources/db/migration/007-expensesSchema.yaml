@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-expenses-schema
+      author: rs
+      changes:
+        - createTable:
+            tableName: expenses
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: amount
+                  type: numeric
+              - column:
+                  name: purchase_date
+                  type: timestamp
+              - column:
+                  name: category
+                  type: text
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_expenses
+                    references: users(id)

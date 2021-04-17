@@ -1,6 +1,6 @@
 package com.forbusypeople.budget.repositories.entities;
 
-import com.forbusypeople.budget.enums.AssetCategory;
+import com.forbusypeople.budget.enums.ExpensesCategory;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -10,8 +10,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "assets")
-public class AssetEntity {
+@Table(name = "expenses")
+public class ExpensesEntity {
 
     @Id
     @Column(name = "id", updatable = false, nullable = false)
@@ -22,11 +22,11 @@ public class AssetEntity {
     )
     private UUID id;
     private BigDecimal amount;
-    private Instant incomeDate;
+    private Instant purchaseDate;
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity user;
+    private UserEntity userEntity;
     @Enumerated(EnumType.STRING)
-    private AssetCategory category;
+    private ExpensesCategory category;
 
     public UUID getId() {
         return id;
@@ -44,50 +44,50 @@ public class AssetEntity {
         this.amount = amount;
     }
 
-    public Instant getIncomeDate() {
-        return incomeDate;
+    public Instant getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setIncomeDate(Instant incomeDate) {
-        this.incomeDate = incomeDate;
+    public void setPurchaseDate(Instant purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
-    public AssetCategory getCategory() {
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
+    public ExpensesCategory getCategory() {
         return category;
     }
 
-    public void setCategory(AssetCategory category) {
+    public void setCategory(ExpensesCategory category) {
         this.category = category;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AssetEntity entity = (AssetEntity) o;
-        return Objects.equals(id, entity.id) && Objects.equals(user, entity.user);
+        ExpensesEntity that = (ExpensesEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(userEntity, that.userEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user);
+        return Objects.hash(id, userEntity);
     }
 
     @Override
     public String toString() {
-        return "AssetEntity{" +
+        return "ExpensesEntity{" +
                 "id=" + id +
                 ", amount=" + amount +
-                ", incomeDate=" + incomeDate +
-                ", user=" + user +
+                ", purchaseDate=" + purchaseDate +
+                ", userEntity=" + userEntity +
                 ", category=" + category +
                 '}';
     }
