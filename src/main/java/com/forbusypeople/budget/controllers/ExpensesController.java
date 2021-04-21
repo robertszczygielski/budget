@@ -1,7 +1,7 @@
 package com.forbusypeople.budget.controllers;
 
+import com.forbusypeople.budget.services.ExpensesService;
 import com.forbusypeople.budget.services.dtos.ExpensesDto;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,24 +10,30 @@ import java.util.List;
 @RequestMapping("/expenses")
 public class ExpensesController {
 
+    private final ExpensesService expensesService;
+
+    public ExpensesController(ExpensesService expensesService) {
+        this.expensesService = expensesService;
+    }
+
     @GetMapping
     public List<ExpensesDto> getAllExpenses() {
-        throw new NotYetImplementedException();
+        return expensesService.getAllExpenses();
     }
 
     @PostMapping
     public void setExpenses(@RequestBody ExpensesDto expensesDto) {
-        throw new NotYetImplementedException();
+        expensesService.setExpenses(expensesDto);
     }
 
     @PutMapping
     public void updateExpenses(@RequestBody ExpensesDto expensesDto) {
-        throw new NotYetImplementedException();
+        expensesService.updateExpenses(expensesDto);
     }
 
     @DeleteMapping
     public void deleteExpenses(@RequestBody ExpensesDto expensesDto) {
-        throw new NotYetImplementedException();
+        expensesService.deleteExpenses(expensesDto);
     }
-    
+
 }

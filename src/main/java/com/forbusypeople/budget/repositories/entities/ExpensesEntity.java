@@ -24,7 +24,7 @@ public class ExpensesEntity {
     private BigDecimal amount;
     private Instant purchaseDate;
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity userEntity;
+    private UserEntity user;
     @Enumerated(EnumType.STRING)
     private ExpensesCategory category;
 
@@ -52,12 +52,12 @@ public class ExpensesEntity {
         this.purchaseDate = purchaseDate;
     }
 
-    public UserEntity getUserEntity() {
-        return userEntity;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public void setUser(UserEntity userEntity) {
+        this.user = userEntity;
     }
 
     public ExpensesCategory getCategory() {
@@ -73,12 +73,12 @@ public class ExpensesEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExpensesEntity that = (ExpensesEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(userEntity, that.userEntity);
+        return Objects.equals(id, that.id) && Objects.equals(user, that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userEntity);
+        return Objects.hash(id, user);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ExpensesEntity {
                 "id=" + id +
                 ", amount=" + amount +
                 ", purchaseDate=" + purchaseDate +
-                ", userEntity=" + userEntity +
+                ", userEntity=" + user +
                 ", category=" + category +
                 '}';
     }
