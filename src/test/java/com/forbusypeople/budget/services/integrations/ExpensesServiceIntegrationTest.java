@@ -1,43 +1,19 @@
 package com.forbusypeople.budget.services.integrations;
 
 import com.forbusypeople.budget.builders.ExpensesDtoBuilder;
-import com.forbusypeople.budget.builders.ExpensesEntityBuilder;
 import com.forbusypeople.budget.enums.ExpensesCategory;
-import com.forbusypeople.budget.repositories.ExpensesRepository;
-import com.forbusypeople.budget.repositories.UserRepository;
-import com.forbusypeople.budget.repositories.entities.UserEntity;
-import com.forbusypeople.budget.services.ExpensesService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-
-@SpringBootTest
-@Transactional
-@WithMockUser(username = "user123", password = "userPassword")
-public class ExpensesServiceIntegrationTest {
-
-    @Autowired
-    private ExpensesService expensesService;
-    @Autowired
-    private ExpensesRepository expensesRepository;
-    @Autowired
-    private UserRepository userRepository;
-
-    public static final String USER_NAME = "user123";
-    public static final String USER_PASSWORD = "userPassword";
+public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
 
     @Test
     void shouldSaveOneExpensesInToDatabase() {
         // given
-        initUserInDatabase();
+        initDatabaseByPrimeUser();
         var dto = new ExpensesDtoBuilder()
                 .withAmount(BigDecimal.ONE)
                 .build();
@@ -54,8 +30,8 @@ public class ExpensesServiceIntegrationTest {
     @Test
     void shouldDeleteExpensesFromDatabase() {
         // given
-        var user = initUserInDatabase();
-        var expensesId = initExpensesInDatabase(user);
+        var user = initDatabaseByPrimeUser();
+        var expensesId = initDatabaseByExpenses(user);
         var dto = new ExpensesDtoBuilder()
                 .withAmount(BigDecimal.ONE)
                 .withId(expensesId)
@@ -77,8 +53,8 @@ public class ExpensesServiceIntegrationTest {
     @Test
     void shouldUpdateExpensesInDatabase() {
         // given
-        var user = initUserInDatabase();
-        var expenseId = initExpensesInDatabase(user);
+        var user = initDatabaseByPrimeUser();
+        var expenseId = initDatabaseByExpenses(user);
         var dto = new ExpensesDtoBuilder()
                 .withAmount(BigDecimal.TEN)
                 .withCategory(ExpensesCategory.EDUCATION)
@@ -104,12 +80,12 @@ public class ExpensesServiceIntegrationTest {
     @Test
     void shouldReturnAllExpensesSavedInDatabase() {
         // given
-        var user = initUserInDatabase();
-        initExpensesInDatabase(user);
-        initExpensesInDatabase(user);
+        var user = initDatabaseByPrimeUser();
+        initDatabaseByExpenses(user);
+        initDatabaseByExpenses(user);
 
-        var secondUser = initSecondUserInDatabase();
-        initExpensesInDatabase(secondUser);
+        var secondUser = initDatabaseBySecondUser();
+        initDatabaseByExpenses(secondUser);
 
         // when
         var result = expensesService.getAllExpenses();
@@ -119,29 +95,4 @@ public class ExpensesServiceIntegrationTest {
 
     }
 
-    private UUID initExpensesInDatabase(UserEntity user) {
-        var expenses = new ExpensesEntityBuilder()
-                .withUser(user)
-                .withAmount(BigDecimal.ONE)
-                .build();
-
-        var entity = expensesRepository.save(expenses);
-        return entity.getId();
-    }
-
-    private UserEntity initUserInDatabase() {
-        var user = new UserEntity();
-        user.setUsername(USER_NAME);
-        user.setPassword(USER_PASSWORD);
-
-        return userRepository.save(user);
-    }
-
-    private UserEntity initSecondUserInDatabase() {
-        var user = new UserEntity();
-        user.setUsername("secondUser");
-        user.setPassword(USER_PASSWORD);
-
-        return userRepository.save(user);
-    }
 }
