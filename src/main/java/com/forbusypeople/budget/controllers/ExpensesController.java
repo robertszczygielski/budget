@@ -21,6 +21,12 @@ public class ExpensesController {
         return expensesService.getAllExpenses();
     }
 
+    @GetMapping("/filter")
+    private List<ExpensesDto> getAllExpensesBetweenDate(@RequestParam("from") String fromDate,
+                                                        @RequestParam("to") String toDate) {
+        return expensesService.getAllExpensesBetweenDate(fromDate, toDate);
+    }
+
     @PostMapping
     public void setExpenses(@RequestBody ExpensesDto expensesDto) {
         expensesService.setExpenses(expensesDto);

@@ -5,6 +5,7 @@ import com.forbusypeople.budget.enums.ExpensesCategory;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -95,4 +96,30 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
 
     }
 
+    @Test
+    void shouldReturnAllExpensesSavedInDatabaseAfter() {
+        // given
+        var fromDate = "2021-01-04";
+        var toDate = "2021-01-10";
+        var middleDate = "2021-01-08";
+        var notInRangeDate = "2021-01-11";
+        var user = initDatabaseByPrimeUser();
+        initDatabaseByExpenses(user, fromDate);
+        initDatabaseByExpenses(user, toDate);
+        initDatabaseByExpenses(user, middleDate);
+        initDatabaseByExpenses(user, notInRangeDate);
+
+        // when
+        var result = expensesService.getAllExpensesBetweenDate(fromDate, toDate);
+
+        // then
+        assertThat(result).hasSize(3);
+        var dateAsString = result.stream()
+                .map(dto -> dto.getPurchaseDate().toString().substring(0, fromDate.length()))
+                .collect(Collectors.toSet());
+        assertThat(dateAsString)
+                .contains(fromDate, toDate, middleDate)
+                .doesNotContain(notInRangeDate);
+
+    }
 }

@@ -137,4 +137,17 @@ public abstract class InitIntegrationTestData {
         return entity.getId();
     }
 
+    protected UUID initDatabaseByExpenses(UserEntity user, String date) {
+        var dateSuffix = "T00:00:00.001Z";
+
+        var expenses = new ExpensesEntityBuilder()
+                .withUser(user)
+                .withAmount(BigDecimal.ONE)
+                .withPurchaseDate(Instant.parse(date + dateSuffix))
+                .build();
+
+        var entity = expensesRepository.save(expenses);
+        return entity.getId();
+    }
+
 }

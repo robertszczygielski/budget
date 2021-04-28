@@ -8,8 +8,10 @@ import com.forbusypeople.budget.services.dtos.ExpensesDto;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class ExpensesService {
@@ -48,6 +50,18 @@ public class ExpensesService {
         var user = userLogInfoService.getLoggedUserEntity();
         var allExpenses = expensesRepository.findAllByUser(user);
         return expensesMapper.fromEntitiesToDtos(allExpenses);
+    }
+
+    public List<ExpensesDto> getAllExpensesBetweenDate(String fromDate, String toDate) {
+        var user = userLogInfoService.getLoggedUserEntity();
+        var dateSuffix = "T00:00:00.001Z";
+        var fromInstantDate = Instant.parse(fromDate + dateSuffix);
+        var toInstantDate = Instant.parse(toDate + dateSuffix);
+
+        return expensesRepository.findAllByBetweenDate(user, fromInstantDate, toInstantDate)
+                .stream()
+                .map(expensesMapper::formEntityToDto)
+                .collect(Collectors.toList());
     }
 
     private void updateExpenses(ExpensesEntity entity, ExpensesDto dto) {
