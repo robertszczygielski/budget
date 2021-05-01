@@ -1,5 +1,7 @@
 package com.forbusypeople.budget.services;
 
+import com.forbusypeople.budget.enums.FilterExpensesParametersEnum;
+import com.forbusypeople.budget.enums.MonthsEnum;
 import com.forbusypeople.budget.mappers.ExpensesMapper;
 import com.forbusypeople.budget.repositories.ExpensesRepository;
 import com.forbusypeople.budget.repositories.entities.ExpensesEntity;
@@ -9,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -52,7 +56,29 @@ public class ExpensesService {
         return expensesMapper.fromEntitiesToDtos(allExpenses);
     }
 
-    public List<ExpensesDto> getAllExpensesBetweenDate(String fromDate, String toDate) {
+    public List<ExpensesDto> getFilteredExpenses(Map<String, String> filter) {
+        if (filter.containsKey(FilterExpensesParametersEnum.FROM_DATE.getKey())) {
+            return getAllExpensesBetweenDate(
+                    filter.get(FilterExpensesParametersEnum.FROM_DATE.getKey()),
+                    filter.get(FilterExpensesParametersEnum.TO_DATE.getKey())
+            );
+        } else if (filter.containsKey(FilterExpensesParametersEnum.YEAR.getKey())) {
+            MonthsEnum month = MonthsEnum.valueOf(filter.get(FilterExpensesParametersEnum.MONTH.getKey()).toUpperCase());
+            String year = filter.get(FilterExpensesParametersEnum.YEAR.getKey());
+            return getAllExpensesForMonthInYear(month, year);
+        }
+
+        return Collections.emptyList();
+    }
+
+    private List<ExpensesDto> getAllExpensesForMonthInYear(MonthsEnum month, String year) {
+        String from = month.getFirstDayForYear(year);
+        String to = month.getLastDayForYear(year);
+
+        return getAllExpensesBetweenDate(from, to);
+    }
+
+    private List<ExpensesDto> getAllExpensesBetweenDate(String fromDate, String toDate) {
         var user = userLogInfoService.getLoggedUserEntity();
         var dateSuffix = "T00:00:00.001Z";
         var fromInstantDate = Instant.parse(fromDate + dateSuffix);

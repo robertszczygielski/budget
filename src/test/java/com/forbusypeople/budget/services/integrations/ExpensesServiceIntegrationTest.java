@@ -2,9 +2,12 @@ package com.forbusypeople.budget.services.integrations;
 
 import com.forbusypeople.budget.builders.ExpensesDtoBuilder;
 import com.forbusypeople.budget.enums.ExpensesCategory;
+import com.forbusypeople.budget.enums.FilterExpensesParametersEnum;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -108,9 +111,13 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
         initDatabaseByExpenses(user, toDate);
         initDatabaseByExpenses(user, middleDate);
         initDatabaseByExpenses(user, notInRangeDate);
+        Map<String, String> filter = new HashMap<>() {{
+            put(FilterExpensesParametersEnum.FROM_DATE.getKey(), fromDate);
+            put(FilterExpensesParametersEnum.TO_DATE.getKey(), toDate);
+        }};
 
         // when
-        var result = expensesService.getAllExpensesBetweenDate(fromDate, toDate);
+        var result = expensesService.getFilteredExpenses(filter);
 
         // then
         assertThat(result).hasSize(3);
