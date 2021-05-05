@@ -23,7 +23,7 @@ public class ExpensesController {
     }
 
     @GetMapping("/filter")
-    private List<ExpensesDto> getAllExpensesBetweenDate(@RequestParam Map<String, String> filter) {
+    private List<ExpensesDto> getFilteredExpenses(@RequestParam Map<String, String> filter) {
         return expensesService.getFilteredExpenses(filter);
     }
 
