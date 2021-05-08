@@ -1,14 +1,13 @@
 package com.forbusypeople.budget.services;
 
-import com.forbusypeople.budget.enums.ExpensesExceptionErrorMessages;
 import com.forbusypeople.budget.enums.FilterExpensesParametersEnum;
 import com.forbusypeople.budget.enums.MonthsEnum;
-import com.forbusypeople.budget.excetpions.MissingExpensesFilterException;
 import com.forbusypeople.budget.mappers.ExpensesMapper;
 import com.forbusypeople.budget.repositories.ExpensesRepository;
 import com.forbusypeople.budget.repositories.entities.ExpensesEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.dtos.ExpensesDto;
+import com.forbusypeople.budget.validators.FilterParametersValidator;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,11 +24,16 @@ public class ExpensesService {
     private final ExpensesRepository expensesRepository;
     private final ExpensesMapper expensesMapper;
     private final UserLogInfoService userLogInfoService;
+    private final FilterParametersValidator parametersValidator;
 
-    public ExpensesService(ExpensesRepository expensesRepository, ExpensesMapper expensesMapper, UserLogInfoService userLogInfoService) {
+    public ExpensesService(ExpensesRepository expensesRepository,
+                           ExpensesMapper expensesMapper,
+                           UserLogInfoService userLogInfoService,
+                           FilterParametersValidator parametersValidator) {
         this.expensesRepository = expensesRepository;
         this.expensesMapper = expensesMapper;
         this.userLogInfoService = userLogInfoService;
+        this.parametersValidator = parametersValidator;
     }
 
     public void setExpenses(ExpensesDto dto) {
@@ -59,6 +63,8 @@ public class ExpensesService {
     }
 
     public List<ExpensesDto> getFilteredExpenses(Map<String, String> filter) {
+        parametersValidator.assertFilter(filter);
+        
         if (isFilterForFromToDate(filter)) {
             return getAllExpensesBetweenDate(
                     filter.get(FilterExpensesParametersEnum.FROM_DATE.getKey()),
@@ -74,42 +80,13 @@ public class ExpensesService {
     }
 
     private boolean isFilterForMonthYear(Map<String, String> filter) {
-        if (filter.containsKey(FilterExpensesParametersEnum.MONTH.getKey())
-                && !filter.containsKey(FilterExpensesParametersEnum.YEAR.getKey())) {
-            throw new MissingExpensesFilterException(
-                    getMessageToException(FilterExpensesParametersEnum.YEAR.getKey()),
-                    "CKO8MSABP000NYW423ZEENTG4");
-        }
-        if (filter.containsKey(FilterExpensesParametersEnum.YEAR.getKey())
-                && !filter.containsKey(FilterExpensesParametersEnum.MONTH.getKey())) {
-            throw new MissingExpensesFilterException(
-                    getMessageToException(FilterExpensesParametersEnum.MONTH.getKey()),
-                    "CKO8MSJCQ000OYW4293K6CL02");
-        }
-
         return filter.containsKey(FilterExpensesParametersEnum.YEAR.getKey())
                 && filter.containsKey(FilterExpensesParametersEnum.MONTH.getKey());
     }
 
     private boolean isFilterForFromToDate(Map<String, String> filter) {
-        if (filter.containsKey(FilterExpensesParametersEnum.FROM_DATE.getKey())
-                && !filter.containsKey(FilterExpensesParametersEnum.TO_DATE.getKey())) {
-            throw new MissingExpensesFilterException(
-                    getMessageToException(FilterExpensesParametersEnum.TO_DATE.getKey()),
-                    "CKO8MP2A1000LYW42KL2Q6UD3");
-        }
-        if (filter.containsKey(FilterExpensesParametersEnum.TO_DATE.getKey())
-                && !filter.containsKey(FilterExpensesParametersEnum.FROM_DATE.getKey())) {
-            throw new MissingExpensesFilterException(
-                    getMessageToException(FilterExpensesParametersEnum.FROM_DATE.getKey()),
-                    "CKO8MPVEI000MYW42IEGWOIBK");
-        }
         return filter.containsKey(FilterExpensesParametersEnum.FROM_DATE.getKey())
                 && filter.containsKey(FilterExpensesParametersEnum.TO_DATE.getKey());
-    }
-
-    private String getMessageToException(String missingKey) {
-        return ExpensesExceptionErrorMessages.MISSING_FILTER_KEY.getMessage() + missingKey;
     }
 
     private List<ExpensesDto> getAllExpensesForMonthInYear(MonthsEnum month, String year) {

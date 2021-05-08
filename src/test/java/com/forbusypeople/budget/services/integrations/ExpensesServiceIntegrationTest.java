@@ -179,7 +179,7 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
 
         // then
         assertThat(result.getMessage())
-                .isEqualTo(ExpensesExceptionErrorMessages.MISSING_FILTER_KEY.getMessage() + testData.missingKey.getKey());
+                .isEqualTo(ExpensesExceptionErrorMessages.MISSING_FILTER_KEY.getMessage(testData.missingKey.getKey()));
 
     }
 
