@@ -171,11 +171,15 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource
-    void shouldThrowExceptionWhenOneOfTheFiltersKey(String testName, ParameterTestData testData) {
+    void shouldThrowExceptionWhenOneOfTheFiltersKey(String testName,
+                                                    ParameterTestData testData) {
         // given
+        initDatabaseByPrimeUser();
+        
         // when
         var result = assertThrows(MissingExpensesFilterException.class,
-                () -> expensesService.getFilteredExpenses(testData.filter));
+                                  () -> expensesService.getFilteredExpenses(testData.filter)
+        );
 
         // then
         assertThat(result.getMessage())
@@ -186,35 +190,39 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
     private static Stream<Arguments> shouldThrowExceptionWhenOneOfTheFiltersKey() {
         return Stream.of(
                 Arguments.of("test for missing " + FilterExpensesParametersEnum.FROM_DATE.getKey(),
-                        new ParameterTestData(
-                                new HashMap<>() {{
-                                    put(FilterExpensesParametersEnum.TO_DATE.getKey(), "2020-02-20");
-                                }},
-                                FilterExpensesParametersEnum.FROM_DATE)
+                             new ParameterTestData(
+                                     new HashMap<>() {{
+                                         put(FilterExpensesParametersEnum.TO_DATE.getKey(), "2020-02-20");
+                                     }},
+                                     FilterExpensesParametersEnum.FROM_DATE
+                             )
                 ),
 
                 Arguments.of("test for missing " + FilterExpensesParametersEnum.TO_DATE.getKey(),
-                        new ParameterTestData(
-                                new HashMap<>() {{
-                                    put(FilterExpensesParametersEnum.FROM_DATE.getKey(), "2020-02-20");
-                                }},
-                                FilterExpensesParametersEnum.TO_DATE)
+                             new ParameterTestData(
+                                     new HashMap<>() {{
+                                         put(FilterExpensesParametersEnum.FROM_DATE.getKey(), "2020-02-20");
+                                     }},
+                                     FilterExpensesParametersEnum.TO_DATE
+                             )
                 ),
 
                 Arguments.of("test for missing " + FilterExpensesParametersEnum.MONTH.getKey(),
-                        new ParameterTestData(
-                                new HashMap<>() {{
-                                    put(FilterExpensesParametersEnum.MONTH.getKey(), "january");
-                                }},
-                                FilterExpensesParametersEnum.YEAR)
+                             new ParameterTestData(
+                                     new HashMap<>() {{
+                                         put(FilterExpensesParametersEnum.MONTH.getKey(), "january");
+                                     }},
+                                     FilterExpensesParametersEnum.YEAR
+                             )
                 ),
 
                 Arguments.of("test for missing " + FilterExpensesParametersEnum.YEAR.getKey(),
-                        new ParameterTestData(
-                                new HashMap<>() {{
-                                    put(FilterExpensesParametersEnum.YEAR.getKey(), "2020");
-                                }},
-                                FilterExpensesParametersEnum.MONTH)
+                             new ParameterTestData(
+                                     new HashMap<>() {{
+                                         put(FilterExpensesParametersEnum.YEAR.getKey(), "2020");
+                                     }},
+                                     FilterExpensesParametersEnum.MONTH
+                             )
                 )
 
         );
@@ -225,7 +233,8 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
         public Map<String, String> filter;
         public FilterExpensesParametersEnum missingKey;
 
-        public ParameterTestData(Map<String, String> filter, FilterExpensesParametersEnum missingKey) {
+        public ParameterTestData(Map<String, String> filter,
+                                 FilterExpensesParametersEnum missingKey) {
             this.filter = filter;
             this.missingKey = missingKey;
         }
