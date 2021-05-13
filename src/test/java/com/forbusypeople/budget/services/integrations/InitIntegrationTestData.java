@@ -52,9 +52,20 @@ public abstract class InitIntegrationTestData {
     protected static final String USER_NAME_SECOND = "userNameSecond";
     protected final String USER_PASSWORD_SECOND = "userPasswordSecond";
 
+    protected void initDatabaseByAssetsForUser(UserEntity userEntity,
+                                               String date) {
+        var suffixDate = "T00:00:00.001Z";
+        initDatabaseByAssetsForUser(userEntity, Instant.parse(date + suffixDate));
+    }
+
     protected void initDatabaseByAssetsForUser(UserEntity userEntity) {
+        initDatabaseByAssetsForUser(userEntity, Instant.now());
+    }
+
+    private void initDatabaseByAssetsForUser(UserEntity userEntity,
+                                             Instant date) {
         var assetEntity = new AssetEntityBuilder()
-                .withIncomeDate(Instant.now())
+                .withIncomeDate(date)
                 .withUser(userEntity)
                 .withAmount(BigDecimal.ONE)
                 .withCategory(AssetCategory.BONUS)
@@ -137,7 +148,8 @@ public abstract class InitIntegrationTestData {
         return entity.getId();
     }
 
-    protected UUID initDatabaseByExpenses(UserEntity user, String date) {
+    protected UUID initDatabaseByExpenses(UserEntity user,
+                                          String date) {
         var dateSuffix = "T00:00:00.001Z";
 
         var expenses = new ExpensesEntityBuilder()

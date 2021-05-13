@@ -21,7 +21,7 @@ public class ExpensesService {
     private final ExpensesRepository expensesRepository;
     private final ExpensesMapper expensesMapper;
     private final UserLogInfoService userLogInfoService;
-    private final FilterRangeAbstract filterRange;
+    private final FilterRangeAbstract<ExpensesEntity> filterRange;
 
     public ExpensesService(ExpensesRepository expensesRepository,
                            ExpensesMapper expensesMapper,

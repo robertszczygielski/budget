@@ -1,6 +1,6 @@
 package com.forbusypeople.budget.validators;
 
-import com.forbusypeople.budget.enums.FilterExpensesParametersEnum;
+import com.forbusypeople.budget.enums.FilterParametersCalendarEnum;
 
 import java.util.Map;
 
@@ -13,36 +13,40 @@ public abstract class FilterParametersValidator {
         checkIfYearExistMonthMissing(filter, "CKO8MSABP000NYW423ZEENTG4");
     }
 
-    private void checkIfYearExistMonthMissing(Map<String, String> filter, String errorCode) {
-        if (filter.containsKey(FilterExpensesParametersEnum.YEAR.getKey())
-                && !filter.containsKey(FilterExpensesParametersEnum.MONTH.getKey())) {
+    private void checkIfYearExistMonthMissing(Map<String, String> filter,
+                                              String errorCode) {
+        if (filter.containsKey(FilterParametersCalendarEnum.YEAR.getKey())
+                && !filter.containsKey(FilterParametersCalendarEnum.MONTH.getKey())) {
 
-            throwException(FilterExpensesParametersEnum.MONTH.getKey(), errorCode);
+            throwException(FilterParametersCalendarEnum.MONTH.getKey(), errorCode);
         }
     }
 
-    private void checkIfMonthExistYearMissing(Map<String, String> filter, String errorCode) {
-        if (filter.containsKey(FilterExpensesParametersEnum.MONTH.getKey())
-                && !filter.containsKey(FilterExpensesParametersEnum.YEAR.getKey())) {
+    private void checkIfMonthExistYearMissing(Map<String, String> filter,
+                                              String errorCode) {
+        if (filter.containsKey(FilterParametersCalendarEnum.MONTH.getKey())
+                && !filter.containsKey(FilterParametersCalendarEnum.YEAR.getKey())) {
 
-            throwException(FilterExpensesParametersEnum.YEAR.getKey(), errorCode);
+            throwException(FilterParametersCalendarEnum.YEAR.getKey(), errorCode);
         }
 
     }
 
-    private void checkIfToDateExistFromDateMissing(Map<String, String> filter, String errorCode) {
-        if (filter.containsKey(FilterExpensesParametersEnum.TO_DATE.getKey())
-                && !filter.containsKey(FilterExpensesParametersEnum.FROM_DATE.getKey())) {
+    private void checkIfToDateExistFromDateMissing(Map<String, String> filter,
+                                                   String errorCode) {
+        if (filter.containsKey(FilterParametersCalendarEnum.TO_DATE.getKey())
+                && !filter.containsKey(FilterParametersCalendarEnum.FROM_DATE.getKey())) {
 
-            throwException(FilterExpensesParametersEnum.FROM_DATE.getKey(), errorCode);
+            throwException(FilterParametersCalendarEnum.FROM_DATE.getKey(), errorCode);
         }
     }
 
-    private void checkIfFromDateExistToDateMissing(Map<String, String> filter, String errorCode) {
-        if (filter.containsKey(FilterExpensesParametersEnum.FROM_DATE.getKey())
-                && !filter.containsKey(FilterExpensesParametersEnum.TO_DATE.getKey())) {
+    private void checkIfFromDateExistToDateMissing(Map<String, String> filter,
+                                                   String errorCode) {
+        if (filter.containsKey(FilterParametersCalendarEnum.FROM_DATE.getKey())
+                && !filter.containsKey(FilterParametersCalendarEnum.TO_DATE.getKey())) {
 
-            throwException(FilterExpensesParametersEnum.TO_DATE.getKey(), errorCode);
+            throwException(FilterParametersCalendarEnum.TO_DATE.getKey(), errorCode);
         }
     }
 

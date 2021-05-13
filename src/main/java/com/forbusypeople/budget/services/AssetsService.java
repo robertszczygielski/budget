@@ -1,8 +1,11 @@
 package com.forbusypeople.budget.services;
 
 import com.forbusypeople.budget.enums.AssetCategory;
+import com.forbusypeople.budget.filters.AssetsFilterRange;
+import com.forbusypeople.budget.filters.FilterRangeAbstract;
 import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
+import com.forbusypeople.budget.repositories.entities.AssetEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.validators.AssetValidator;
@@ -11,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,15 +26,18 @@ public class AssetsService {
     private final AssetsMapper assetsMapper;
     private final AssetValidator assetValidator;
     private final UserLogInfoService userLogInfoService;
+    private final FilterRangeAbstract<AssetEntity> filterRange;
 
     public AssetsService(AssetsRepository assetsRepository,
                          AssetsMapper assetsMapper,
                          AssetValidator assetValidator,
-                         UserLogInfoService userLogInfoService) {
+                         UserLogInfoService userLogInfoService,
+                         AssetsFilterRange filterRange) {
         this.assetsRepository = assetsRepository;
         this.assetsMapper = assetsMapper;
         this.assetValidator = assetValidator;
         this.userLogInfoService = userLogInfoService;
+        this.filterRange = filterRange;
     }
 
     public List<AssetDto> getAllAssets() {
@@ -83,6 +90,14 @@ public class AssetsService {
 
     public void deleteAssetByUser(UserEntity userEntity) {
         assetsRepository.deleteAllByUser(userEntity);
+    }
+
+    public List<AssetDto> getAssetsByFilter(Map<String, String> filter) {
+        var user = userLogInfoService.getLoggedUserEntity();
+        return filterRange.getAllByFilter(user, filter)
+                .stream()
+                .map(entity -> assetsMapper.fromEntityToDto(entity))
+                .collect(Collectors.toList());
     }
 
     private UserEntity getUserEntity() {

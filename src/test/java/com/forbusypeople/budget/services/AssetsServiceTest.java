@@ -4,6 +4,7 @@ import com.forbusypeople.budget.builders.AssetDtoBuilder;
 import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.enums.ValidatorsAssetEnum;
 import com.forbusypeople.budget.excetpions.AssetIncompleteException;
+import com.forbusypeople.budget.filters.AssetsFilterRange;
 import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
@@ -35,6 +36,8 @@ class AssetsServiceTest {
     private AssetsRepository assetsRepository;
     @Mock
     private UserLogInfoService userLogInfoService;
+    @Mock
+    private AssetsFilterRange assetsFilterRange;
 
     private final AssetValidator assetValidator = new AssetValidator();
     private final AssetsMapper assetsMapper = new AssetsMapper();
@@ -44,9 +47,11 @@ class AssetsServiceTest {
     @BeforeEach
     public void init() {
         service = new AssetsService(assetsRepository,
-                assetsMapper,
-                assetValidator,
-                userLogInfoService);
+                                    assetsMapper,
+                                    assetValidator,
+                                    userLogInfoService,
+                                    assetsFilterRange
+        );
     }
 
     @Test
@@ -141,7 +146,8 @@ class AssetsServiceTest {
 
         // when
         var result = assertThrows(AssetIncompleteException.class,
-                () -> service.setAsset(dto));
+                                  () -> service.setAsset(dto)
+        );
 
         // then
         assertEquals(ValidatorsAssetEnum.NO_AMOUNT.getMessage(), result.getMessage());
@@ -157,7 +163,8 @@ class AssetsServiceTest {
 
         // when
         var result = assertThrows(AssetIncompleteException.class,
-                () -> service.setAsset(dto));
+                                  () -> service.setAsset(dto)
+        );
 
         // then
         assertEquals(ValidatorsAssetEnum.NO_INCOME_DATE.getMessage(), result.getMessage());
@@ -175,7 +182,8 @@ class AssetsServiceTest {
 
         // when
         var result = assertThrows(AssetIncompleteException.class,
-                () -> service.setAsset(dto));
+                                  () -> service.setAsset(dto)
+        );
 
         // then
         assertEquals(expectedMessage, result.getMessage());

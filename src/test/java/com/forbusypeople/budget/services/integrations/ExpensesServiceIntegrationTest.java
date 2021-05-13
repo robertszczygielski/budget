@@ -3,7 +3,7 @@ package com.forbusypeople.budget.services.integrations;
 import com.forbusypeople.budget.builders.ExpensesDtoBuilder;
 import com.forbusypeople.budget.enums.ExpensesCategory;
 import com.forbusypeople.budget.enums.ExpensesExceptionErrorMessages;
-import com.forbusypeople.budget.enums.FilterExpensesParametersEnum;
+import com.forbusypeople.budget.enums.FilterParametersCalendarEnum;
 import com.forbusypeople.budget.enums.MonthsEnum;
 import com.forbusypeople.budget.excetpions.MissingExpensesFilterException;
 import org.junit.jupiter.api.Test;
@@ -120,8 +120,8 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
         initDatabaseByExpenses(user, middleDate);
         initDatabaseByExpenses(user, notInRangeDate);
         Map<String, String> filter = new HashMap<>() {{
-            put(FilterExpensesParametersEnum.FROM_DATE.getKey(), fromDate);
-            put(FilterExpensesParametersEnum.TO_DATE.getKey(), toDate);
+            put(FilterParametersCalendarEnum.FROM_DATE.getKey(), fromDate);
+            put(FilterParametersCalendarEnum.TO_DATE.getKey(), toDate);
         }};
 
         // when
@@ -151,8 +151,8 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
         initDatabaseByExpenses(user, middleDate);
         initDatabaseByExpenses(user, notInRangeDate);
         Map<String, String> filter = new HashMap<>() {{
-            put(FilterExpensesParametersEnum.MONTH.getKey(), MonthsEnum.JANUARY.name());
-            put(FilterExpensesParametersEnum.YEAR.getKey(), "2021");
+            put(FilterParametersCalendarEnum.MONTH.getKey(), MonthsEnum.JANUARY.name());
+            put(FilterParametersCalendarEnum.YEAR.getKey(), "2021");
         }};
 
         // when
@@ -175,7 +175,7 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
                                                     ParameterTestData testData) {
         // given
         initDatabaseByPrimeUser();
-        
+
         // when
         var result = assertThrows(MissingExpensesFilterException.class,
                                   () -> expensesService.getFilteredExpenses(testData.filter)
@@ -189,39 +189,39 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
 
     private static Stream<Arguments> shouldThrowExceptionWhenOneOfTheFiltersKey() {
         return Stream.of(
-                Arguments.of("test for missing " + FilterExpensesParametersEnum.FROM_DATE.getKey(),
+                Arguments.of("test for missing " + FilterParametersCalendarEnum.FROM_DATE.getKey(),
                              new ParameterTestData(
                                      new HashMap<>() {{
-                                         put(FilterExpensesParametersEnum.TO_DATE.getKey(), "2020-02-20");
+                                         put(FilterParametersCalendarEnum.TO_DATE.getKey(), "2020-02-20");
                                      }},
-                                     FilterExpensesParametersEnum.FROM_DATE
+                                     FilterParametersCalendarEnum.FROM_DATE
                              )
                 ),
 
-                Arguments.of("test for missing " + FilterExpensesParametersEnum.TO_DATE.getKey(),
+                Arguments.of("test for missing " + FilterParametersCalendarEnum.TO_DATE.getKey(),
                              new ParameterTestData(
                                      new HashMap<>() {{
-                                         put(FilterExpensesParametersEnum.FROM_DATE.getKey(), "2020-02-20");
+                                         put(FilterParametersCalendarEnum.FROM_DATE.getKey(), "2020-02-20");
                                      }},
-                                     FilterExpensesParametersEnum.TO_DATE
+                                     FilterParametersCalendarEnum.TO_DATE
                              )
                 ),
 
-                Arguments.of("test for missing " + FilterExpensesParametersEnum.MONTH.getKey(),
+                Arguments.of("test for missing " + FilterParametersCalendarEnum.MONTH.getKey(),
                              new ParameterTestData(
                                      new HashMap<>() {{
-                                         put(FilterExpensesParametersEnum.MONTH.getKey(), "january");
+                                         put(FilterParametersCalendarEnum.MONTH.getKey(), "january");
                                      }},
-                                     FilterExpensesParametersEnum.YEAR
+                                     FilterParametersCalendarEnum.YEAR
                              )
                 ),
 
-                Arguments.of("test for missing " + FilterExpensesParametersEnum.YEAR.getKey(),
+                Arguments.of("test for missing " + FilterParametersCalendarEnum.YEAR.getKey(),
                              new ParameterTestData(
                                      new HashMap<>() {{
-                                         put(FilterExpensesParametersEnum.YEAR.getKey(), "2020");
+                                         put(FilterParametersCalendarEnum.YEAR.getKey(), "2020");
                                      }},
-                                     FilterExpensesParametersEnum.MONTH
+                                     FilterParametersCalendarEnum.MONTH
                              )
                 )
 
@@ -231,10 +231,10 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
 
     private static class ParameterTestData {
         public Map<String, String> filter;
-        public FilterExpensesParametersEnum missingKey;
+        public FilterParametersCalendarEnum missingKey;
 
         public ParameterTestData(Map<String, String> filter,
-                                 FilterExpensesParametersEnum missingKey) {
+                                 FilterParametersCalendarEnum missingKey) {
             this.filter = filter;
             this.missingKey = missingKey;
         }
