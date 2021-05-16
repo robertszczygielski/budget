@@ -2,7 +2,7 @@ package com.forbusypeople.budget.services.integrations;
 
 import com.forbusypeople.budget.builders.ExpensesDtoBuilder;
 import com.forbusypeople.budget.enums.ExpensesCategory;
-import com.forbusypeople.budget.enums.ExpensesExceptionErrorMessages;
+import com.forbusypeople.budget.enums.FilterExceptionErrorMessages;
 import com.forbusypeople.budget.enums.FilterParametersCalendarEnum;
 import com.forbusypeople.budget.enums.MonthsEnum;
 import com.forbusypeople.budget.excetpions.MissingExpensesFilterException;
@@ -183,7 +183,8 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
 
         // then
         assertThat(result.getMessage())
-                .isEqualTo(ExpensesExceptionErrorMessages.MISSING_FILTER_KEY.getMessage(testData.missingKey.getKey()));
+                .isEqualTo(FilterExceptionErrorMessages.MISSING_EXPENSES_FILTER_KEY.getMessage(
+                        testData.missingKey.getKey()));
 
     }
 

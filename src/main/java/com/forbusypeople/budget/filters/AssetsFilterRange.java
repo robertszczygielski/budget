@@ -23,4 +23,9 @@ public class AssetsFilterRange extends FilterRangeAbstract {
                                                         Instant toDate) {
         return assetsRepository.findAllByBetweenDate(user, fromDate, toDate);
     }
+
+    @Override
+    protected String getFilterName() {
+        return "AssetsFilter";
+    }
 }

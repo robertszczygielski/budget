@@ -3,7 +3,8 @@ package com.forbusypeople.budget.filters;
 import com.forbusypeople.budget.enums.FilterParametersCalendarEnum;
 import com.forbusypeople.budget.enums.MonthsEnum;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
-import com.forbusypeople.budget.validators.ExpensesFilerParametersValidator;
+import com.forbusypeople.budget.validators.AssetsFilterParametersValidator;
+import com.forbusypeople.budget.validators.ExpensesFilterParametersValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
@@ -14,13 +15,21 @@ import java.util.Map;
 public abstract class FilterRangeAbstract<T> {
 
     @Autowired
-    private ExpensesFilerParametersValidator parametersValidator;
+    private ExpensesFilterParametersValidator expensesFilerParametersValidator;
+    @Autowired
+    private AssetsFilterParametersValidator assetsFilterParametersValidator;
 
     private final static String DATE_SUFFIX = "T00:00:00.001Z";
 
     public List<T> getAllByFilter(UserEntity user,
                                   Map<String, String> filter) {
-        parametersValidator.assertFilter(filter);
+
+        if ("ExpensesFilter".equals(getFilterName())) {
+            expensesFilerParametersValidator.assertFilter(filter);
+        }
+        if ("AssetsFilter".equals(getFilterName())) {
+            assetsFilterParametersValidator.assertFilter(filter);
+        }
 
         if (isFilterForFromToDate(filter)) {
             var fromDate = filter.get(FilterParametersCalendarEnum.FROM_DATE.getKey());
@@ -67,4 +76,6 @@ public abstract class FilterRangeAbstract<T> {
     protected abstract List<T> getAllEntityBetweenDate(UserEntity user,
                                                        Instant fromDate,
                                                        Instant toDate);
+
+    protected abstract String getFilterName();
 }

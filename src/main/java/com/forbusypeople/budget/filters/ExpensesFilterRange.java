@@ -23,4 +23,9 @@ public class ExpensesFilterRange extends FilterRangeAbstract {
                                                            Instant toDate) {
         return expensesRepository.findAllByBetweenDate(user, fromDate, toDate);
     }
+
+    @Override
+    protected String getFilterName() {
+        return "ExpensesFilter";
+    }
 }

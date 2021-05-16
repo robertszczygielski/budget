@@ -2,20 +2,28 @@ package com.forbusypeople.budget.services.integrations;
 
 import com.forbusypeople.budget.builders.AssetDtoBuilder;
 import com.forbusypeople.budget.enums.AssetCategory;
+import com.forbusypeople.budget.enums.FilterExceptionErrorMessages;
 import com.forbusypeople.budget.enums.FilterParametersCalendarEnum;
 import com.forbusypeople.budget.enums.MonthsEnum;
+import com.forbusypeople.budget.excetpions.MissingAssetsFilterException;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.dtos.AssetDto;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.assertj.core.util.Streams;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AssetServiceIntegrationTest extends InitIntegrationTestData {
 
@@ -166,4 +174,78 @@ public class AssetServiceIntegrationTest extends InitIntegrationTestData {
                 .contains(fromDate, toDate, middleDate)
                 .doesNotContain(outOfRangeDate);
     }
+
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource
+    void shouldThrowExceptionWhenOneOfTheFiltersKey(String testName,
+                                                    ParameterTestData testData) {
+        // given
+        initDatabaseByPrimeUser();
+
+        // when
+        var result = assertThrows(MissingAssetsFilterException.class,
+                                  () -> assetsService.getAssetsByFilter(testData.filter)
+        );
+
+        // then
+        AssertionsForClassTypes.assertThat(result.getMessage())
+                .isEqualTo(FilterExceptionErrorMessages.MISSING_ASSETS_FILTER_KEY.getMessage(
+                        testData.missingKey.getKey()));
+
+    }
+
+    private static Stream<Arguments> shouldThrowExceptionWhenOneOfTheFiltersKey() {
+        return Stream.of(
+                Arguments.of("test for missing " + FilterParametersCalendarEnum.FROM_DATE.getKey(),
+                             new ParameterTestData(
+                                     new HashMap<>() {{
+                                         put(FilterParametersCalendarEnum.TO_DATE.getKey(), "2020-02-20");
+                                     }},
+                                     FilterParametersCalendarEnum.FROM_DATE
+                             )
+                ),
+
+                Arguments.of("test for missing " + FilterParametersCalendarEnum.TO_DATE.getKey(),
+                             new ParameterTestData(
+                                     new HashMap<>() {{
+                                         put(FilterParametersCalendarEnum.FROM_DATE.getKey(), "2020-02-20");
+                                     }},
+                                     FilterParametersCalendarEnum.TO_DATE
+                             )
+                ),
+
+                Arguments.of("test for missing " + FilterParametersCalendarEnum.MONTH.getKey(),
+                             new ParameterTestData(
+                                     new HashMap<>() {{
+                                         put(FilterParametersCalendarEnum.MONTH.getKey(), "january");
+                                     }},
+                                     FilterParametersCalendarEnum.YEAR
+                             )
+                ),
+
+                Arguments.of("test for missing " + FilterParametersCalendarEnum.YEAR.getKey(),
+                             new ParameterTestData(
+                                     new HashMap<>() {{
+                                         put(FilterParametersCalendarEnum.YEAR.getKey(), "2020");
+                                     }},
+                                     FilterParametersCalendarEnum.MONTH
+                             )
+                )
+
+        );
+
+    }
+
+    private static class ParameterTestData {
+        public Map<String, String> filter;
+        public FilterParametersCalendarEnum missingKey;
+
+        public ParameterTestData(Map<String, String> filter,
+                                 FilterParametersCalendarEnum missingKey) {
+            this.filter = filter;
+            this.missingKey = missingKey;
+        }
+    }
+
 }
