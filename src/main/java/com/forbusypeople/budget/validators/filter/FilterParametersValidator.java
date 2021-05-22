@@ -1,10 +1,10 @@
-package com.forbusypeople.budget.validators;
+package com.forbusypeople.budget.validators.filter;
 
 import com.forbusypeople.budget.enums.FilterParametersCalendarEnum;
 
 import java.util.Map;
 
-public abstract class FilterParametersValidator {
+abstract class FilterParametersValidator {
 
     public void assertFilter(Map<String, String> filter) {
         checkIfFromDateExistToDateMissing(filter, "CKO8MP2A1000LYW42KL2Q6UD3");

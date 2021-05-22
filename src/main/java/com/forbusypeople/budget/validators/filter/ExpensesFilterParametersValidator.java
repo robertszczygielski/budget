@@ -1,11 +1,11 @@
-package com.forbusypeople.budget.validators;
+package com.forbusypeople.budget.validators.filter;
 
 import com.forbusypeople.budget.enums.FilterExceptionErrorMessages;
 import com.forbusypeople.budget.excetpions.MissingExpensesFilterException;
 import org.springframework.stereotype.Component;
 
-@Component
-public class ExpensesFilterParametersValidator extends FilterParametersValidator {
+@Component("forExpensesValidator")
+class ExpensesFilterParametersValidator extends FilterParametersValidator {
 
     @Override
     public void throwException(String missingKey,

@@ -74,10 +74,13 @@ public class AssetsService {
         LOGGER.info("Update asset");
         LOGGER.debug("AssetDto: " + dto);
         var entity = assetsRepository.findById(dto.getId());
+        entity.ifPresent(System.out::println);
         entity.ifPresent(e -> {
             e.setAmount(dto.getAmount());
+            System.out.println(e);
             assetsRepository.saveAndFlush(e);
         });
+
         LOGGER.info("Asset updated");
     }
 

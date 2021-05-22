@@ -1,10 +1,10 @@
 package com.forbusypeople.budget.filters;
 
 import com.forbusypeople.budget.enums.FilterParametersCalendarEnum;
+import com.forbusypeople.budget.enums.FilterSpecification;
 import com.forbusypeople.budget.enums.MonthsEnum;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
-import com.forbusypeople.budget.validators.AssetsFilterParametersValidator;
-import com.forbusypeople.budget.validators.ExpensesFilterParametersValidator;
+import com.forbusypeople.budget.validators.filter.FilterStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
@@ -15,9 +15,7 @@ import java.util.Map;
 public abstract class FilterRangeAbstract<T> {
 
     @Autowired
-    private ExpensesFilterParametersValidator expensesFilerParametersValidator;
-    @Autowired
-    private AssetsFilterParametersValidator assetsFilterParametersValidator;
+    private FilterStrategy filterStrategy;
 
     private final static String DATE_SUFFIX = "T00:00:00.001Z";
 
@@ -25,10 +23,10 @@ public abstract class FilterRangeAbstract<T> {
                                   Map<String, String> filter) {
 
         if ("ExpensesFilter".equals(getFilterName())) {
-            expensesFilerParametersValidator.assertFilter(filter);
+            filterStrategy.checkFilterForSpecification(filter, FilterSpecification.FOR_EXPENSES);
         }
         if ("AssetsFilter".equals(getFilterName())) {
-            assetsFilterParametersValidator.assertFilter(filter);
+            filterStrategy.checkFilterForSpecification(filter, FilterSpecification.FOR_ASSETS);
         }
 
         if (isFilterForFromToDate(filter)) {
