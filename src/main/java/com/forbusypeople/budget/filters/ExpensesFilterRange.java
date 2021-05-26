@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.util.List;
 
-@Component
-public class ExpensesFilterRange extends FilterRangeAbstract {
+@Component("forExpensesRange")
+class ExpensesFilterRange extends FilterRangeAbstract<ExpensesEntity> {
 
     private final ExpensesRepository expensesRepository;
 
@@ -24,8 +24,4 @@ public class ExpensesFilterRange extends FilterRangeAbstract {
         return expensesRepository.findAllByBetweenDate(user, fromDate, toDate);
     }
 
-    @Override
-    protected String getFilterName() {
-        return "ExpensesFilter";
-    }
 }

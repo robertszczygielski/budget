@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public abstract class FilterRangeAbstract<T> {
+abstract class FilterRangeAbstract<T> {
 
     @Autowired
     private FilterStrategy filterStrategy;
@@ -20,14 +20,10 @@ public abstract class FilterRangeAbstract<T> {
     private final static String DATE_SUFFIX = "T00:00:00.001Z";
 
     public List<T> getAllByFilter(UserEntity user,
-                                  Map<String, String> filter) {
+                                  Map<String, String> filter,
+                                  FilterSpecification specification) {
 
-        if ("ExpensesFilter".equals(getFilterName())) {
-            filterStrategy.checkFilterForSpecification(filter, FilterSpecification.FOR_EXPENSES);
-        }
-        if ("AssetsFilter".equals(getFilterName())) {
-            filterStrategy.checkFilterForSpecification(filter, FilterSpecification.FOR_ASSETS);
-        }
+        filterStrategy.checkFilterForSpecification(filter, specification);
 
         if (isFilterForFromToDate(filter)) {
             var fromDate = filter.get(FilterParametersCalendarEnum.FROM_DATE.getKey());
@@ -75,5 +71,4 @@ public abstract class FilterRangeAbstract<T> {
                                                        Instant fromDate,
                                                        Instant toDate);
 
-    protected abstract String getFilterName();
 }

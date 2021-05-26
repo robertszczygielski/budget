@@ -4,7 +4,7 @@ import com.forbusypeople.budget.builders.AssetDtoBuilder;
 import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.enums.ValidatorsAssetEnum;
 import com.forbusypeople.budget.excetpions.AssetIncompleteException;
-import com.forbusypeople.budget.filters.AssetsFilterRange;
+import com.forbusypeople.budget.filters.FilterRangeStrategy;
 import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
@@ -37,7 +37,7 @@ class AssetsServiceTest {
     @Mock
     private UserLogInfoService userLogInfoService;
     @Mock
-    private AssetsFilterRange assetsFilterRange;
+    private FilterRangeStrategy filterRangeStrategy;
 
     private final AssetValidator assetValidator = new AssetValidator();
     private final AssetsMapper assetsMapper = new AssetsMapper();
@@ -50,7 +50,7 @@ class AssetsServiceTest {
                                     assetsMapper,
                                     assetValidator,
                                     userLogInfoService,
-                                    assetsFilterRange
+                                    filterRangeStrategy
         );
     }
 

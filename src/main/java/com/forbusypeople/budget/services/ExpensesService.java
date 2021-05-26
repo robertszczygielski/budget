@@ -1,7 +1,7 @@
 package com.forbusypeople.budget.services;
 
-import com.forbusypeople.budget.filters.ExpensesFilterRange;
-import com.forbusypeople.budget.filters.FilterRangeAbstract;
+import com.forbusypeople.budget.enums.FilterSpecification;
+import com.forbusypeople.budget.filters.FilterRangeStrategy;
 import com.forbusypeople.budget.mappers.ExpensesMapper;
 import com.forbusypeople.budget.repositories.ExpensesRepository;
 import com.forbusypeople.budget.repositories.entities.ExpensesEntity;
@@ -21,16 +21,16 @@ public class ExpensesService {
     private final ExpensesRepository expensesRepository;
     private final ExpensesMapper expensesMapper;
     private final UserLogInfoService userLogInfoService;
-    private final FilterRangeAbstract<ExpensesEntity> filterRange;
+    private final FilterRangeStrategy<ExpensesEntity> filterRangeStrategy;
 
     public ExpensesService(ExpensesRepository expensesRepository,
                            ExpensesMapper expensesMapper,
                            UserLogInfoService userLogInfoService,
-                           ExpensesFilterRange filterRange) {
+                           FilterRangeStrategy filterRangeStrategy) {
         this.expensesRepository = expensesRepository;
         this.expensesMapper = expensesMapper;
         this.userLogInfoService = userLogInfoService;
-        this.filterRange = filterRange;
+        this.filterRangeStrategy = filterRangeStrategy;
     }
 
     public void setExpenses(ExpensesDto dto) {
@@ -61,8 +61,9 @@ public class ExpensesService {
 
     public List<ExpensesDto> getFilteredExpenses(Map<String, String> filter) {
         var user = userLogInfoService.getLoggedUserEntity();
+        FilterSpecification specification = FilterSpecification.FOR_EXPENSES;
 
-        return filterRange.getAllByFilter(user, filter)
+        return filterRangeStrategy.getFilteredDataForSpecification(user, filter, specification)
                 .stream()
                 .map(expensesMapper::formEntityToDto)
                 .collect(Collectors.toList());
