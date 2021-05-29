@@ -1,15 +1,10 @@
 package com.forbusypeople.budget.excetpions;
 
-public class MissingExpensesFilterException extends RuntimeException {
+public class MissingExpensesFilterException extends BudgetMainException {
 
-    private final String errorCode;
-
-    public MissingExpensesFilterException(String message, String errorCode) {
-        super(message);
-        this.errorCode = errorCode;
+    public MissingExpensesFilterException(String message,
+                                          String errorCode) {
+        super(message, errorCode);
     }
 
-    public String getErrorCode() {
-        return errorCode;
-    }
 }
