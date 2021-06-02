@@ -20,7 +20,8 @@ class ExpensesFilterRange extends FilterRangeAbstract<ExpensesEntity> {
     @Override
     protected List<ExpensesEntity> getAllEntityBetweenDate(UserEntity user,
                                                            Instant fromDate,
-                                                           Instant toDate) {
+                                                           Instant toDate,
+                                                           String category) {
         return expensesRepository.findAllByBetweenDate(user, fromDate, toDate);
     }
 

@@ -1,6 +1,6 @@
 package com.forbusypeople.budget.filters;
 
-import com.forbusypeople.budget.enums.FilterParametersCalendarEnum;
+import com.forbusypeople.budget.enums.FilterParametersEnum;
 import com.forbusypeople.budget.enums.FilterSpecification;
 import com.forbusypeople.budget.enums.MonthsEnum;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
@@ -26,18 +26,23 @@ abstract class FilterRangeAbstract<T> {
         filterStrategy.checkFilterForSpecification(filter, specification);
 
         if (isFilterForFromToDate(filter)) {
-            var fromDate = filter.get(FilterParametersCalendarEnum.FROM_DATE.getKey());
-            var toDate = filter.get(FilterParametersCalendarEnum.TO_DATE.getKey());
+            var fromDate = filter.get(FilterParametersEnum.FROM_DATE.getKey());
+            var toDate = filter.get(FilterParametersEnum.TO_DATE.getKey());
 
             return getAllEntityBetweenDate(user,
                                            parseDateToInstant(fromDate),
-                                           parseDateToInstant(toDate)
+                                           parseDateToInstant(toDate),
+                                           filter.get(FilterParametersEnum.CATEGORY.getKey())
             );
         } else if (isFilterForMonthYear(filter)) {
             MonthsEnum month = MonthsEnum.valueOf(
-                    filter.get(FilterParametersCalendarEnum.MONTH.getKey()).toUpperCase());
-            String year = filter.get(FilterParametersCalendarEnum.YEAR.getKey());
-            return getAllExpensesForMonthInYear(user, month, year);
+                    filter.get(FilterParametersEnum.MONTH.getKey()).toUpperCase());
+            String year = filter.get(FilterParametersEnum.YEAR.getKey());
+            return getAllExpensesForMonthInYear(user,
+                                                month,
+                                                year,
+                                                filter.get(FilterParametersEnum.CATEGORY.getKey())
+            );
         }
 
         return Collections.emptyList();
@@ -45,22 +50,27 @@ abstract class FilterRangeAbstract<T> {
 
 
     private boolean isFilterForMonthYear(Map<String, String> filter) {
-        return filter.containsKey(FilterParametersCalendarEnum.YEAR.getKey())
-                && filter.containsKey(FilterParametersCalendarEnum.MONTH.getKey());
+        return filter.containsKey(FilterParametersEnum.YEAR.getKey())
+                && filter.containsKey(FilterParametersEnum.MONTH.getKey());
     }
 
     private boolean isFilterForFromToDate(Map<String, String> filter) {
-        return filter.containsKey(FilterParametersCalendarEnum.FROM_DATE.getKey())
-                && filter.containsKey(FilterParametersCalendarEnum.TO_DATE.getKey());
+        return filter.containsKey(FilterParametersEnum.FROM_DATE.getKey())
+                && filter.containsKey(FilterParametersEnum.TO_DATE.getKey());
     }
 
     private List<T> getAllExpensesForMonthInYear(UserEntity user,
                                                  MonthsEnum month,
-                                                 String year) {
+                                                 String year,
+                                                 String category) {
         String from = month.getFirstDayForYear(year);
         String to = month.getLastDayForYear(year);
 
-        return getAllEntityBetweenDate(user, parseDateToInstant(from), parseDateToInstant(to));
+        return getAllEntityBetweenDate(user,
+                                       parseDateToInstant(from),
+                                       parseDateToInstant(to),
+                                       category
+        );
     }
 
     private Instant parseDateToInstant(String date) {
@@ -69,6 +79,7 @@ abstract class FilterRangeAbstract<T> {
 
     protected abstract List<T> getAllEntityBetweenDate(UserEntity user,
                                                        Instant fromDate,
-                                                       Instant toDate);
+                                                       Instant toDate,
+                                                       String category);
 
 }
