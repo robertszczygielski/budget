@@ -27,6 +27,7 @@ public class AssetEntity {
     private UserEntity user;
     @Enumerated(EnumType.STRING)
     private AssetCategory category;
+    private String description;
 
     public UUID getId() {
         return id;
@@ -66,6 +67,14 @@ public class AssetEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

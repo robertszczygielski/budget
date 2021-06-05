@@ -13,6 +13,7 @@ public class AssetDtoBuilder {
     private BigDecimal amount;
     private Instant incomeDate;
     private AssetCategory category;
+    private String description;
 
     public AssetDtoBuilder withId(UUID id) {
         this.id = id;
@@ -21,6 +22,11 @@ public class AssetDtoBuilder {
 
     public AssetDtoBuilder withAmount(BigDecimal amount) {
         this.amount = amount;
+        return this;
+    }
+
+    public AssetDtoBuilder withDescription(String description) {
+        this.description = description;
         return this;
     }
 
@@ -40,6 +46,7 @@ public class AssetDtoBuilder {
         dto.setId(this.id);
         dto.setIncomeDate(this.incomeDate);
         dto.setCategory(this.category);
+        dto.setDescription(this.description);
         return dto;
     }
 

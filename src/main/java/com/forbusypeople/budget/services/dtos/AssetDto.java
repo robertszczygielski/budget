@@ -13,6 +13,7 @@ public class AssetDto {
     private BigDecimal amount;
     private Instant incomeDate;
     private AssetCategory category;
+    private String description;
 
     public UUID getId() {
         return id;
@@ -44,6 +45,14 @@ public class AssetDto {
 
     public void setCategory(AssetCategory category) {
         this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

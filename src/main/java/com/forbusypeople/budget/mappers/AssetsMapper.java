@@ -12,7 +12,8 @@ import java.util.Objects;
 @Component
 public class AssetsMapper {
 
-    public AssetEntity fromDtoToEntity(AssetDto dto, UserEntity user) {
+    public AssetEntity fromDtoToEntity(AssetDto dto,
+                                       UserEntity user) {
 
         if (Objects.isNull(dto)) {
             return null;
@@ -26,6 +27,10 @@ public class AssetsMapper {
 
         if (Objects.nonNull(dto.getId())) {
             entityBuilder.withId(dto.getId());
+        }
+
+        if (Objects.nonNull(dto.getDescription())) {
+            entityBuilder.withDescription(dto.getDescription());
         }
 
         if (Objects.nonNull(dto.getIncomeDate())) {
@@ -61,6 +66,10 @@ public class AssetsMapper {
 
         if (Objects.nonNull(entity.getIncomeDate())) {
             dtoBuilder.withIncomeDate(entity.getIncomeDate());
+        }
+
+        if (Objects.nonNull(entity.getDescription())) {
+            dtoBuilder.withDescription(entity.getDescription());
         }
 
         if (Objects.nonNull(entity.getCategory())) {

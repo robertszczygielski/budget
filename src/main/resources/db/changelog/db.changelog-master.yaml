@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/migration/006-assetsSchemaAddUserId.sql
   - include:
       file: db/migration/007-expensesSchema.yaml
+  - include:
+      file: db/migration/008-assetsSchemaAddDescription.yaml

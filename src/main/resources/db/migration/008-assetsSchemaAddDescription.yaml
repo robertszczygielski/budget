@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-assets-schema-add-description
+      author: rs
+      changes:
+        - addColumn:
+            tableName: assets
+            columns:
+              - column:
+                  name: description
+                  type: text
