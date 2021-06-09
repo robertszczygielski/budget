@@ -9,10 +9,7 @@ import com.forbusypeople.budget.repositories.ExpensesRepository;
 import com.forbusypeople.budget.repositories.UserRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
-import com.forbusypeople.budget.services.AssetsService;
-import com.forbusypeople.budget.services.ExpensesService;
-import com.forbusypeople.budget.services.JWTService;
-import com.forbusypeople.budget.services.UserDetailsServiceImpl;
+import com.forbusypeople.budget.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,6 +43,8 @@ public abstract class InitIntegrationTestData {
     protected JWTService jwtService;
     @Autowired
     protected AuthenticationManager authenticationManager;
+    @Autowired
+    protected PropertyService propertyService;
 
     protected static final String USER_NAME_PRIME = "userNamePrime";
     protected static final String USER_PASSWORD_PRIME = "userPasswordPrime";

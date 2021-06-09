@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-property-schema
+      author: rs
+      changes:
+        - createTable:
+            tableName: property
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: city
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: post_code
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: street
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: house
+                  type: text
+                  constraints:
+                    nullable: true
+              - column:
+                  name: rooms
+                  type: numeric
+                  constraints:
+                    nullable: false
+              - column:
+                  name: single
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_proprty
+                    reference: users(id)

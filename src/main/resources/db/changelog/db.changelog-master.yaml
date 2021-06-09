@@ -15,3 +15,5 @@ databaseChangeLog:
       file: db/migration/007-expensesSchema.yaml
   - include:
       file: db/migration/008-assetsSchemaAddDescription.yaml
+  - include:
+      file: db/migration/009-propretySchema.yaml
