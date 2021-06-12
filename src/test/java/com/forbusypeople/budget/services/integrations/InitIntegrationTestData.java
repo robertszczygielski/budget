@@ -3,11 +3,14 @@ package com.forbusypeople.budget.services.integrations;
 
 import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.builders.ExpensesEntityBuilder;
+import com.forbusypeople.budget.builders.PropertyEntityBuilder;
 import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.repositories.ExpensesRepository;
+import com.forbusypeople.budget.repositories.PropertyRepository;
 import com.forbusypeople.budget.repositories.UserRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
+import com.forbusypeople.budget.repositories.entities.PropertyEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,8 @@ public abstract class InitIntegrationTestData {
     protected AuthenticationManager authenticationManager;
     @Autowired
     protected PropertyService propertyService;
+    @Autowired
+    protected PropertyRepository propertyRepository;
 
     protected static final String USER_NAME_PRIME = "userNamePrime";
     protected static final String USER_PASSWORD_PRIME = "userPasswordPrime";
@@ -178,4 +183,23 @@ public abstract class InitIntegrationTestData {
         return entity.getId();
     }
 
+    protected void initDatabaseByProperty(UserEntity user) {
+        var postCode = "00-010";
+        var city = "Warsaw";
+        var street = "Smerfetki";
+        var house = "12A";
+        var single = false;
+        var rooms = 3;
+        PropertyEntity property = new PropertyEntityBuilder()
+                .withPostCode(postCode)
+                .withCity(city)
+                .withStreet(street)
+                .withHouse(house)
+                .withSingle(single)
+                .withRooms(rooms)
+                .withUser(user)
+                .build();
+
+        propertyRepository.save(property);
+    }
 }
