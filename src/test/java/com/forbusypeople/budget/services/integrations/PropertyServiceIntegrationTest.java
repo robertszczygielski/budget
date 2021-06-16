@@ -53,12 +53,54 @@ public class PropertyServiceIntegrationTest extends InitIntegrationTestData {
         var user = initDatabaseByPrimeUser();
         initDatabaseByProperty(user);
 
-
         // when
         var dtoList = propertyService.findAllProperties();
 
         // then
         assertThat(dtoList).hasSize(1);
+
+    }
+
+    @Test
+    void shouldRemovePropertyFromDatabase() {
+        // given
+        var user = initDatabaseByPrimeUser();
+        initDatabaseByProperty(user);
+
+        PropertyDto property = propertyService.findAllProperties().stream().findFirst().get();
+
+        // when
+        propertyService.deleteProperty(property);
+
+        // then
+        var entityList = propertyRepository.findAll();
+        assertThat(entityList).hasSize(0);
+
+    }
+
+    @Test
+    void shouldUpdatePropertyInDatabase() {
+        // given
+        var user = initDatabaseByPrimeUser();
+        initDatabaseByProperty(user);
+
+        PropertyDto property = propertyService.findAllProperties().stream().findFirst().get();
+        var room = property.getRooms();
+        var single = property.getSingle();
+
+        var newRoom = room + 3;
+        var newSingle = !single;
+        property.setRooms(newRoom);
+        property.setSingle(newSingle);
+
+
+        // when
+        propertyService.updateProperty(property);
+
+        // then
+        var entity = propertyRepository.findAll().stream().findFirst().get();
+        assertThat(entity.getRooms()).isEqualTo(newRoom);
+        assertThat(entity.getSingle()).isEqualTo(newSingle);
 
     }
 }

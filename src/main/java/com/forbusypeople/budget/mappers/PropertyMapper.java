@@ -64,4 +64,25 @@ public class PropertyMapper {
 
         return entityBuilder.build();
     }
+
+    public PropertyEntity updateEntityByDto(PropertyEntity entity,
+                                            PropertyDto dto) {
+        if (Objects.nonNull(dto.getStreet())) {
+            entity.setStreet(dto.getStreet());
+        }
+        if (Objects.nonNull(dto.getSingle())) {
+            entity.setSingle(dto.getSingle());
+        }
+        if (Objects.nonNull(dto.getPostCode())) {
+            entity.setPostCode(dto.getPostCode());
+        }
+        if (Objects.nonNull(dto.getRooms())) {
+            entity.setRooms(dto.getRooms());
+        }
+        if (Objects.nonNull(dto.getHouse())) {
+            entity.setHouse(dto.getHouse());
+        }
+
+        return entity;
+    }
 }

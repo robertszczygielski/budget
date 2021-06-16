@@ -49,4 +49,19 @@ public class PropertyService {
                 .map(entity -> propertyMapper.fromEntityToDto(entity))
                 .collect(Collectors.toList());
     }
+
+    public void deleteProperty(PropertyDto dto) {
+        var entity = propertyRepository.findById(dto.getId()).stream().findFirst();
+        if (entity.isPresent()) {
+            propertyRepository.delete(entity.get());
+        }
+    }
+
+    public void updateProperty(PropertyDto dto) {
+        var entity = propertyRepository.findById(dto.getId()).stream().findFirst();
+        if (entity.isPresent()) {
+            var newEntity = propertyMapper.updateEntityByDto(entity.get(), dto);
+            propertyRepository.saveAndFlush(newEntity);
+        }
+    }
 }
