@@ -17,3 +17,5 @@ databaseChangeLog:
       file: db/migration/008-assetsSchemaAddDescription.yaml
   - include:
       file: db/migration/009-propretySchema.yaml
+  - include:
+      file: db/migration/010-roomsSchema.yaml
