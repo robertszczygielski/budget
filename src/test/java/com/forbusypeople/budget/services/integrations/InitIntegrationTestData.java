@@ -5,10 +5,7 @@ import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.builders.ExpensesEntityBuilder;
 import com.forbusypeople.budget.builders.PropertyEntityBuilder;
 import com.forbusypeople.budget.enums.AssetCategory;
-import com.forbusypeople.budget.repositories.AssetsRepository;
-import com.forbusypeople.budget.repositories.ExpensesRepository;
-import com.forbusypeople.budget.repositories.PropertyRepository;
-import com.forbusypeople.budget.repositories.UserRepository;
+import com.forbusypeople.budget.repositories.*;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
 import com.forbusypeople.budget.repositories.entities.PropertyEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
@@ -50,6 +47,10 @@ public abstract class InitIntegrationTestData {
     protected PropertyService propertyService;
     @Autowired
     protected PropertyRepository propertyRepository;
+    @Autowired
+    protected RoomsService roomsService;
+    @Autowired
+    protected RoomsRepository roomsRepository;
 
     protected static final String USER_NAME_PRIME = "userNamePrime";
     protected static final String USER_PASSWORD_PRIME = "userPasswordPrime";
