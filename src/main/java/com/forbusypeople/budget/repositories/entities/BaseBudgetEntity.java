@@ -1,6 +1,9 @@
 package com.forbusypeople.budget.repositories.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,6 +11,9 @@ import java.util.UUID;
 
 @MappedSuperclass
 @Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 abstract class BaseBudgetEntity {
 
     @Id

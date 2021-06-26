@@ -5,9 +5,11 @@ import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.builders.ExpensesEntityBuilder;
 import com.forbusypeople.budget.builders.PropertyEntityBuilder;
 import com.forbusypeople.budget.enums.AssetCategory;
+import com.forbusypeople.budget.enums.RoomsType;
 import com.forbusypeople.budget.repositories.*;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
 import com.forbusypeople.budget.repositories.entities.PropertyEntity;
+import com.forbusypeople.budget.repositories.entities.RoomsEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,5 +204,18 @@ public abstract class InitIntegrationTestData {
                 .build();
 
         propertyRepository.save(property);
+    }
+
+    protected UUID initDatabaseByRoom(RoomsType type,
+                                      BigDecimal cost,
+                                      UserEntity user) {
+        var entity = RoomsEntity.builder()
+                .user(user)
+                .cost(cost)
+                .type(type)
+                .build();
+        var savedEntity = roomsRepository.save(entity);
+        
+        return savedEntity.getId();
     }
 }
