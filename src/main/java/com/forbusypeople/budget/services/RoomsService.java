@@ -7,6 +7,7 @@ import com.forbusypeople.budget.services.dtos.RoomsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +23,7 @@ public class RoomsService {
     private final UserLogInfoService userLogInfoService;
     private final RoomsMapper roomsMapper;
 
+    @Transactional
     public UUID saveOrUpdate(RoomsDto dto) {
         return Objects.isNull(dto.getId())
                 ? saveRoom(dto)
@@ -44,6 +46,7 @@ public class RoomsService {
         return dot.getId();
     }
 
+    @Transactional
     public void inactiveRoom(UUID roomId) {
         var entityOptional = roomsRepository.findById(roomId);
         if (entityOptional.isPresent()) {
