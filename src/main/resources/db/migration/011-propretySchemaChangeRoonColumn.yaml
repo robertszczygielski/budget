@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 011-property-schema-change-room-column
+      author: rs
+      changes:
+        - dropColumn:
+            tableName: property
+            columnName: rooms
+        - addTable:
+            tableName: property
+            columns:
+              - column:
+                  name: sold
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rooms
+                  type: uuid
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_rooms_id_property
+                    reference: rooms(id)

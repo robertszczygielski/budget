@@ -4,6 +4,8 @@ import com.forbusypeople.budget.services.dtos.PropertyDto;
 
 import java.util.UUID;
 
+
+// TODO: do usunięcia na następnej lekcji
 public class PropertyDtoBuilder {
 
     private UUID id;
@@ -17,7 +19,6 @@ public class PropertyDtoBuilder {
     public PropertyDto build() {
         PropertyDto dto = new PropertyDto();
         dto.setId(this.id);
-        dto.setRooms(this.rooms);
         dto.setSingle(this.single);
         dto.setCity(this.city);
         dto.setPostCode(this.postCode);

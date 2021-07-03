@@ -5,6 +5,7 @@ import com.forbusypeople.budget.repositories.entities.UserEntity;
 
 import java.util.UUID;
 
+// TODO: do usunięcia na następnej lekcji
 public class PropertyEntityBuilder {
 
     private UUID id;
@@ -19,7 +20,6 @@ public class PropertyEntityBuilder {
     public PropertyEntity build() {
         PropertyEntity entity = new PropertyEntity();
         entity.setId(this.id);
-        entity.setRooms(this.rooms);
         entity.setSingle(this.single);
         entity.setCity(this.city);
         entity.setPostCode(this.postCode);
