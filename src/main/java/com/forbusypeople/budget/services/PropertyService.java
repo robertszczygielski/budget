@@ -2,6 +2,7 @@ package com.forbusypeople.budget.services;
 
 import com.forbusypeople.budget.mappers.PropertyMapper;
 import com.forbusypeople.budget.repositories.PropertyRepository;
+import com.forbusypeople.budget.repositories.RoomsRepository;
 import com.forbusypeople.budget.repositories.entities.PropertyEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.dtos.PropertyDto;
@@ -20,6 +21,7 @@ public class PropertyService {
     private final PropertyRepository propertyRepository;
     private final UserLogInfoService userLogInfoService;
     private final PropertyMapper propertyMapper;
+    private final RoomsRepository roomsRepository;
 
     public UUID addProperty(PropertyDto dto) {
         UserEntity user = userLogInfoService.getLoggedUserEntity();
@@ -49,7 +51,16 @@ public class PropertyService {
         var entity = propertyRepository.findById(dto.getId()).stream().findFirst();
         if (entity.isPresent()) {
             var entityToChange = entity.get();
-            propertyMapper.updateEntityByDto(entityToChange, dto);
+            var roomsEntity = dto.getRooms().stream()
+                    .map(it -> roomsRepository.findById(it.getId()).get())
+                    .collect(Collectors.toList());
+
+            propertyMapper.updateEntityByDto(entityToChange, dto, roomsEntity);
         }
+    }
+
+    public void setSoldProperty(UUID id) {
+        var user = userLogInfoService.getLoggedUserEntity();
+        propertyRepository.setSoldProperty(user, id);
     }
 }

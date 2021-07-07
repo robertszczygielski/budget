@@ -6,7 +6,7 @@ databaseChangeLog:
         - dropColumn:
             tableName: property
             columnName: rooms
-        - addTable:
+        - addColumn:
             tableName: property
             columns:
               - column:

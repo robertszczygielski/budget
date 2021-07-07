@@ -3,7 +3,6 @@ package com.forbusypeople.budget.services.integrations;
 
 import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.builders.ExpensesEntityBuilder;
-import com.forbusypeople.budget.builders.PropertyEntityBuilder;
 import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.enums.RoomsType;
 import com.forbusypeople.budget.repositories.*;
@@ -20,7 +19,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -187,20 +189,33 @@ public abstract class InitIntegrationTestData {
     }
 
     protected void initDatabaseByProperty(UserEntity user) {
+        initDatabaseByProperty(user, null);
+    }
+
+    protected void initDatabaseByProperty(UserEntity user,
+                                          UUID... roomsId) {
         var postCode = "00-010";
         var city = "Warsaw";
         var street = "Smerfetki";
         var house = "12A";
         var single = false;
-        var rooms = 3;
-        PropertyEntity property = new PropertyEntityBuilder()
-                .withPostCode(postCode)
-                .withCity(city)
-                .withStreet(street)
-                .withHouse(house)
-                .withSingle(single)
-                .withRooms(rooms)
-                .withUser(user)
+
+        var roomsIdForEntity = Objects.isNull(roomsId)
+                ? null
+                : Arrays.stream(roomsId).collect(Collectors.toList());
+        var roomsEntity = Objects.isNull(roomsIdForEntity)
+                ? null
+                : roomsRepository.findAllById(roomsIdForEntity);
+
+        PropertyEntity property = PropertyEntity.builder()
+                .postCode(postCode)
+                .city(city)
+                .street(street)
+                .house(house)
+                .single(single)
+                .user(user)
+                .sold(false)
+                .rooms(roomsEntity)
                 .build();
 
         propertyRepository.save(property);
@@ -215,7 +230,7 @@ public abstract class InitIntegrationTestData {
                 .type(type)
                 .build();
         var savedEntity = roomsRepository.save(entity);
-        
+
         return savedEntity.getId();
     }
 }
