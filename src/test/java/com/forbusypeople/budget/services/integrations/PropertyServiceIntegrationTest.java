@@ -55,7 +55,7 @@ public class PropertyServiceIntegrationTest extends InitIntegrationTestData {
         initDatabaseByProperty(user);
 
         // when
-        var dtoList = propertyService.findAllProperties();
+        var dtoList = propertyService.findAllProperties(false);
 
         // then
         assertThat(dtoList).hasSize(1);
@@ -70,7 +70,7 @@ public class PropertyServiceIntegrationTest extends InitIntegrationTestData {
         var roomType = RoomsType.ROOM_XL;
         var roomId = initDatabaseByRoom(roomType, BigDecimal.TEN, user);
 
-        PropertyDto property = propertyService.findAllProperties().stream().findFirst().get();
+        PropertyDto property = propertyService.findAllProperties(false).stream().findFirst().get();
         assertThat(property.getRooms()).isNull();
 
         var single = property.getSingle();
@@ -123,7 +123,7 @@ public class PropertyServiceIntegrationTest extends InitIntegrationTestData {
 
         initDatabaseByProperty(user, roomXlId, roomMId);
 
-        var property = propertyService.findAllProperties().stream().findFirst().get();
+        var property = propertyService.findAllProperties(false).stream().findFirst().get();
 
         var containsRoomsXLAndM = property.getRooms().stream()
                 .map(it -> it.getId())

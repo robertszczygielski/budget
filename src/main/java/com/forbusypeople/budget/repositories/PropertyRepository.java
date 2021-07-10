@@ -12,7 +12,9 @@ import java.util.UUID;
 
 @Repository
 public interface PropertyRepository extends JpaRepository<PropertyEntity, UUID> {
-    List<PropertyEntity> findAllByUser(UserEntity user);
+    @Query("SELECT e FROM PropertyEntity e WHERE e.user = :user AND e.sold = :isSold")
+    List<PropertyEntity> findAllByUser(UserEntity user,
+                                       boolean isSold);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE PropertyEntity e SET e.sold=true WHERE e.user = :user AND e.id = :id")

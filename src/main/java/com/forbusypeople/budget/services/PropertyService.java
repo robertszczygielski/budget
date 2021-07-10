@@ -31,9 +31,9 @@ public class PropertyService {
         return saveEntity.getId();
     }
 
-    public List<PropertyDto> findAllProperties() {
+    public List<PropertyDto> findAllProperties(boolean isSold) {
         var user = userLogInfoService.getLoggedUserEntity();
-        return propertyRepository.findAllByUser(user)
+        return propertyRepository.findAllByUser(user, isSold)
                 .stream()
                 .map(entity -> propertyMapper.fromEntityToDto(entity))
                 .collect(Collectors.toList());
@@ -59,6 +59,7 @@ public class PropertyService {
         }
     }
 
+    @Transactional
     public void setSoldProperty(UUID id) {
         var user = userLogInfoService.getLoggedUserEntity();
         propertyRepository.setSoldProperty(user, id);

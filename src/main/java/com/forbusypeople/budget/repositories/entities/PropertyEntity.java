@@ -20,6 +20,7 @@ public class PropertyEntity extends BaseBudgetEntity {
     private List<RoomsEntity> rooms;
     private Boolean single;
     private String city;
+    @Column(name = "post_code")
     private String postCode;
     private String street;
     private String house;
