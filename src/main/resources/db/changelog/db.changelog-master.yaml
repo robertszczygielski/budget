@@ -21,3 +21,5 @@ databaseChangeLog:
       file: db/migration/010-roomsSchema.yaml
   - include:
       file: db/migration/011-propretySchemaChangeRoonColumn.yaml
+  - include:
+      file: db/migration/012-propretyRoomAssociationTable.yaml
