@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 012-property-room-association-table
+      author: rs
+      changes:
+        - createTable:
+            tableName: property_room_associations
+            columns:
+              - column:
+                  name: property_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: room_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: rent
+                  type: boolean
+                  constraints:
+                    default: false
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: FK_ROOM_ID_REF
+            baseTableName: property_room_associations
+            baseColumnNames: room_id
+            referencedTableName: rooms
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            constraintName: FK_PROPERTY_ID_REF
+            baseTableName: property_room_associations
+            baseColumnNames: property_id
+            referencedTableName: property
+            referencedColumnNames: id
+        - addDefaultValue:
+            tableName: property_room_associations
+            columnName: rent
+            defaultValueBoolean: false

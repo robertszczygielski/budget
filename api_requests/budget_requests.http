@@ -1,0 +1,77 @@
+
+### get JWT Token
+GET {{host}}:{{port}}/auth
+Content-Type: application/json
+
+{
+  "username": "cos",
+  "password": "cos"
+}
+
+> {%
+client.log(response.body.jwtToken)
+client.global.set("token", response.body.jwtToken);
+%}
+
+### get all rooms for logged user
+GET {{host}}:{{port}}/rooms
+Authorization: Bearer {{token}}
+
+
+### update room for logged user
+POST {{host}}:{{port}}/rooms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id": "4f73f0af-f29c-445e-86e3-9e26c521b363",
+  "type": "ROOM_S",
+  "cost": 15.00
+}
+
+
+### get property for logged user
+GET {{host}}:{{port}}/property
+Authorization: Bearer {{token}}
+
+
+### add property for logged user
+POST {{host}}:{{port}}/property
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "rooms": [],
+  "single": false,
+  "city": "Warszawa",
+  "postCode": "02-020",
+  "street": "Osiłka 1A/B",
+  "house": "1"
+}
+
+### update property for logged user
+PUT {{host}}:{{port}}/property
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+{
+  "id": "89244d90-87b8-46df-97c4-cef78411d594",
+  "rooms": [
+    {
+      "id": "80cb105f-6cec-4668-b83d-f360c925146b",
+      "type": "ROOM_XS",
+      "cost": 10.00
+    },
+    {
+      "id": "3985565d-2da6-48f4-a011-601b9b9c3ed8",
+      "type": "ROOM_XL",
+      "cost": 50.00
+    }
+  ],
+  "single": false,
+  "city": "Warszawa",
+  "postCode": "02-020",
+  "street": "Osiłka 1A/B",
+  "house": "1"
+}
