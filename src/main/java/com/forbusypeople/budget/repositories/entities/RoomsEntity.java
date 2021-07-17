@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -23,5 +20,7 @@ public class RoomsEntity extends BaseBudgetEntity {
     @Enumerated(EnumType.STRING)
     private RoomsType type;
     private BigDecimal cost;
+    @Transient
+    private Boolean rent;
 
 }

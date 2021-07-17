@@ -2,10 +2,7 @@ package com.forbusypeople.budget.repositories.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -13,11 +10,23 @@ import java.util.UUID;
 @Table(name = "property_room_associations")
 @Data
 @IdClass(PropertyRoomAssociationsEntity.class)
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "getAssociationsByPropertyId",
+                query = "SELECT * FROM property_room_associations WHERE property_id = ?1",
+                resultClass = PropertyRoomAssociationsEntity.class
+        ),
+        @NamedNativeQuery(
+                name = "PropertyRoomAssociationsEntity.setRent",
+                query = "UPDATE property_room_associations SET rent = ?3 WHERE property_id = ?1 AND room_id = ?2",
+                resultClass = PropertyRoomAssociationsEntity.class
+        )
+})
 public class PropertyRoomAssociationsEntity implements Serializable {
 
     @Id
-    private UUID property_id;
+    private UUID propertyId;
     @Id
-    private UUID room_id;
+    private UUID roomId;
     private Boolean rent;
 }
