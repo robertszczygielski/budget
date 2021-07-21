@@ -25,8 +25,10 @@ import java.util.UUID;
 public class PropertyRoomAssociationsEntity implements Serializable {
 
     @Id
+    @Column(name = "property_id")
     private UUID propertyId;
     @Id
+    @Column(name = "room_id")
     private UUID roomId;
     private Boolean rent;
 }

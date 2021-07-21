@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 013-property-room-association-table-remove-columns
+      author: rs
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: property_room_associations
+        - columnExists:
+            tableName: property_room_associations
+            columnName: roomid
+        - columnExists:
+            tableName: property_room_associations
+            columnName: propertyid
+      changes:
+        - sql:
+            sql: ALTER TABlE property_room_associations DROP COLUMN roomid
+        - sql:
+            sql: ALTER TABlE property_room_associations DROP COLUMN propertyid
+
+  - changeSet:
+      id: 013-property-room-change-association-table
+      author: rs
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: property_rooms
+      changes:
+        - sql:
+            sql: INSERT INTO property_room_associations(property_id, room_id) SELECT propertyentity_id, rooms_id FROM property_rooms
+        - sql:
+            sql: DROP TABLE property_rooms

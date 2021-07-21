@@ -17,6 +17,11 @@ import java.util.List;
 public class PropertyEntity extends BaseBudgetEntity {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "property_room_associations",
+            joinColumns = {@JoinColumn(name = "property_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "room_id", referencedColumnName = "id")}
+    )
     private List<RoomsEntity> rooms;
     private Boolean single;
     private String city;
