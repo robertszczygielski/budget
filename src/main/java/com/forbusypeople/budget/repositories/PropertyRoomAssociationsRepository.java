@@ -1,6 +1,7 @@
 package com.forbusypeople.budget.repositories;
 
 import com.forbusypeople.budget.repositories.entities.PropertyRoomAssociationsEntity;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,8 +14,9 @@ public interface PropertyRoomAssociationsRepository extends CrudRepository<Prope
 
     Optional<List<PropertyRoomAssociationsEntity>> getAssociationsByPropertyId(UUID propertyId);
 
-    PropertyRoomAssociationsEntity setRent(UUID propertyId,
-                                           UUID roomId,
-                                           Boolean isRent);
+    @Modifying(clearAutomatically = true)
+    void setRent(UUID propertyId,
+                 UUID roomId,
+                 Boolean isRent);
 
 }

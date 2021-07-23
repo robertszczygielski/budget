@@ -2,6 +2,7 @@ package com.forbusypeople.budget.services.integrations;
 
 import com.forbusypeople.budget.enums.RoomsType;
 import com.forbusypeople.budget.services.dtos.PropertyDto;
+import com.forbusypeople.budget.services.dtos.RoomsDto;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -151,4 +152,35 @@ public class PropertyServiceIntegrationTest extends InitIntegrationTestData {
 
     }
 
+    @Test
+    void shouldAddOneRoomToTwoProperties() {
+        // given
+        var user = initDatabaseByPrimeUser();
+        initDatabaseByProperty(user);
+        initDatabaseByProperty(user);
+        var roomId = initDatabaseByRoom(RoomsType.ROOM_XL, BigDecimal.TEN, user);
+        var roomToSet = RoomsDto.builder()
+                .id(roomId)
+                .build();
+
+        var allProperties = propertyService.findAllProperties(false);
+        assertThat(allProperties).hasSize(2);
+
+        var firstProperty = allProperties.get(0);
+        var secondProperty = allProperties.get(1);
+
+        firstProperty.setRooms(asList(roomToSet));
+        secondProperty.setRooms(asList(roomToSet));
+
+        // when
+        propertyService.updateProperty(firstProperty);
+        propertyService.updateProperty(secondProperty);
+
+        // then
+        var propertiesAfterUpdate = propertyService.findAllProperties(false);
+        assertThat(propertiesAfterUpdate).hasSize(2);
+        assertThat(propertiesAfterUpdate.get(0).getRooms())
+                .isEqualTo(propertiesAfterUpdate.get(1).getRooms());
+
+    }
 }

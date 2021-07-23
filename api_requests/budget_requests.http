@@ -56,22 +56,24 @@ Content-Type: application/json
 
 
 {
-  "id": "89244d90-87b8-46df-97c4-cef78411d594",
+  "id": "6ebf7502-afde-40e9-8bc4-09b5b579a0ec",
   "rooms": [
-    {
-      "id": "80cb105f-6cec-4668-b83d-f360c925146b",
-      "type": "ROOM_XS",
-      "cost": 10.00
-    },
     {
       "id": "3985565d-2da6-48f4-a011-601b9b9c3ed8",
       "type": "ROOM_XL",
-      "cost": 50.00
+      "cost": 50.00,
+      "rent": true
+    },
+    {
+      "id": "36e096c0-8586-44ec-96bd-7dbfb490ef8e",
+      "type": "ROOM_M",
+      "cost": 20.00,
+      "rent": false
     }
   ],
   "single": false,
   "city": "Warszawa",
   "postCode": "02-020",
-  "street": "Osiłka 1A/B",
-  "house": "1"
+  "street": "Ważniak 12",
+  "house": "12B"
 }

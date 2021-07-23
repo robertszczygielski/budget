@@ -22,6 +22,7 @@ public class PropertyService {
     private final UserLogInfoService userLogInfoService;
     private final PropertyMapper propertyMapper;
     private final RoomsRepository roomsRepository;
+    private final RentService rentService;
 
     public UUID addProperty(PropertyDto dto) {
         UserEntity user = userLogInfoService.getLoggedUserEntity();
@@ -35,19 +36,28 @@ public class PropertyService {
         var user = userLogInfoService.getLoggedUserEntity();
         return propertyRepository.findAllByUser(user, isSold)
                 .stream()
+                .map(entity -> rentService.setRentRoomInProperty(entity))
                 .map(entity -> propertyMapper.fromEntityToDto(entity))
                 .collect(Collectors.toList());
     }
 
-    public void deleteProperty(PropertyDto dto) {
-        var entity = propertyRepository.findById(dto.getId()).stream().findFirst();
-        if (entity.isPresent()) {
-            propertyRepository.delete(entity.get());
-        }
+    @Transactional
+    public void updateProperty(PropertyDto dto) {
+        updateOnlyProperty(dto);
+        updateRentRoomsInProperty(dto);
     }
 
     @Transactional
-    public void updateProperty(PropertyDto dto) {
+    public void setSoldProperty(UUID id) {
+        var user = userLogInfoService.getLoggedUserEntity();
+        propertyRepository.setSoldProperty(user, id);
+    }
+
+    private void updateRentRoomsInProperty(PropertyDto dto) {
+        rentService.setRentRooms(dto);
+    }
+
+    private void updateOnlyProperty(PropertyDto dto) {
         var entity = propertyRepository.findById(dto.getId()).stream().findFirst();
         if (entity.isPresent()) {
             var entityToChange = entity.get();
@@ -57,11 +67,5 @@ public class PropertyService {
 
             propertyMapper.updateEntityByDto(entityToChange, dto, roomsEntity);
         }
-    }
-
-    @Transactional
-    public void setSoldProperty(UUID id) {
-        var user = userLogInfoService.getLoggedUserEntity();
-        propertyRepository.setSoldProperty(user, id);
     }
 }

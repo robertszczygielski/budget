@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -34,22 +35,13 @@ public class RentService {
         var roomsList = dto.getRooms();
 
         roomsList.forEach(
-                room -> associations.setRent(propertyId, room.getId(), room.getRent())
+                room -> associations.setRent(propertyId, room.getId(), setRentValueOrFalse(room.getRent()))
         );
     }
 
-    public RoomsEntity setRentRooms(RoomsEntity roomsEntity,
-                                    List<PropertyRoomAssociationsEntity> associationsEntities) {
-        var associationsEntity = associationsEntities.stream()
-                .filter(association -> association.getRoomId().equals(roomsEntity.getId()))
-                .findFirst()
-                .get();
-
-        roomsEntity.setRent(associationsEntity.getRent());
-
-        return roomsEntity;
+    private Boolean setRentValueOrFalse(Boolean isRoom) {
+        return Objects.nonNull(isRoom) ? isRoom : false;
     }
-
 
     private RoomsEntity setRentForRoom(RoomsEntity room,
                                        List<PropertyRoomAssociationsEntity> associationsEntity) {
