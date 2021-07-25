@@ -1,6 +1,5 @@
 package com.forbusypeople.budget.mappers;
 
-import com.forbusypeople.budget.builders.AssetDtoBuilder;
 import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
@@ -54,26 +53,26 @@ public class AssetsMapper {
             return null;
         }
 
-        var dtoBuilder = new AssetDtoBuilder();
+        var dtoBuilder = AssetDto.builder();
 
         if (Objects.nonNull(entity.getAmount())) {
-            dtoBuilder.withAmount(entity.getAmount());
+            dtoBuilder.amount(entity.getAmount());
         }
 
         if (Objects.nonNull(entity.getId())) {
-            dtoBuilder.withId(entity.getId());
+            dtoBuilder.id(entity.getId());
         }
 
         if (Objects.nonNull(entity.getIncomeDate())) {
-            dtoBuilder.withIncomeDate(entity.getIncomeDate());
+            dtoBuilder.incomeDate(entity.getIncomeDate());
         }
 
         if (Objects.nonNull(entity.getDescription())) {
-            dtoBuilder.withDescription(entity.getDescription());
+            dtoBuilder.description(entity.getDescription());
         }
 
         if (Objects.nonNull(entity.getCategory())) {
-            dtoBuilder.withCategory(entity.getCategory());
+            dtoBuilder.category(entity.getCategory());
         }
 
         return dtoBuilder.build();

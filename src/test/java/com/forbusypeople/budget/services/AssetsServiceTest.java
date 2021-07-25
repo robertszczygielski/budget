@@ -1,6 +1,5 @@
 package com.forbusypeople.budget.services;
 
-import com.forbusypeople.budget.builders.AssetDtoBuilder;
 import com.forbusypeople.budget.builders.AssetEntityBuilder;
 import com.forbusypeople.budget.enums.ValidatorsAssetEnum;
 import com.forbusypeople.budget.excetpions.AssetIncompleteException;
@@ -70,7 +69,7 @@ class AssetsServiceTest {
         // then
         Assertions.assertThat(result)
                 .hasSize(1)
-                .contains(new AssetDtoBuilder().withAmount(asset).build());
+                .contains(AssetDto.builder().amount(asset).build());
     }
 
     @Test
@@ -95,8 +94,8 @@ class AssetsServiceTest {
         Assertions.assertThat(result)
                 .hasSize(2)
                 .containsExactly(
-                        new AssetDtoBuilder().withAmount(assetOne).build(),
-                        new AssetDtoBuilder().withAmount(assetTwo).build()
+                        AssetDto.builder().amount(assetOne).build(),
+                        AssetDto.builder().amount(assetTwo).build()
                 );
     }
 
@@ -105,9 +104,9 @@ class AssetsServiceTest {
         // given
         BigDecimal asset = BigDecimal.ONE;
         Instant incomeDate = Instant.now();
-        AssetDto dto = new AssetDtoBuilder()
-                .withAmount(asset)
-                .withIncomeDate(incomeDate)
+        AssetDto dto = AssetDto.builder()
+                .amount(asset)
+                .incomeDate(incomeDate)
                 .build();
         AssetEntity entity = new AssetEntityBuilder()
                 .withAmount(asset)
@@ -126,7 +125,7 @@ class AssetsServiceTest {
     void shouldVerifyIfTheRepositoryUpdateWasCalled() {
         // given
         BigDecimal asset = BigDecimal.ONE;
-        var dto = new AssetDtoBuilder().withAmount(asset).build();
+        var dto = AssetDto.builder().amount(asset).build();
         var entity = new AssetEntityBuilder().withAmount(asset).build();
         Mockito.when(assetsRepository.findById(any())).thenReturn(Optional.of(entity));
 
@@ -140,8 +139,8 @@ class AssetsServiceTest {
     @Test
     void shouldThrowExceptionWhenAmountInAssetDtoIsNull() {
         // given
-        AssetDto dto = new AssetDtoBuilder()
-                .withIncomeDate(Instant.now())
+        AssetDto dto = AssetDto.builder()
+                .incomeDate(Instant.now())
                 .build();
 
         // when
@@ -157,8 +156,8 @@ class AssetsServiceTest {
     @Test
     void shouldThrowExceptionWhenIncomeDateInAssetDtoIsNull() {
         // given
-        AssetDto dto = new AssetDtoBuilder()
-                .withAmount(BigDecimal.ONE)
+        AssetDto dto = AssetDto.builder()
+                .amount(BigDecimal.ONE)
                 .build();
 
         // when

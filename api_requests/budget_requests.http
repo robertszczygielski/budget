@@ -17,6 +17,10 @@ client.global.set("token", response.body.jwtToken);
 GET {{host}}:{{port}}/rooms
 Authorization: Bearer {{token}}
 
+### get all suggest assets for logged user
+GET {{host}}:{{port}}/suggest
+Authorization: Bearer {{token}}
+
 
 ### update room for logged user
 POST {{host}}:{{port}}/rooms

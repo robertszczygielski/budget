@@ -1,6 +1,5 @@
 package com.forbusypeople.budget.services.integrations;
 
-import com.forbusypeople.budget.builders.AssetDtoBuilder;
 import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.enums.FilterExceptionErrorMessages;
 import com.forbusypeople.budget.enums.FilterParametersEnum;
@@ -46,11 +45,11 @@ public class AssetServiceIntegrationTest extends InitIntegrationTestData {
         // given
         initDatabaseByPrimeUser();
         String desc = "some desc";
-        AssetDto dto = new AssetDtoBuilder()
-                .withAmount(new BigDecimal(11))
-                .withIncomeDate(Instant.now())
-                .withCategory(AssetCategory.BONUS)
-                .withDescription(desc)
+        AssetDto dto = AssetDto.builder()
+                .amount(new BigDecimal(11))
+                .incomeDate(Instant.now())
+                .category(AssetCategory.BONUS)
+                .description(desc)
                 .build();
 
         // when
