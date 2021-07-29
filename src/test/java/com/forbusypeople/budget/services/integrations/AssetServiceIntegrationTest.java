@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -53,7 +54,7 @@ public class AssetServiceIntegrationTest extends InitIntegrationTestData {
                 .build();
 
         // when
-        assetsService.setAsset(dto);
+        assetsService.setAsset(asList(dto));
 
         // then
         var allAssetInDB = assetsRepository.findAll();

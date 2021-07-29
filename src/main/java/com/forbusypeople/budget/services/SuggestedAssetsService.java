@@ -3,6 +3,7 @@ package com.forbusypeople.budget.services;
 import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.services.dtos.PropertyDto;
+import com.forbusypeople.budget.services.dtos.RoomsDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class SuggestedAssetsService {
         var properties = propertyService.findAllProperties(false);
         return properties.stream()
                 .map(property -> property.getRooms().stream()
+                        .filter(RoomsDto::getRent)
                         .map(room -> AssetDto.builder()
                                 .category(AssetCategory.RENT)
                                 .amount(room.getCost())

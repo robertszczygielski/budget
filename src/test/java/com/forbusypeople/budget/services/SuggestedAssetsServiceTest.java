@@ -35,7 +35,7 @@ class SuggestedAssetsServiceTest {
     }
 
     @Test
-    void shouldSuggestAssetsForRoomsWhoAreRent() {
+    void shouldGetSuggestAssetsForOnlyRentedRooms() {
         // given
         var roomsAndCostsForProperty1 = new HashMap<RoomsType, BigDecimal>() {{
             put(RoomsType.ROOM_L, new BigDecimal("5"));
@@ -47,8 +47,8 @@ class SuggestedAssetsServiceTest {
             put(RoomsType.ROOM_S, new BigDecimal("2"));
         }};
 
-        List<RoomsDto> roomsForProperty1 = getRoomsForProperty(roomsAndCostsForProperty1);
-        List<RoomsDto> roomsForProperty2 = getRoomsForProperty(roomsAndCostsForProperty2);
+        List<RoomsDto> roomsForProperty1 = getRentedRoomsForProperty(roomsAndCostsForProperty1);
+        List<RoomsDto> roomsForProperty2 = getRentedRoomsForProperty(roomsAndCostsForProperty2);
 
         var property1 = PropertyDto.builder()
                 .city("citi1")
@@ -84,11 +84,62 @@ class SuggestedAssetsServiceTest {
 
     }
 
-    private List<RoomsDto> getRoomsForProperty(HashMap<RoomsType, BigDecimal> roomsAndCosts) {
+    @Test
+    void shouldGetNoSuggestAssetsForNotRentedRooms() {
+        // given
+        var roomsAndCostsForProperty1 = new HashMap<RoomsType, BigDecimal>() {{
+            put(RoomsType.ROOM_L, new BigDecimal("5"));
+            put(RoomsType.ROOM_M, new BigDecimal("4"));
+        }};
+        var roomsAndCostsForProperty2 = new HashMap<RoomsType, BigDecimal>() {{
+            put(RoomsType.ROOM_XL, new BigDecimal("8"));
+            put(RoomsType.ROOM_L, new BigDecimal("5"));
+            put(RoomsType.ROOM_S, new BigDecimal("2"));
+        }};
+
+        List<RoomsDto> roomsForProperty1 = getNotRentedRoomsForProperty(roomsAndCostsForProperty1);
+        List<RoomsDto> roomsForProperty2 = getNotRentedRoomsForProperty(roomsAndCostsForProperty2);
+
+        var property1 = PropertyDto.builder()
+                .city("citi1")
+                .house("house1")
+                .street("street1")
+                .rooms(roomsForProperty1)
+                .build();
+        var property2 = PropertyDto.builder()
+                .city("citi2")
+                .house("house2")
+                .street("street2")
+                .rooms(roomsForProperty2)
+                .build();
+
+        var allProperties = asList(property1, property2);
+        when(propertyService.findAllProperties(false)).thenReturn(allProperties);
+
+        // when
+        List<AssetDto> suggestedAssets = service.getAllRentRooms();
+
+        // then
+        assertThat(suggestedAssets).hasSize(0);
+
+    }
+
+    private List<RoomsDto> getRentedRoomsForProperty(HashMap<RoomsType, BigDecimal> roomsAndCosts) {
         return roomsAndCosts.entrySet().stream()
                 .map(it -> RoomsDto.builder()
                         .cost(it.getValue())
                         .type(it.getKey())
+                        .rent(true)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<RoomsDto> getNotRentedRoomsForProperty(HashMap<RoomsType, BigDecimal> roomsAndCosts) {
+        return roomsAndCosts.entrySet().stream()
+                .map(it -> RoomsDto.builder()
+                        .cost(it.getValue())
+                        .type(it.getKey())
+                        .rent(false)
                         .build())
                 .collect(Collectors.toList());
     }

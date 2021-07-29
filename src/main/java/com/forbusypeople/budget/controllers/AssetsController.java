@@ -25,8 +25,8 @@ public class AssetsController {
     }
 
     @PostMapping
-    public void setAsset(@RequestBody AssetDto dto) {
-        assetsService.setAsset(dto);
+    public void setAsset(@RequestBody List<AssetDto> dtos) {
+        assetsService.setAsset(dtos);
     }
 
     @DeleteMapping

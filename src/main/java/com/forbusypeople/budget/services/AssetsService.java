@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,15 +51,17 @@ public class AssetsService {
                 .collect(Collectors.toList());
     }
 
-    public void setAsset(AssetDto dto) {
+    @Transactional
+    public void setAsset(List<AssetDto> dtos) {
         LOGGER.info("Set Asset");
-        LOGGER.debug("AssetDto: " + dto);
-        assetValidator.validate(dto);
         var user = getUserEntity();
-        var entity = assetsMapper.fromDtoToEntity(dto, user);
 
-        assetsRepository.save(entity);
-        LOGGER.info("Asset Saved");
+        dtos.forEach(dto -> {
+            assetValidator.validate(dto);
+            var entity = assetsMapper.fromDtoToEntity(dto, user);
+            assetsRepository.save(entity);
+        });
+
     }
 
     public void deleteAsset(AssetDto dto) {

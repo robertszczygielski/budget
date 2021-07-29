@@ -13,6 +13,30 @@ client.log(response.body.jwtToken)
 client.global.set("token", response.body.jwtToken);
 %}
 
+### get all assets for logged user
+GET {{host}}:{{port}}/assets
+Authorization: Bearer {{token}}
+
+
+### post assets for logged user
+POST {{host}}:{{port}}/assets
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+[
+  {
+    "amount": 223.00,
+    "category": "RENT",
+    "description": "some house"
+  },
+  {
+    "amount": 1223.00,
+    "incomeDate": "2020-03-10T12:01:03.001Z",
+    "category": "SALARY",
+    "description": "some job"
+  }
+]
+
 ### get all rooms for logged user
 GET {{host}}:{{port}}/rooms
 Authorization: Bearer {{token}}
