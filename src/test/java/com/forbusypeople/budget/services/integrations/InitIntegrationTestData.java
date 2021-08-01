@@ -3,12 +3,11 @@ package com.forbusypeople.budget.services.integrations;
 
 import com.forbusypeople.budget.builders.ExpensesEntityBuilder;
 import com.forbusypeople.budget.enums.AssetCategory;
+import com.forbusypeople.budget.enums.ExpensesCategory;
+import com.forbusypeople.budget.enums.MonthsEnum;
 import com.forbusypeople.budget.enums.RoomsType;
 import com.forbusypeople.budget.repositories.*;
-import com.forbusypeople.budget.repositories.entities.AssetEntity;
-import com.forbusypeople.budget.repositories.entities.PropertyEntity;
-import com.forbusypeople.budget.repositories.entities.RoomsEntity;
-import com.forbusypeople.budget.repositories.entities.UserEntity;
+import com.forbusypeople.budget.repositories.entities.*;
 import com.forbusypeople.budget.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -54,6 +53,10 @@ public abstract class InitIntegrationTestData {
     protected RoomsService roomsService;
     @Autowired
     protected RoomsRepository roomsRepository;
+    @Autowired
+    protected CyclicalExpensesService cyclicalExpensesService;
+    @Autowired
+    protected CyclicalExpensesRepository cyclicalExpensesRepository;
 
     protected static final String USER_NAME_PRIME = "userNamePrime";
     protected static final String USER_PASSWORD_PRIME = "userPasswordPrime";
@@ -231,5 +234,18 @@ public abstract class InitIntegrationTestData {
         var savedEntity = roomsRepository.save(entity);
 
         return savedEntity.getId();
+    }
+
+    protected void initDatabaseByCyclicalExpenses(UserEntity user) {
+        var entity = CyclicalExpensesEntity.builder()
+                .day(21)
+                .category(ExpensesCategory.FUN)
+                .month(MonthsEnum.JANUARY)
+                .amount(BigDecimal.ONE)
+                .user(user)
+                .build();
+
+        cyclicalExpensesRepository.save(entity);
+
     }
 }

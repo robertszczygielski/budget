@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 014-cyclical-expenses-schema
+      author: rs
+      changes:
+        - createTable:
+            tableName: cyclical_expenses
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_cyclicalexpenses
+                    references: users(id)
+              - column:
+                  name: amount
+                  type: numeric
+              - column:
+                  name: category
+                  type: text
+              - column:
+                  name: day
+                  type: numeric
+              - column:
+                  name: month
+                  type: text

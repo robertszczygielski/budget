@@ -13,6 +13,11 @@ client.log(response.body.jwtToken)
 client.global.set("token", response.body.jwtToken);
 %}
 
+### get months with mays assets for logged user
+GET {{host}}:{{port}}/calendar/months/days
+Authorization: Bearer {{token}}
+
+
 ### get all assets for logged user
 GET {{host}}:{{port}}/assets
 Authorization: Bearer {{token}}
@@ -105,3 +110,30 @@ Content-Type: application/json
   "street": "Ważniak 12",
   "house": "12B"
 }
+
+
+### add cyclical expenses for logged user
+GET {{host}}:{{port}}/cyclical/expenses
+Authorization: Bearer {{token}}
+
+
+### post cyclical expenses for logged user
+POST {{host}}:{{port}}/cyclical/expenses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+[
+  {
+    "amount": 200,
+    "category": "FUN",
+    "month": "MAY",
+    "day": 21
+  },
+  {
+    "amount": 2000,
+    "category": "EDUCATION",
+    "month": "MAY",
+    "day": 11
+  }
+]

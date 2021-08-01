@@ -1,5 +1,9 @@
 package com.forbusypeople.budget.enums;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public enum MonthsEnum {
     JANUARY("01", "31"),
     FEBRUARY("02", "28"),
@@ -17,9 +21,18 @@ public enum MonthsEnum {
     private final String monthNumber;
     private final String maxDays;
 
-    MonthsEnum(String monthNumber, String maxDays) {
+    MonthsEnum(String monthNumber,
+               String maxDays) {
         this.monthNumber = monthNumber;
         this.maxDays = maxDays;
+    }
+
+    public static Map<MonthsEnum, String> getMonthsWithMaxDays() {
+        return Arrays.stream(MonthsEnum.values())
+                .collect(Collectors.toMap(
+                        enumValue -> enumValue,
+                        enumValueMonth -> enumValueMonth.maxDays
+                ));
     }
 
     public String getFirstDayForYear(String year) {
