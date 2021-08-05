@@ -13,6 +13,10 @@ client.log(response.body.jwtToken)
 client.global.set("token", response.body.jwtToken);
 %}
 
+### get download assets with mays assets for logged user
+GET {{host}}:{{port}}/download/assets
+Authorization: Bearer {{token}}
+
 ### get months with mays assets for logged user
 GET {{host}}:{{port}}/calendar/months/days
 Authorization: Bearer {{token}}
