@@ -1,6 +1,5 @@
-package com.forbusypeople.budget.services;
+package com.forbusypeople.budget.services.downloader;
 
-import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -12,22 +11,12 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 @Service
-@AllArgsConstructor
-public class DownloadService {
+class ResponsePrepareService {
 
-    private final AssetsService assetsService;
-
-    public void downloadAssets(HttpServletResponse response) {
+    public void addToResponse(HttpServletResponse response,
+                              StringBuffer stringBuffer) {
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        response.setHeader("Content-Disposition", "attachment;file=fileNameToDownload.csv");
-
-        var allAssets = assetsService.getAllAssets();
-
-        StringBuffer stringBuffer = new StringBuffer("Header\n");
-        allAssets.forEach(asset ->
-                                  stringBuffer
-                                          .append(asset.getAmount())
-                                          .append("\n"));
+        response.setHeader("Content-Disposition", "attachment;filename=fileNameToDownload.csv");
 
         try {
             InputStream inputStream = new ByteArrayInputStream(stringBuffer.toString().getBytes("UTF-8"));
