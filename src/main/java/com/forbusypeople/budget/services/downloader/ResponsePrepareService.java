@@ -14,9 +14,10 @@ import java.io.UnsupportedEncodingException;
 class ResponsePrepareService {
 
     public void addToResponse(HttpServletResponse response,
-                              StringBuffer stringBuffer) {
+                              StringBuffer stringBuffer,
+                              String filename) {
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        response.setHeader("Content-Disposition", "attachment;filename=fileNameToDownload.csv");
+        response.setHeader("Content-Disposition", "attachment;filename=" + filename + ".csv");
 
         try {
             InputStream inputStream = new ByteArrayInputStream(stringBuffer.toString().getBytes("UTF-8"));

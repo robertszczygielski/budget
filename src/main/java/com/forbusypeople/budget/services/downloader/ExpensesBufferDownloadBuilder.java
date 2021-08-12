@@ -8,18 +8,17 @@ import java.util.List;
 @Service
 class ExpensesBufferDownloadBuilder {
 
-    private final String SEPARATOR = ";";
-
-    public StringBuffer prepareBuffer(List<ExpensesDto> dtos) {
+    public StringBuffer prepareBuffer(List<ExpensesDto> dtos,
+                                      String separator) {
         StringBuffer stringBuffer = new StringBuffer(
-                "Amount" + SEPARATOR + "Category" + SEPARATOR + "Date");
+                "Amount" + separator + "Category" + separator + "Date");
         dtos.forEach(asset ->
                              stringBuffer
                                      .append("\n")
                                      .append(asset.getAmount())
-                                     .append(SEPARATOR)
+                                     .append(separator)
                                      .append(asset.getCategory())
-                                     .append(SEPARATOR)
+                                     .append(separator)
                                      .append(asset.getPurchaseDate())
         );
 
