@@ -4,10 +4,15 @@ import com.forbusypeople.budget.configurations.DownloadConfiguration;
 import com.forbusypeople.budget.enums.DownloadSpecificationEnum;
 import com.forbusypeople.budget.services.AssetsService;
 import com.forbusypeople.budget.services.ExpensesService;
+import com.forbusypeople.budget.services.dtos.AssetDto;
+import com.forbusypeople.budget.services.dtos.ExpensesDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -22,15 +27,17 @@ public class DownloadService {
     private final DownloadConfiguration downloadConfiguration;
 
     public void getFileToDownload(HttpServletResponse response,
-                                  DownloadSpecificationEnum downloadSpecificationEnum) {
+                                  DownloadSpecificationEnum downloadSpecificationEnum,
+                                  Map<String, String> filter) {
         switch (downloadSpecificationEnum) {
-            case ASSETS -> prepareResponseForAssets(response);
-            case EXPENSES -> prepareResponseForExpenses(response);
+            case ASSETS -> prepareResponseForAssets(response, filter);
+            case EXPENSES -> prepareResponseForExpenses(response, filter);
         }
     }
 
-    private void prepareResponseForAssets(HttpServletResponse response) {
-        var assets = assetsService.getAllAssets();
+    private void prepareResponseForAssets(HttpServletResponse response,
+                                          Map<String, String> filter) {
+        var assets = getAllAssets(filter);
         var assetsBuffer =
                 assetsBufferDownloadBuilder.prepareBuffer(
                         assets,
@@ -44,8 +51,9 @@ public class DownloadService {
         );
     }
 
-    private void prepareResponseForExpenses(HttpServletResponse response) {
-        var expenses = expensesService.getAllExpenses();
+    private void prepareResponseForExpenses(HttpServletResponse response,
+                                            Map<String, String> filter) {
+        var expenses = getAllExpenses(filter);
         var expensesBuffer =
                 expensesBufferDownloadBuilder.prepareBuffer(
                         expenses,
@@ -57,6 +65,20 @@ public class DownloadService {
                 expensesBuffer,
                 downloadConfiguration.getExpensesFilename()
         );
+    }
+
+    private List<ExpensesDto> getAllExpenses(Map<String, String> filter) {
+        if (Objects.isNull(filter)) {
+            return expensesService.getAllExpenses();
+        }
+        return expensesService.getFilteredExpenses(filter);
+    }
+
+    private List<AssetDto> getAllAssets(Map<String, String> filter) {
+        if (Objects.isNull(filter)) {
+            return assetsService.getAllAssets();
+        }
+        return assetsService.getAssetsByFilter(filter);
     }
 
 }

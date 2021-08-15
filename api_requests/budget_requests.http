@@ -17,6 +17,10 @@ client.global.set("token", response.body.jwtToken);
 GET {{host}}:{{port}}/download/assets
 Authorization: Bearer {{token}}
 
+### get download filtered assets with mays assets for logged user
+GET {{host}}:{{port}}/download/assets/filter?month=february&year=2020&category=rent
+Authorization: Bearer {{token}}
+
 ### get download expenses with mays assets for logged user
 GET {{host}}:{{port}}/download/expenses
 Authorization: Bearer {{token}}
