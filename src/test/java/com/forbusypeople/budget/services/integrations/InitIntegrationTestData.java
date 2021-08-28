@@ -1,7 +1,6 @@
 package com.forbusypeople.budget.services.integrations;
 
 
-import com.forbusypeople.budget.builders.ExpensesEntityBuilder;
 import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.enums.ExpensesCategory;
 import com.forbusypeople.budget.enums.MonthsEnum;
@@ -167,9 +166,9 @@ public abstract class InitIntegrationTestData {
     }
 
     protected UUID initDatabaseByExpenses(UserEntity user) {
-        var expenses = new ExpensesEntityBuilder()
-                .withUser(user)
-                .withAmount(BigDecimal.ONE)
+        var expenses = ExpensesEntity.builder()
+                .user(user)
+                .amount(BigDecimal.ONE)
                 .build();
 
         var entity = expensesRepository.save(expenses);
@@ -180,10 +179,10 @@ public abstract class InitIntegrationTestData {
                                           String date) {
         var dateSuffix = "T00:00:00.001Z";
 
-        var expenses = new ExpensesEntityBuilder()
-                .withUser(user)
-                .withAmount(BigDecimal.ONE)
-                .withPurchaseDate(Instant.parse(date + dateSuffix))
+        var expenses = ExpensesEntity.builder()
+                .user(user)
+                .amount(BigDecimal.ONE)
+                .purchaseDate(Instant.parse(date + dateSuffix))
                 .build();
 
         var entity = expensesRepository.save(expenses);

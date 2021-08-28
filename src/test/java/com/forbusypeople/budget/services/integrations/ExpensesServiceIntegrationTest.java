@@ -1,11 +1,11 @@
 package com.forbusypeople.budget.services.integrations;
 
-import com.forbusypeople.budget.builders.ExpensesDtoBuilder;
 import com.forbusypeople.budget.enums.ExpensesCategory;
 import com.forbusypeople.budget.enums.FilterExceptionErrorMessages;
 import com.forbusypeople.budget.enums.FilterParametersEnum;
 import com.forbusypeople.budget.enums.MonthsEnum;
 import com.forbusypeople.budget.excetpions.MissingExpensesFilterException;
+import com.forbusypeople.budget.services.dtos.ExpensesDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,8 +26,8 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
     void shouldSaveOneExpensesInToDatabase() {
         // given
         initDatabaseByPrimeUser();
-        var dto = new ExpensesDtoBuilder()
-                .withAmount(BigDecimal.ONE)
+        var dto = ExpensesDto.builder()
+                .amount(BigDecimal.ONE)
                 .build();
 
         // when
@@ -44,9 +44,9 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
         // given
         var user = initDatabaseByPrimeUser();
         var expensesId = initDatabaseByExpenses(user);
-        var dto = new ExpensesDtoBuilder()
-                .withAmount(BigDecimal.ONE)
-                .withId(expensesId)
+        var dto = ExpensesDto.builder()
+                .amount(BigDecimal.ONE)
+                .id(expensesId)
                 .build();
 
         var entitiesInDatabase = expensesRepository.findAll();
@@ -67,10 +67,10 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
         // given
         var user = initDatabaseByPrimeUser();
         var expenseId = initDatabaseByExpenses(user);
-        var dto = new ExpensesDtoBuilder()
-                .withAmount(BigDecimal.TEN)
-                .withCategory(ExpensesCategory.EDUCATION)
-                .withId(expenseId)
+        var dto = ExpensesDto.builder()
+                .amount(BigDecimal.TEN)
+                .category(ExpensesCategory.EDUCATION)
+                .id(expenseId)
                 .build();
 
         var entityInDatabase = expensesRepository.findById(expenseId);

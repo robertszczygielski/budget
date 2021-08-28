@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 @Component
 class ParseAssetsService {
 
-
     public List<AssetDto> mapToDto(List<String> bufferedReader) {
         return bufferedReader.stream()
                 .map(data -> data.split(";"))

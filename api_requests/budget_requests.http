@@ -13,7 +13,7 @@ client.log(response.body.jwtToken)
 client.global.set("token", response.body.jwtToken);
 %}
 
-### Post upload
+### Post upload assets
 POST {{host}}:{{port}}/upload
 Authorization: Bearer {{token}}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
@@ -22,6 +22,16 @@ Content-Type: multipart/form-data; boundary=WebAppBoundary
 Content-Disposition: form-data; name="file"; filename="./AssetsCsvData.csv"
 
 < ./AssetsCsvData.csv
+
+### Post upload expenses
+POST {{host}}:{{port}}/upload
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="./ExpnesesCsvData.csv"
+
+< ./ExpensesCsvData.csv
 
 ### get download assets with mays assets for logged user
 GET {{host}}:{{port}}/download/assets

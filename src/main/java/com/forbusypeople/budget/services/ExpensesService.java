@@ -39,6 +39,10 @@ public class ExpensesService {
         expensesRepository.save(entity);
     }
 
+    public void setExpenses(List<ExpensesDto> dtos) {
+        dtos.forEach(this::setExpenses);
+    }
+
     public void deleteExpenses(ExpensesDto dto) {
         UserEntity user = userLogInfoService.getLoggedUserEntity();
         var entity = expensesMapper.formDtoToEntity(dto, user);
