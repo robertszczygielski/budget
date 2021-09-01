@@ -54,6 +54,10 @@ Authorization: Bearer {{token}}
 GET {{host}}:{{port}}/assets
 Authorization: Bearer {{token}}
 
+### get all expenses for logged user
+GET {{host}}:{{port}}/expenses
+Authorization: Bearer {{token}}
+
 
 ### post assets for logged user
 POST {{host}}:{{port}}/assets
@@ -169,3 +173,8 @@ Content-Type: application/json
     "day": 11
   }
 ]
+
+
+### get all assets for logged user
+GET {{host}}:{{port}}/auditor/expenses/month/december/year/2020
+Authorization: Bearer {{token}}
