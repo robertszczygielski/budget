@@ -27,3 +27,5 @@ databaseChangeLog:
       file: db/migration/013-propretyRoomChangeAssociationTable.yaml
   - include:
       file: db/migration/014-cyclicalExpensesSchema.yaml
+  - include:
+      file: db/migration/015-expensesEstimatedPercentageSchema.yaml

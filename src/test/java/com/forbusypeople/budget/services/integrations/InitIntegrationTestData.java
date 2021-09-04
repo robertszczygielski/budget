@@ -56,6 +56,10 @@ public abstract class InitIntegrationTestData {
     protected CyclicalExpensesService cyclicalExpensesService;
     @Autowired
     protected CyclicalExpensesRepository cyclicalExpensesRepository;
+    @Autowired
+    protected ExpensesEstimatePercentageRepository expensesEstimatePercentageRepository;
+    @Autowired
+    protected ExpensesEstimatePercentageService expensesEstimatePercentageService;
 
     protected static final String USER_NAME_PRIME = "userNamePrime";
     protected static final String USER_PASSWORD_PRIME = "userPasswordPrime";
@@ -246,5 +250,32 @@ public abstract class InitIntegrationTestData {
 
         cyclicalExpensesRepository.save(entity);
 
+    }
+
+    protected void initDatabaseByEstimatedExpenses(UserEntity user) {
+        var entities = asList(
+                ExpensesEstimatedPercentageEntity.builder()
+                        .percentage(new BigDecimal("25"))
+                        .user(user)
+                        .category(ExpensesCategory.OTHERS)
+                        .build(),
+                ExpensesEstimatedPercentageEntity.builder()
+                        .percentage(new BigDecimal("25"))
+                        .user(user)
+                        .category(ExpensesCategory.FOR_LIFE)
+                        .build(),
+                ExpensesEstimatedPercentageEntity.builder()
+                        .percentage(new BigDecimal("25"))
+                        .user(user)
+                        .category(ExpensesCategory.EDUCATION)
+                        .build(),
+                ExpensesEstimatedPercentageEntity.builder()
+                        .percentage(new BigDecimal("25"))
+                        .user(user)
+                        .category(ExpensesCategory.FUN)
+                        .build()
+        );
+
+        expensesEstimatePercentageRepository.saveAll(entities);
     }
 }

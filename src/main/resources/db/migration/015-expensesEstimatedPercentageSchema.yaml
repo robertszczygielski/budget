@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 015-expenses-estimate-percentage-schema
+      author: rs
+      changes:
+        - createTable:
+            tableName: expenses_estimate_percentage
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_expensesestimatepercentage
+                    references: users(id)
+              - column:
+                  name: percentage
+                  type: numeric
+              - column:
+                  name: category
+                  type: text
