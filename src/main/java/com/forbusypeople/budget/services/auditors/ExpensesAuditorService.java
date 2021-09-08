@@ -1,8 +1,10 @@
 package com.forbusypeople.budget.services.auditors;
 
+import com.forbusypeople.budget.enums.ExpensesCategory;
 import com.forbusypeople.budget.enums.FilterParametersEnum;
 import com.forbusypeople.budget.enums.MonthsEnum;
 import com.forbusypeople.budget.services.AssetsService;
+import com.forbusypeople.budget.services.ExpensesEstimatePercentageService;
 import com.forbusypeople.budget.services.ExpensesService;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.services.dtos.ExpensesDto;
@@ -20,6 +22,7 @@ public class ExpensesAuditorService {
 
     private final AssetsService assetsService;
     private final ExpensesService expensesService;
+    private final ExpensesEstimatePercentageService expensesEstimatePercentageService;
 
     public BigDecimal getAudit(MonthsEnum month,
                                String year) {
@@ -35,6 +38,15 @@ public class ExpensesAuditorService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return assetsSum.subtract(expenseSum);
+    }
+
+    public BigDecimal getPercentAudit(ExpensesCategory expensesCategory,
+                                      BigDecimal assets) {
+        var percent = expensesEstimatePercentageService.getEstimation()
+                .get(expensesCategory)
+                .divide(new BigDecimal("100"));
+
+        return assets.multiply(percent);
     }
 
     private List<ExpensesDto> getExpensesInMonth(MonthsEnum month,
