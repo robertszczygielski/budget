@@ -40,13 +40,23 @@ public class ExpensesAuditorService {
         return assetsSum.subtract(expenseSum);
     }
 
-    public BigDecimal getPercentAudit(ExpensesCategory expensesCategory,
-                                      BigDecimal assets) {
+    public BigDecimal getPlanPercentAudit(ExpensesCategory expensesCategory,
+                                          BigDecimal assets) {
         var percent = expensesEstimatePercentageService.getEstimation()
                 .get(expensesCategory)
                 .divide(new BigDecimal("100"));
 
         return assets.multiply(percent);
+    }
+
+    public BigDecimal getRealPercentAudit(ExpensesCategory expensesCategory,
+                                          MonthsEnum month,
+                                          String year) {
+        var expenses = getExpensesInMonth(month, year);
+        return expenses.stream()
+                .filter(dto -> dto.getCategory().equals(expensesCategory))
+                .map(dto -> dto.getAmount())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private List<ExpensesDto> getExpensesInMonth(MonthsEnum month,

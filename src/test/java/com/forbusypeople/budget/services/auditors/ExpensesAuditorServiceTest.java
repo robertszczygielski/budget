@@ -67,9 +67,9 @@ class ExpensesAuditorServiceTest {
             "for_life, 30, 300.0",
             "education, 40, 400.0"
     })
-    void shouldReturnPercentForExpensesCategory(String category,
-                                                String percent,
-                                                String expected) {
+    void shouldReturnPercentAmountForAssetsForExpensesCategory(String category,
+                                                               String percent,
+                                                               String expected) {
         // given
         var expensesCategory = ExpensesCategory.valueOf(category.toUpperCase());
         Map<ExpensesCategory, BigDecimal> estimations = new HashMap<>() {{
@@ -78,9 +78,43 @@ class ExpensesAuditorServiceTest {
         when(expensesEstimatePercentageService.getEstimation()).thenReturn(estimations);
 
         // when
-        var result = expensesAuditorService.getPercentAudit(
+        var result = expensesAuditorService.getPlanPercentAudit(
                 expensesCategory,
                 new BigDecimal("1000")
+        );
+
+        // then
+        assertThat(result).isEqualTo(new BigDecimal(expected));
+
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "fun, 100",
+            "others, 120",
+            "for_life, 180",
+            "education, 200"
+    })
+    void shouldReturnPercentAmountForExpensesForExpensesCategory(String category,
+                                                                 String expected) {
+        // given
+        List<ExpensesDto> dtos = asList(
+                ExpensesDto.builder().category(ExpensesCategory.FUN).amount(new BigDecimal("90")).build(),
+                ExpensesDto.builder().category(ExpensesCategory.FUN).amount(new BigDecimal("10")).build(),
+                ExpensesDto.builder().category(ExpensesCategory.OTHERS).amount(new BigDecimal("60")).build(),
+                ExpensesDto.builder().category(ExpensesCategory.OTHERS).amount(new BigDecimal("60")).build(),
+                ExpensesDto.builder().category(ExpensesCategory.FOR_LIFE).amount(new BigDecimal("90")).build(),
+                ExpensesDto.builder().category(ExpensesCategory.FOR_LIFE).amount(new BigDecimal("90")).build(),
+                ExpensesDto.builder().category(ExpensesCategory.EDUCATION).amount(new BigDecimal("100")).build(),
+                ExpensesDto.builder().category(ExpensesCategory.EDUCATION).amount(new BigDecimal("100")).build()
+        );
+        when(expensesService.getFilteredExpenses(anyMap())).thenReturn(dtos);
+
+        // when
+        var result = expensesAuditorService.getRealPercentAudit(
+                ExpensesCategory.valueOf(category.toUpperCase()),
+                MonthsEnum.JANUARY,
+                "2020"
         );
 
         // then
