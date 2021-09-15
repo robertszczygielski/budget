@@ -176,5 +176,17 @@ Content-Type: application/json
 
 
 ### get all assets for logged user
-GET {{host}}:{{port}}/auditor/expenses/month/december/year/2020
+GET {{host}}:{{port}}/auditor/expenses/month/august/year/2020/estimate
 Authorization: Bearer {{token}}
+
+### post estimates
+POST {{host}}:{{port}}/auditor/estimate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "FOR_LIFE": "60",
+  "EDUCATION": "20",
+  "FUN": "10",
+  "OTHERS": "10"
+}
