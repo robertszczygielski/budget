@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class ExpensesEstimatePercentageServiceIntegrationTest extends InitIntegrationTestData {
 
@@ -44,7 +45,7 @@ class ExpensesEstimatePercentageServiceIntegrationTest extends InitIntegrationTe
     }
 
     @Test
-    void shouldGetMapWithCategoryAndEstimation() {
+    void shouldGetMapWithCategoryAndEstimationExpensesValueIfThereAreDateInDatabase() {
         // given
         var user = initDatabaseByPrimeUser();
         initDatabaseByEstimatedExpenses(user);
@@ -54,6 +55,22 @@ class ExpensesEstimatePercentageServiceIntegrationTest extends InitIntegrationTe
 
         // then
         assertThat(resultMap).hasSize(4);
+
+    }
+
+    @Test
+    void shouldGetMapWithCategoryAndEstimationZeroIfThereAreNoValueInDatabase() {
+        // given
+        initDatabaseByPrimeUser();
+
+        // when
+        var resultMap = expensesEstimatePercentageService.getEstimation();
+
+        // then
+        assertAll(
+                () -> assertThat(resultMap).hasSize(4),
+                () -> assertThat(resultMap.get(ExpensesCategory.FUN)).isEqualTo(BigDecimal.ZERO)
+        );
 
     }
 }
