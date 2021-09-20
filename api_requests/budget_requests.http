@@ -190,3 +190,8 @@ Content-Type: application/json
   "FUN": "10",
   "OTHERS": "10"
 }
+
+
+### send mail
+GET {{host}}:{{port}}/mail
+Authorization: Bearer {{token}}
