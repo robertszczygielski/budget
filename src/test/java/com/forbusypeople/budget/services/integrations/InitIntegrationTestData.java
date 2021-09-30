@@ -8,6 +8,8 @@ import com.forbusypeople.budget.enums.RoomsType;
 import com.forbusypeople.budget.repositories.*;
 import com.forbusypeople.budget.repositories.entities.*;
 import com.forbusypeople.budget.services.*;
+import com.forbusypeople.budget.services.users.AdditionalUserDataService;
+import com.forbusypeople.budget.services.users.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -60,6 +62,11 @@ public abstract class InitIntegrationTestData {
     protected ExpensesEstimatePercentageRepository expensesEstimatePercentageRepository;
     @Autowired
     protected ExpensesEstimatePercentageService expensesEstimatePercentageService;
+    @Autowired
+    protected AdditionalUserDataRepository additionalUserDataRepository;
+    @Autowired
+    protected AdditionalUserDataService additionalUserDataService;
+
 
     protected static final String USER_NAME_PRIME = "userNamePrime";
     protected static final String USER_PASSWORD_PRIME = "userPasswordPrime";

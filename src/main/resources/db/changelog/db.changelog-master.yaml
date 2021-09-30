@@ -29,3 +29,5 @@ databaseChangeLog:
       file: db/migration/014-cyclicalExpensesSchema.yaml
   - include:
       file: db/migration/015-expensesEstimatedPercentageSchema.yaml
+  - include:
+      file: db/migration/016-additionalUserDataSchema.yaml

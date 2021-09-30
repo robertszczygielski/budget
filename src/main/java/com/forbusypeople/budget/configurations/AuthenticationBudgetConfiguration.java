@@ -1,6 +1,6 @@
 package com.forbusypeople.budget.configurations;
 
-import com.forbusypeople.budget.services.UserDetailsServiceImpl;
+import com.forbusypeople.budget.services.users.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;

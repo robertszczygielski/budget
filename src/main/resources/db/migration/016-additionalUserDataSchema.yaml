@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 016-additional-user-data-schema
+      author: rs
+      changes:
+        - createTable:
+            tableName: additional_user_data
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_additionaluserdata
+                    references: users(id)
+              - column:
+                  name: email
+                  type: text

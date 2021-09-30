@@ -7,6 +7,7 @@ import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
 import com.forbusypeople.budget.services.dtos.AssetDto;
+import com.forbusypeople.budget.services.users.UserLogInfoService;
 import com.forbusypeople.budget.validators.AssetValidator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -4,6 +4,7 @@ import com.forbusypeople.budget.enums.RoomsType;
 import com.forbusypeople.budget.mappers.RoomsMapper;
 import com.forbusypeople.budget.repositories.RoomsRepository;
 import com.forbusypeople.budget.services.dtos.RoomsDto;
+import com.forbusypeople.budget.services.users.UserLogInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

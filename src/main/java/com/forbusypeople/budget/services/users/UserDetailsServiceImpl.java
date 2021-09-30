@@ -1,10 +1,11 @@
-package com.forbusypeople.budget.services;
+package com.forbusypeople.budget.services.users;
 
 import com.forbusypeople.budget.excetpions.BudgetUserAlreadyExistsInDatabaseException;
 import com.forbusypeople.budget.excetpions.BudgetUserNotFoundException;
 import com.forbusypeople.budget.mappers.UserMapper;
 import com.forbusypeople.budget.repositories.UserRepository;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
+import com.forbusypeople.budget.services.AssetsService;
 import com.forbusypeople.budget.services.dtos.UserDetailsDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserLogInfoService userLogInfoService;
     private final AssetsService assetsService;
 
-    public UserDetailsServiceImpl(UserRepository userRepository, UserMapper userMapper, UserLogInfoService userLogInfoService, AssetsService assetsService) {
+    public UserDetailsServiceImpl(UserRepository userRepository,
+                                  UserMapper userMapper,
+                                  UserLogInfoService userLogInfoService,
+                                  AssetsService assetsService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.userLogInfoService = userLogInfoService;

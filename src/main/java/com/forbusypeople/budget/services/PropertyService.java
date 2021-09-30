@@ -6,6 +6,7 @@ import com.forbusypeople.budget.repositories.RoomsRepository;
 import com.forbusypeople.budget.repositories.entities.PropertyEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.dtos.PropertyDto;
+import com.forbusypeople.budget.services.users.UserLogInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

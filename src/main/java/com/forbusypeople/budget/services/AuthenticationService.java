@@ -3,6 +3,7 @@ package com.forbusypeople.budget.services;
 import com.forbusypeople.budget.excetpions.BudgetInvalidUsernameOrPasswordException;
 import com.forbusypeople.budget.services.dtos.AuthenticationJwtToken;
 import com.forbusypeople.budget.services.dtos.UserDetailsDto;
+import com.forbusypeople.budget.services.users.UserDetailsServiceImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;

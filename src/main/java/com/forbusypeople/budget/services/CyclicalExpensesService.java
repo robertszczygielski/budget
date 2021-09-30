@@ -4,6 +4,7 @@ import com.forbusypeople.budget.mappers.CyclicalExpensesMapper;
 import com.forbusypeople.budget.repositories.CyclicalExpensesRepository;
 import com.forbusypeople.budget.repositories.entities.CyclicalExpensesEntity;
 import com.forbusypeople.budget.services.dtos.CyclicalExpensesDto;
+import com.forbusypeople.budget.services.users.UserLogInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

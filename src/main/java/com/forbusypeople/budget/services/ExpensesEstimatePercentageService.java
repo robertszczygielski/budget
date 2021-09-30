@@ -3,6 +3,7 @@ package com.forbusypeople.budget.services;
 import com.forbusypeople.budget.enums.ExpensesCategory;
 import com.forbusypeople.budget.mappers.ExpensesEstimatePercentageMapper;
 import com.forbusypeople.budget.repositories.ExpensesEstimatePercentageRepository;
+import com.forbusypeople.budget.services.users.UserLogInfoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

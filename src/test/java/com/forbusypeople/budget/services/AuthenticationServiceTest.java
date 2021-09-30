@@ -4,6 +4,7 @@ package com.forbusypeople.budget.services;
 import com.forbusypeople.budget.enums.AuthenticationMessageEnum;
 import com.forbusypeople.budget.excetpions.BudgetInvalidUsernameOrPasswordException;
 import com.forbusypeople.budget.services.dtos.UserDetailsDto;
+import com.forbusypeople.budget.services.users.UserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +43,8 @@ class AuthenticationServiceTest {
         authenticationService = new AuthenticationService(
                 userDetailsService,
                 jwtService,
-                authenticationManager);
+                authenticationManager
+        );
     }
 
     @Test
@@ -83,7 +85,8 @@ class AuthenticationServiceTest {
 
         // when
         var result = assertThrows(BudgetInvalidUsernameOrPasswordException.class,
-                () -> authenticationService.createAuthenticationToken(authenticationUser));
+                                  () -> authenticationService.createAuthenticationToken(authenticationUser)
+        );
 
         // then
         assertThat(result).isNotNull();

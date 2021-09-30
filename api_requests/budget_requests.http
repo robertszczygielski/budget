@@ -195,3 +195,12 @@ Content-Type: application/json
 ### send mail
 GET {{host}}:{{port}}/mail
 Authorization: Bearer {{token}}
+
+### send mail
+POST {{host}}:{{port}}/additional/data
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "email": "some@mail.com"
+}

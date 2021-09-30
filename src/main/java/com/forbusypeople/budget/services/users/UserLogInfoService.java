@@ -1,4 +1,4 @@
-package com.forbusypeople.budget.services;
+package com.forbusypeople.budget.services.users;
 
 import com.forbusypeople.budget.excetpions.BudgetUserNotFoundException;
 import com.forbusypeople.budget.repositories.UserRepository;

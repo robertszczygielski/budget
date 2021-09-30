@@ -7,6 +7,7 @@ import com.forbusypeople.budget.repositories.ExpensesRepository;
 import com.forbusypeople.budget.repositories.entities.ExpensesEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.dtos.ExpensesDto;
+import com.forbusypeople.budget.services.users.UserLogInfoService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

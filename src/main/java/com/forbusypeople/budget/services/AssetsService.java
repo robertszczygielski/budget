@@ -8,6 +8,7 @@ import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.dtos.AssetDto;
+import com.forbusypeople.budget.services.users.UserLogInfoService;
 import com.forbusypeople.budget.validators.AssetValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
