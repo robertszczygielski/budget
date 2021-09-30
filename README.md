@@ -22,3 +22,13 @@
     - klasy serwisowej
     - klasy Dto
 - wstrzykiwanie zależności do klas
+
+### 004. Zapis danych w Bazie danych InMemory
+
+- Użycie JUnit5 i AssertJ
+- Pierwszy test serwisu
+    - Zastosowanie sekcji w teście
+- Uaktualnienie klasy serwisowej
+- Dodanie nowego mappingu URL
+    - @PostMapping - zapis jednej liczby
+    - @PathVariable - odczyt zmiennej z URL
