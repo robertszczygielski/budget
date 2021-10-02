@@ -2,6 +2,7 @@ package com.forbusypeople.budget.services.auditors;
 
 import com.forbusypeople.budget.enums.ExpensesCategory;
 import com.forbusypeople.budget.enums.MonthsEnum;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.ExpensesEstimatePercentageService;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.services.dtos.AuditDto;
@@ -57,6 +58,32 @@ public class ExpensesAuditorService {
                                     .currentAmount(realExpenses)
                                     .expectedAmount(planedExpenses)
                                     .percent(expensesEstimatePercentageService.getEstimation().get(category))
+                                    .build();
+                        }
+                ));
+    }
+
+    public Map<ExpensesCategory, AuditDto> getAuditForEstimate(UserEntity user,
+                                                               MonthsEnum monthsEnum,
+                                                               String year) {
+        var assetsInMonth = expensesAuditorCalculator.getAssetsInMonth(user, monthsEnum, year);
+        var assetSum = assetsInMonth.stream()
+                .map(AssetDto::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return Arrays.stream(ExpensesCategory.values())
+                .collect(Collectors.toMap(
+                        category -> category,
+                        category -> {
+                            var planedExpenses =
+                                    expensesAuditorCalculator.getPlanPercentAudit(user, category, assetSum);
+                            var realExpenses =
+                                    expensesAuditorCalculator.getRealPercentAudit(user, category, monthsEnum, year);
+
+                            return AuditDto.builder()
+                                    .currentAmount(realExpenses)
+                                    .expectedAmount(planedExpenses)
+                                    .percent(expensesEstimatePercentageService.getEstimation(user).get(category))
                                     .build();
                         }
                 ));

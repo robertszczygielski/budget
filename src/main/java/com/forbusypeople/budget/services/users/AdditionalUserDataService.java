@@ -2,6 +2,7 @@ package com.forbusypeople.budget.services.users;
 
 import com.forbusypeople.budget.mappers.AdditionalUserDataMapper;
 import com.forbusypeople.budget.repositories.AdditionalUserDataRepository;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.dtos.AdditionalUserDataDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,7 @@ public class AdditionalUserDataService {
         additionalUserDataRepository.save(entity);
     }
 
-    public AdditionalUserDataDto getAdditionalData() {
-        var user = userLogInfoService.getLoggedUserEntity();
+    public AdditionalUserDataDto getAdditionalData(UserEntity user) {
         var entity = additionalUserDataRepository.findAdditionalUserDataEntitiesByUser(user);
         return additionalUserDataMapper.fromEntityToDto(entity);
     }

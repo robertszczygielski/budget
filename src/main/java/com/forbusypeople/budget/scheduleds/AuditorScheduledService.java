@@ -1,29 +1,16 @@
 package com.forbusypeople.budget.scheduleds;
 
-import com.forbusypeople.budget.enums.MonthsEnum;
-import com.forbusypeople.budget.services.auditors.ExpensesAuditorService;
-import lombok.AllArgsConstructor;
+import com.forbusypeople.budget.enums.ExpensesCategory;
+import com.forbusypeople.budget.services.dtos.AuditDto;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Service
 class AuditorScheduledService {
 
-    private final ExpensesAuditorService expensesAuditorService;
-
-    public boolean mailShouldBeSend() {
-        var ldt = LocalDateTime.now();
-        var month = ldt.getMonth().name();
-        var year = String.valueOf(ldt.getYear());
-
-        var auditForEstimate = expensesAuditorService.getAuditForEstimate(
-                MonthsEnum.valueOf(month.toUpperCase()),
-                year
-        );
-
+    public boolean mailShouldBeSend(Map<ExpensesCategory, AuditDto> auditForEstimate) {
         var diff = auditForEstimate.entrySet().stream()
                 .filter(estimate -> {
                     var dto = estimate.getValue();

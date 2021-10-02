@@ -101,6 +101,11 @@ public class AssetsService {
 
     public List<AssetDto> getAssetsByFilter(Map<String, String> filter) {
         var user = userLogInfoService.getLoggedUserEntity();
+        return getAssetsByFilter(user, filter);
+    }
+
+    public List<AssetDto> getAssetsByFilter(UserEntity user,
+                                            Map<String, String> filter) {
         FilterSpecification specification = FilterSpecification.FOR_ASSETS;
 
         return filterRangeStrategy.getFilteredDataForSpecification(user, filter, specification)

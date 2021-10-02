@@ -1,12 +1,10 @@
 package com.forbusypeople.budget.scheduleds;
 
 import com.forbusypeople.budget.enums.ExpensesCategory;
-import com.forbusypeople.budget.services.auditors.ExpensesAuditorService;
 import com.forbusypeople.budget.services.dtos.AuditDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -14,30 +12,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AuditorScheduledServiceTest {
-
-    @Mock
-    private ExpensesAuditorService expensesAuditorService;
 
     private AuditorScheduledService auditorScheduledService;
 
     @BeforeEach
     public void setUp() {
-        auditorScheduledService = new AuditorScheduledService(expensesAuditorService);
+        auditorScheduledService = new AuditorScheduledService();
     }
 
     @Test
     void shouldReturnTrueIfTheAmountOfExpensesIsHigherThenExpected() {
         // given
-        Map<ExpensesCategory, AuditDto> values = prepareValuesMapForSendMail();
-        when(expensesAuditorService.getAuditForEstimate(any(), any())).thenReturn(values);
+        Map<ExpensesCategory, AuditDto> auditForEstimate = prepareValuesMapForSendMail();
 
         // when
-        boolean result = auditorScheduledService.mailShouldBeSend();
+        boolean result = auditorScheduledService.mailShouldBeSend(auditForEstimate);
 
         // then
         assertThat(result).isTrue();
@@ -47,11 +39,10 @@ class AuditorScheduledServiceTest {
     @Test
     void shouldReturnFalseIfTheAmountOfExpensesIsNotHigherThenExpected() {
         // given
-        Map<ExpensesCategory, AuditDto> values = prepareValuesMapForNotSendMail();
-        when(expensesAuditorService.getAuditForEstimate(any(), any())).thenReturn(values);
+        Map<ExpensesCategory, AuditDto> auditForEstimate = prepareValuesMapForNotSendMail();
 
         // when
-        boolean result = auditorScheduledService.mailShouldBeSend();
+        boolean result = auditorScheduledService.mailShouldBeSend(auditForEstimate);
 
         // then
         assertThat(result).isFalse();

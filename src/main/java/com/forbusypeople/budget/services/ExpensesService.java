@@ -66,6 +66,11 @@ public class ExpensesService {
 
     public List<ExpensesDto> getFilteredExpenses(Map<String, String> filter) {
         var user = userLogInfoService.getLoggedUserEntity();
+        return getFilteredExpenses(user, filter);
+    }
+
+    public List<ExpensesDto> getFilteredExpenses(UserEntity user,
+                                                 Map<String, String> filter) {
         FilterSpecification specification = FilterSpecification.FOR_EXPENSES;
 
         return filterRangeStrategy.getFilteredDataForSpecification(user, filter, specification)

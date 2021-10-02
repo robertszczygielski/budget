@@ -3,6 +3,7 @@ package com.forbusypeople.budget.services;
 import com.forbusypeople.budget.enums.ExpensesCategory;
 import com.forbusypeople.budget.mappers.ExpensesEstimatePercentageMapper;
 import com.forbusypeople.budget.repositories.ExpensesEstimatePercentageRepository;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.users.UserLogInfoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,10 @@ public class ExpensesEstimatePercentageService {
 
     public Map<ExpensesCategory, BigDecimal> getEstimation() {
         var user = userLogInfoService.getLoggedUserEntity();
+        return getEstimation(user);
+    }
+
+    public Map<ExpensesCategory, BigDecimal> getEstimation(UserEntity user) {
         var entitiesOptional = expensesEstimatePercentageRepository.findAllByUser(user);
 
         if (entitiesOptional.isPresent()) {
