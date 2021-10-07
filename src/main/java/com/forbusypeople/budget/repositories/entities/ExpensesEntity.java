@@ -25,5 +25,6 @@ public class ExpensesEntity extends BaseBudgetEntity {
     private Instant purchaseDate;
     @Enumerated(EnumType.STRING)
     private ExpensesCategory category;
+    private String description;
 
 }

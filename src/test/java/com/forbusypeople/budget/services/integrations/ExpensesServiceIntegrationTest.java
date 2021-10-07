@@ -12,12 +12,14 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
@@ -37,6 +39,35 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
         var entitiesInDatabase = expensesRepository.findAll();
         assertThat(entitiesInDatabase).hasSize(1);
         assertThat(entitiesInDatabase.get(0).getAmount()).isEqualTo(BigDecimal.ONE);
+    }
+
+    @Test
+    void shouldSaveOneFullInfillExpensesInToDatabase() {
+        // given
+        initDatabaseByPrimeUser();
+        var amount = BigDecimal.ONE;
+        var purchaseDate = Instant.parse("2020-09-09T08:08:01.001Z");
+        var category = ExpensesCategory.EDUCATION;
+        var description = "some expenses description";
+        var dto = ExpensesDto.builder()
+                .amount(amount)
+                .purchaseDate(purchaseDate)
+                .category(category)
+                .description(description)
+                .build();
+
+        // when
+        expensesService.setExpenses(dto);
+
+        // then
+        var entitiesInDatabase = expensesRepository.findAll();
+        assertThat(entitiesInDatabase).hasSize(1);
+        assertAll(
+                () -> assertThat(entitiesInDatabase.get(0).getAmount()).isEqualTo(BigDecimal.ONE),
+                () -> assertThat(entitiesInDatabase.get(0).getDescription()).isEqualTo(description),
+                () -> assertThat(entitiesInDatabase.get(0).getPurchaseDate()).isEqualTo(purchaseDate),
+                () -> assertThat(entitiesInDatabase.get(0).getCategory()).isEqualTo(category)
+        );
     }
 
     @Test

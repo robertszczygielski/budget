@@ -20,5 +20,6 @@ public class ExpensesDto {
     private BigDecimal amount;
     private Instant purchaseDate;
     private ExpensesCategory category;
+    private String description;
 
 }
