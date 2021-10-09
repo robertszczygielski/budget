@@ -45,9 +45,11 @@ public class ScheduleMailService {
                     var shouldSendMail = auditorScheduledService.mailShouldBeSend(auditForEstimate);
 
                     if (shouldSendMail) {
-                        var additionalData = additionalUserDataService.getAdditionalData(user);
-                        mailSenderService.sendMail(additionalData.getEmail(), auditForEstimate);
-                        log.info("mail send to {}", additionalData.getEmail());
+                        additionalUserDataService.getAdditionalData(user)
+                                .ifPresent(it -> {
+                                    mailSenderService.sendMail(it.getEmail(), auditForEstimate);
+                                    log.info("mail send to {}", it.getEmail());
+                                });
                     }
 
                 });

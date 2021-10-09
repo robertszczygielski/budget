@@ -285,4 +285,13 @@ public abstract class InitIntegrationTestData {
 
         expensesEstimatePercentageRepository.saveAll(entities);
     }
+
+    protected void initDatabaseByAdditionalData(UserEntity user) {
+        var entity = AdditionalUserDataEntity.builder()
+                .user(user)
+                .email("some@mail.com")
+                .build();
+
+        additionalUserDataRepository.save(entity);
+    }
 }

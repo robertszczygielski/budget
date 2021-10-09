@@ -25,4 +25,31 @@ public class AdditionalUserDataServiceIntegrationTest extends InitIntegrationTes
         assertThat(entity.getEmail()).isEqualTo(mail);
 
     }
+
+    @Test
+    void shouldReturnNotEmptyOptionalIfUserHasAdditionalData() {
+        // given
+        var user = initDatabaseByPrimeUser();
+        initDatabaseByAdditionalData(user);
+
+        // when
+        var result = additionalUserDataService.getAdditionalData(user);
+
+        // then
+        assertThat(result.isPresent()).isTrue();
+
+    }
+
+    @Test
+    void shouldReturnEmptyOptionalIfUserHasNoAdditionalData() {
+        // given
+        var user = initDatabaseByPrimeUser();
+
+        // when
+        var result = additionalUserDataService.getAdditionalData(user);
+
+        // then
+        assertThat(result.isPresent()).isFalse();
+
+    }
 }

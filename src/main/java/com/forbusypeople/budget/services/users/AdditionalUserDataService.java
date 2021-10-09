@@ -7,6 +7,8 @@ import com.forbusypeople.budget.services.dtos.AdditionalUserDataDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class AdditionalUserDataService {
@@ -21,9 +23,10 @@ public class AdditionalUserDataService {
         additionalUserDataRepository.save(entity);
     }
 
-    public AdditionalUserDataDto getAdditionalData(UserEntity user) {
+    public Optional<AdditionalUserDataDto> getAdditionalData(UserEntity user) {
         var entity = additionalUserDataRepository.findAdditionalUserDataEntitiesByUser(user);
-        return additionalUserDataMapper.fromEntityToDto(entity);
+        return Optional.ofNullable(
+                additionalUserDataMapper.fromEntityToDto(entity));
     }
 
 }
