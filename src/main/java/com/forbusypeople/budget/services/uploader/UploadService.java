@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UploadService {
 
+    private final String ASSETS = "assets";
+
     private final AssetsService assetsService;
     private final ExpensesService expensesService;
 
@@ -30,8 +32,7 @@ public class UploadService {
             ).lines()
                     .collect(Collectors.toList());
 
-            var removedString = bufferedReader.remove(0);
-            if (isAsset(removedString)) {
+            if (isAsset(bufferedReader)) {
                 saveAssets(bufferedReader);
             } else {
                 saveExpenses(bufferedReader);
@@ -41,8 +42,13 @@ public class UploadService {
         }
     }
 
-    private boolean isAsset(String removedString) {
+    private boolean isAsset(List<String> bufferedReader) {
+        var removedString = bufferedReader.remove(0);
         var numbersOfColumns = removedString.split(";");
+        if (numbersOfColumns.length == 1) {
+            bufferedReader.remove(0);
+            return numbersOfColumns[0].equals(ASSETS);
+        }
         var numbersOfColumnsForAssets = 4;
         return numbersOfColumns.length == numbersOfColumnsForAssets;
     }

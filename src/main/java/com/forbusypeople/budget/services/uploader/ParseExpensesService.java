@@ -19,6 +19,7 @@ class ParseExpensesService {
                         .amount(new BigDecimal(array[0]))
                         .category(ExpensesCategory.valueOf(array[1].toUpperCase()))
                         .purchaseDate(Instant.parse(array[2] + "T01:01:01.001Z"))
+                        .description(array.length == 4 ? array[3] : null)
                         .build())
                 .collect(Collectors.toList());
     }
