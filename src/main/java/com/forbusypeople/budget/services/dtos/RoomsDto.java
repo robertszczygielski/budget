@@ -19,5 +19,6 @@ public class RoomsDto {
     private RoomsType type;
     private BigDecimal cost;
     private Boolean rent;
+    private String currency;
 
 }

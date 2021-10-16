@@ -22,5 +22,7 @@ public class RoomsEntity extends BaseBudgetEntity {
     private BigDecimal cost;
     @Transient
     private Boolean rent;
+    @Transient
+    private String currency;
 
 }

@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 018-property-room-association-schema-add-currency
+      author: rs
+      changes:
+        - addColumn:
+            tableName: property_room_associations
+            columns:
+              - column:
+                  name: currency
+                  type: text
+                  constraints:
+                    default: false
+                    nullable: false
+        - addDefaultValue:
+            tableName: property_room_associations
+            columnName: currency
+            defaultValue: PLN

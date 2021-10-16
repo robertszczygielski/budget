@@ -30,4 +30,5 @@ public class PropertyRoomAssociationsEntity implements Serializable {
     @Column(name = "room_id")
     private UUID roomId;
     private Boolean rent;
+    private String currency;
 }
