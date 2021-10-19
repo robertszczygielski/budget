@@ -9,9 +9,6 @@ databaseChangeLog:
               - column:
                   name: currency
                   type: text
-                  constraints:
-                    default: false
-                    nullable: false
         - addDefaultValue:
             tableName: property_room_associations
             columnName: currency

@@ -204,3 +204,8 @@ Content-Type: application/json
 {
   "email": "some@mail.com"
 }
+
+
+### send mail
+GET {{host}}:{{port}}/currency/codes
+Authorization: Bearer {{token}}
