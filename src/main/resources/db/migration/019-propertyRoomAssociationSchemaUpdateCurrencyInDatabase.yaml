@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 019-property-room-association-schema-update-currency-in-database
+      author: rs
+      changes:
+        - addNotNullConstraint:
+            columnName: currency
+            constraintName: property_room_associations_currency_constraint
+            defaultNullValue: PLN
+            tableName: property_room_associations

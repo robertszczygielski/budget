@@ -35,3 +35,5 @@ databaseChangeLog:
       file: db/migration/017-expensesSchemaAddDescription.yaml
   - include:
       file: db/migration/018-propertyRoomAssociationSchemaAddCurrency.yaml
+  - include:
+      file: db/migration/019-propertyRoomAssociationSchemaUpdateCurrencyInDatabase.yaml
