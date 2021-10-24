@@ -19,4 +19,9 @@ public interface PropertyRoomAssociationsRepository extends CrudRepository<Prope
                  UUID roomId,
                  Boolean isRent);
 
+    @Modifying(clearAutomatically = true)
+    void setCurrency(UUID propertyId,
+                     UUID roomId,
+                     String currency);
+
 }

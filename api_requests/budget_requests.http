@@ -131,13 +131,15 @@ Content-Type: application/json
       "id": "3985565d-2da6-48f4-a011-601b9b9c3ed8",
       "type": "ROOM_XL",
       "cost": 50.00,
-      "rent": true
+      "rent": true,
+      "currency": "USD"
     },
     {
       "id": "36e096c0-8586-44ec-96bd-7dbfb490ef8e",
       "type": "ROOM_M",
       "cost": 20.00,
-      "rent": false
+      "rent": false,
+      "currency": "EUR"
     }
   ],
   "single": false,
@@ -146,6 +148,7 @@ Content-Type: application/json
   "street": "Ważniak 12",
   "house": "12B"
 }
+
 
 
 ### add cyclical expenses for logged user

@@ -19,6 +19,10 @@ import java.util.UUID;
         @NamedNativeQuery(
                 name = "PropertyRoomAssociationsEntity.setRent",
                 query = "UPDATE property_room_associations SET rent = ?3 WHERE property_id = ?1 AND room_id = ?2"
+        ),
+        @NamedNativeQuery(
+                name = "PropertyRoomAssociationsEntity.setCurrency",
+                query = "UPDATE property_room_associations SET currency = ?3 WHERE property_id = ?1 AND room_id = ?2"
         )
 })
 public class PropertyRoomAssociationsEntity implements Serializable {
