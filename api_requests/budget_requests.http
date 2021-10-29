@@ -209,6 +209,10 @@ Content-Type: application/json
 }
 
 
-### send mail
+### GET currency
 GET {{host}}:{{port}}/currency/codes
+Authorization: Bearer {{token}}
+
+### GET currency amount form NBP
+GET {{host}}:{{port}}/currency/amount/EUR
 Authorization: Bearer {{token}}
