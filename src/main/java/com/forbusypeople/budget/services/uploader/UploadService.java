@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +48,7 @@ public class UploadService {
         var numbersOfColumns = removedString.split(";");
         if (numbersOfColumns.length == 1) {
             bufferedReader.remove(0);
-            return numbersOfColumns[0].equals(ASSETS);
+            return numbersOfColumns[0].toLowerCase(Locale.ROOT).equals(ASSETS);
         }
         var numbersOfColumnsForAssets = 4;
         return numbersOfColumns.length == numbersOfColumnsForAssets;

@@ -1,3 +1,4 @@
-Amount;Category;Date;Description
-1200;Rent;2020-08-08;Narnia
-2200;Bonus;2020-08-09;Jablka
+Assets
+Amount;Currency;Category;Date;Description
+1200;USD;Rent;2020-08-08;Narnia
+2200;PLN;Bonus;2020-08-09;Jablka
