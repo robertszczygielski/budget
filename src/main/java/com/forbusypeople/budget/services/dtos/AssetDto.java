@@ -21,5 +21,6 @@ public class AssetDto {
     private Instant incomeDate;
     private AssetCategory category;
     private String description;
+    private String currencyCode;
 
 }

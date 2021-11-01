@@ -2,10 +2,13 @@ package com.forbusypeople.budget.services;
 
 import com.forbusypeople.budget.enums.ValidatorsAssetEnum;
 import com.forbusypeople.budget.excetpions.AssetIncompleteException;
+import com.forbusypeople.budget.feign.dto.FeignNbpDto;
+import com.forbusypeople.budget.feign.dto.RatesNbpDto;
 import com.forbusypeople.budget.filters.FilterRangeStrategy;
 import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
+import com.forbusypeople.budget.services.currency.CurrencyService;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.services.users.UserLogInfoService;
 import com.forbusypeople.budget.validators.AssetValidator;
@@ -27,6 +30,7 @@ import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AssetsServiceTest {
@@ -37,6 +41,8 @@ class AssetsServiceTest {
     private UserLogInfoService userLogInfoService;
     @Mock
     private FilterRangeStrategy filterRangeStrategy;
+    @Mock
+    private CurrencyService currencyService;
 
     private final AssetValidator assetValidator = new AssetValidator();
     private final AssetsMapper assetsMapper = new AssetsMapper();
@@ -49,7 +55,8 @@ class AssetsServiceTest {
                                     assetsMapper,
                                     assetValidator,
                                     userLogInfoService,
-                                    filterRangeStrategy
+                                    filterRangeStrategy,
+                                    currencyService
         );
     }
 
@@ -61,7 +68,7 @@ class AssetsServiceTest {
                 .amount(asset)
                 .build();
         List<AssetEntity> assetList = Collections.singletonList(assetEntity);
-        Mockito.when(assetsRepository.getAssetEntitiesByUser(any())).thenReturn(assetList);
+        when(assetsRepository.getAssetEntitiesByUser(any())).thenReturn(assetList);
 
         // when
         var result = service.getAllAssets();
@@ -85,7 +92,7 @@ class AssetsServiceTest {
                 .build();
         List<AssetEntity> assetsEntity = asList(entityOne, entityTwo);
 
-        Mockito.when(assetsRepository.getAssetEntitiesByUser(any())).thenReturn(assetsEntity);
+        when(assetsRepository.getAssetEntitiesByUser(any())).thenReturn(assetsEntity);
 
         // when
         var result = service.getAllAssets();
@@ -127,7 +134,7 @@ class AssetsServiceTest {
         BigDecimal asset = BigDecimal.ONE;
         var dto = AssetDto.builder().amount(asset).build();
         var entity = AssetEntity.builder().amount(asset).build();
-        Mockito.when(assetsRepository.findById(any())).thenReturn(Optional.of(entity));
+        when(assetsRepository.findById(any())).thenReturn(Optional.of(entity));
 
         // when
         service.updateAsset(dto);
@@ -186,6 +193,42 @@ class AssetsServiceTest {
 
         // then
         assertEquals(expectedMessage, result.getMessage());
+
+    }
+
+    @Test
+    void shouldSaveAssetsWithCurrenciesAfterChangeAmountToCurrentCurrency() {
+        // given
+        String currencyUSD = "USD";
+        Instant incomeDate = Instant.now();
+        var userAmount = BigDecimal.ONE;
+        var nbpAmount = BigDecimal.TEN;
+        var amountInDatabase = BigDecimal.TEN;
+
+        List<AssetDto> dots = List.of(AssetDto.builder()
+                                              .amount(userAmount)
+                                              .incomeDate(incomeDate)
+                                              .currencyCode(currencyUSD)
+                                              .build());
+
+        AssetEntity assetEntity = AssetEntity.builder()
+                .incomeDate(incomeDate)
+                .amount(amountInDatabase)
+                .build();
+
+        FeignNbpDto currencyDto = FeignNbpDto.builder()
+                .rates(List.of(RatesNbpDto.builder()
+                                       .mid(nbpAmount)
+                                       .build()))
+                .build();
+
+        when(currencyService.getCurrencyFromNbp(currencyUSD)).thenReturn(currencyDto);
+
+        // when
+        service.setAsset(dots);
+
+        // then
+        Mockito.verify(assetsRepository).save(assetEntity);
 
     }
 }

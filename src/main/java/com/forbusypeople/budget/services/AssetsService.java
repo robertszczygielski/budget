@@ -7,19 +7,24 @@ import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
+import com.forbusypeople.budget.services.currency.CurrencyService;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.services.users.UserLogInfoService;
 import com.forbusypeople.budget.validators.AssetValidator;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class AssetsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AssetsService.class.getName());
@@ -29,18 +34,8 @@ public class AssetsService {
     private final AssetValidator assetValidator;
     private final UserLogInfoService userLogInfoService;
     private final FilterRangeStrategy<AssetEntity> filterRangeStrategy;
-
-    public AssetsService(AssetsRepository assetsRepository,
-                         AssetsMapper assetsMapper,
-                         AssetValidator assetValidator,
-                         UserLogInfoService userLogInfoService,
-                         FilterRangeStrategy filterRangeStrategy) {
-        this.assetsRepository = assetsRepository;
-        this.assetsMapper = assetsMapper;
-        this.assetValidator = assetValidator;
-        this.userLogInfoService = userLogInfoService;
-        this.filterRangeStrategy = filterRangeStrategy;
-    }
+    private final CurrencyService currencyService;
+    private final String DEFAULT_CURRENCY = "PLN";
 
     public List<AssetDto> getAllAssets() {
         LOGGER.debug("Get all assets");
@@ -59,10 +54,28 @@ public class AssetsService {
 
         dtos.forEach(dto -> {
             assetValidator.validate(dto);
+            changeCurrencyIfNecessary(dto);
             var entity = assetsMapper.fromDtoToEntity(dto, user);
             assetsRepository.save(entity);
         });
 
+    }
+
+    private void changeCurrencyIfNecessary(AssetDto dto) {
+        if (Objects.isNull(dto.getCurrencyCode())) return;
+        if (dto.getCurrencyCode().isBlank()) return;
+        if (dto.getCurrencyCode().equals(DEFAULT_CURRENCY)) return;
+
+        var currencyCode = dto.getCurrencyCode().toUpperCase();
+        BigDecimal amount = dto.getAmount();
+        var currencyDto = currencyService.getCurrencyFromNbp(currencyCode);
+        var currencyAmount = currencyDto.getRates()
+                .stream()
+                .findFirst()
+                .get()
+                .getMid();
+
+        dto.setAmount(amount.multiply(currencyAmount));
     }
 
     public void deleteAsset(AssetDto dto) {
