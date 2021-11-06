@@ -1,6 +1,6 @@
 
 ### get JWT Token
-GET {{host}}:{{port}}/auth
+POST {{host}}:{{port}}/auth/authorization
 Content-Type: application/json
 
 {

@@ -1,5 +1,6 @@
 package com.forbusypeople.budget.controllers;
 
+import com.forbusypeople.budget.aspects.annotations.LoggerInfo;
 import com.forbusypeople.budget.services.AuthenticationService;
 import com.forbusypeople.budget.services.dtos.AuthenticationJwtToken;
 import com.forbusypeople.budget.services.dtos.UserDetailsDto;
@@ -21,7 +22,8 @@ public class AuthenticationController {
         this.userDetailsService = userDetailsService;
     }
 
-    @GetMapping
+    @PostMapping("/authorization")
+    @LoggerInfo
     public AuthenticationJwtToken getAuthenticationToken(@RequestBody UserDetailsDto userDetailsDto) {
         return authenticationService.createAuthenticationToken(userDetailsDto);
     }

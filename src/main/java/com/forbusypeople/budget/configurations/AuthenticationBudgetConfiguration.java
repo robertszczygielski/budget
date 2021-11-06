@@ -34,7 +34,7 @@ public class AuthenticationBudgetConfiguration extends WebSecurityConfigurerAdap
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers(HttpMethod.GET, "/auth").permitAll()
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/auth/authorization").permitAll()
                 .and()
                 .authorizeRequests().antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .anyRequest().authenticated()
