@@ -32,3 +32,24 @@
 - Dodanie nowego mappingu URL
     - @PostMapping - zapis jednej liczby
     - @PathVariable - odczyt zmiennej z URL
+
+### 005. Połączenie bazy danych z aplikacją Java Spring Boot + liquibase
+
+- Plik dokerowy z przykładową bazą danych
+- Podpięcie Liqibasa - system kontroli bazy danych
+- Pierwszy skrypt migracyjny zakładający tabelkę Assets
+
+### 006. Encja, Mapper, Buildr, dodanie nowych funkcji do aplikacji
+
+- Utworzenie dla Asset:
+    - Repozytorium
+    - Encji
+    - Dto
+- Ręcznie napisanie Buildera:
+    - AssetDto
+    - AssetEntity
+- Ręcznie napisanie Mappera:
+    - Z AssetDto do AssetEntity
+    - Z AssetEntity do AssetDto
+- Pierwsza klasa testowa
+- Sztuczna, szybka, zaślepka Repozytorium
