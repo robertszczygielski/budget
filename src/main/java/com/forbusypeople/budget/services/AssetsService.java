@@ -1,5 +1,7 @@
 package com.forbusypeople.budget.services;
 
+import com.forbusypeople.budget.aspects.annotations.LoggerDebug;
+import com.forbusypeople.budget.aspects.annotations.LoggerInfo;
 import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.enums.FilterSpecification;
 import com.forbusypeople.budget.filters.FilterRangeStrategy;
@@ -48,8 +50,9 @@ public class AssetsService {
     }
 
     @Transactional
+    @LoggerInfo
+    @LoggerDebug
     public void setAsset(List<AssetDto> dtos) {
-        LOGGER.info("Set Asset");
         var user = getUserEntity();
 
         dtos.forEach(dto -> {

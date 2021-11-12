@@ -18,4 +18,14 @@ public class LoggerBudgetAspect {
         return joinPoint.proceed();
     }
 
+    @Around("@annotation(com.forbusypeople.budget.aspects.annotations.LoggerDebug)")
+    public Object loggerDebug(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object[] args = joinPoint.getArgs();
+        for (Object arg : args) {
+            log.debug("Method arg: {}", arg.toString());
+        }
+
+        return joinPoint.proceed();
+    }
+
 }
