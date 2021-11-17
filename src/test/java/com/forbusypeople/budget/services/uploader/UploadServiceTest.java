@@ -62,10 +62,10 @@ class UploadServiceTest {
         var dtos = List.of(testData.dto);
 
         // when
-        uploadService.uploadFile(file);
+        uploadService.uploadFile(null, file);
 
         // then
-        Mockito.verify(assetsService, Mockito.times(1)).setAsset(dtos);
+        Mockito.verify(assetsService, Mockito.times(1)).setAsset(null, dtos);
     }
 
     @ParameterizedTest
@@ -80,7 +80,7 @@ class UploadServiceTest {
         var dtos = asList(testData.dto);
 
         // when
-        uploadService.uploadFile(file);
+        uploadService.uploadFile(null, file);
 
         // then
         Mockito.verify(expensesService, Mockito.times(1)).setExpenses(dtos);

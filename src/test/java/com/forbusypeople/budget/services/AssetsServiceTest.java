@@ -8,6 +8,7 @@ import com.forbusypeople.budget.filters.FilterRangeStrategy;
 import com.forbusypeople.budget.mappers.AssetsMapper;
 import com.forbusypeople.budget.repositories.AssetsRepository;
 import com.forbusypeople.budget.repositories.entities.AssetEntity;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.currency.CurrencyService;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.services.users.UserLogInfoService;
@@ -71,7 +72,7 @@ class AssetsServiceTest {
         when(assetsRepository.getAssetEntitiesByUser(any())).thenReturn(assetList);
 
         // when
-        var result = service.getAllAssets();
+        var result = service.getAllAssets(new UserEntity());
 
         // then
         Assertions.assertThat(result)
@@ -95,7 +96,7 @@ class AssetsServiceTest {
         when(assetsRepository.getAssetEntitiesByUser(any())).thenReturn(assetsEntity);
 
         // when
-        var result = service.getAllAssets();
+        var result = service.getAllAssets(new UserEntity());
 
         // then
         Assertions.assertThat(result)
@@ -121,7 +122,7 @@ class AssetsServiceTest {
                 .build();
 
         // when
-        service.setAsset(asList(dto));
+        service.setAsset(null, List.of(dto));
 
         // then
         Mockito.verify(assetsRepository, Mockito.times(1)).save(entity);
@@ -152,7 +153,7 @@ class AssetsServiceTest {
 
         // when
         var result = assertThrows(AssetIncompleteException.class,
-                                  () -> service.setAsset(asList(dto))
+                                  () -> service.setAsset(null, List.of(dto))
         );
 
         // then
@@ -169,7 +170,7 @@ class AssetsServiceTest {
 
         // when
         var result = assertThrows(AssetIncompleteException.class,
-                                  () -> service.setAsset(asList(dto))
+                                  () -> service.setAsset(null, List.of(dto))
         );
 
         // then
@@ -188,7 +189,7 @@ class AssetsServiceTest {
 
         // when
         var result = assertThrows(AssetIncompleteException.class,
-                                  () -> service.setAsset(asList(dto))
+                                  () -> service.setAsset(null, List.of(dto))
         );
 
         // then
@@ -225,7 +226,7 @@ class AssetsServiceTest {
         when(currencyService.getCurrencyFromNbp(currencyUSD)).thenReturn(currencyDto);
 
         // when
-        service.setAsset(dots);
+        service.setAsset(null, dots);
 
         // then
         Mockito.verify(assetsRepository).save(assetEntity);

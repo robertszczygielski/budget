@@ -14,8 +14,6 @@ import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.services.users.UserLogInfoService;
 import com.forbusypeople.budget.validators.AssetValidator;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,8 +27,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class AssetsService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AssetsService.class.getName());
-
     private final AssetsRepository assetsRepository;
     private final AssetsMapper assetsMapper;
     private final AssetValidator assetValidator;
@@ -39,10 +35,9 @@ public class AssetsService {
     private final CurrencyService currencyService;
     private final String DEFAULT_CURRENCY = "PLN";
 
-    public List<AssetDto> getAllAssets() {
-        LOGGER.debug("Get all assets");
-        var user = getUserEntity();
-
+    @LoggerDebug
+    @LoggerInfo
+    public List<AssetDto> getAllAssets(UserEntity user) {
         return assetsRepository.getAssetEntitiesByUser(user)
                 .stream()
                 .map(entity -> assetsMapper.fromEntityToDto(entity))
@@ -52,9 +47,8 @@ public class AssetsService {
     @Transactional
     @LoggerInfo
     @LoggerDebug
-    public void setAsset(List<AssetDto> dtos) {
-        var user = getUserEntity();
-
+    public void setAsset(UserEntity user,
+                         List<AssetDto> dtos) {
         dtos.forEach(dto -> {
             assetValidator.validate(dto);
             changeCurrencyIfNecessary(dto);
@@ -81,18 +75,17 @@ public class AssetsService {
         dto.setAmount(amount.multiply(currencyAmount));
     }
 
-    public void deleteAsset(AssetDto dto) {
-        LOGGER.info("Delete asset");
-        LOGGER.debug("AssetDto: " + dto);
-        var user = getUserEntity();
+    @LoggerInfo
+    @LoggerDebug
+    public void deleteAsset(UserEntity user,
+                            AssetDto dto) {
         var entity = assetsMapper.fromDtoToEntity(dto, user);
         assetsRepository.delete(entity);
-        LOGGER.info("Asset deleted");
     }
 
+    @LoggerDebug
+    @LoggerInfo
     public void updateAsset(AssetDto dto) {
-        LOGGER.info("Update asset");
-        LOGGER.debug("AssetDto: " + dto);
         var entity = assetsRepository.findById(dto.getId());
         entity.ifPresent(System.out::println);
         entity.ifPresent(e -> {
@@ -100,8 +93,6 @@ public class AssetsService {
             System.out.println(e);
             assetsRepository.saveAndFlush(e);
         });
-
-        LOGGER.info("Asset updated");
     }
 
     public List<AssetDto> getAssetsByCategory(AssetCategory category) {
@@ -130,8 +121,4 @@ public class AssetsService {
                 .collect(Collectors.toList());
     }
 
-    private UserEntity getUserEntity() {
-        LOGGER.info("getLoggedUserEntity");
-        return userLogInfoService.getLoggedUserEntity();
-    }
 }

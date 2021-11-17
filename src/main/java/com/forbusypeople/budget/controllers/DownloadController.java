@@ -1,6 +1,8 @@
 package com.forbusypeople.budget.controllers;
 
+import com.forbusypeople.budget.aspects.annotations.SetLoggedUser;
 import com.forbusypeople.budget.enums.DownloadSpecificationEnum;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.downloader.DownloadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +21,11 @@ public class DownloadController {
     private final DownloadService downloadService;
 
     @GetMapping("/assets")
-    public void getDownloadAssets(HttpServletResponse response) {
+    @SetLoggedUser
+    public void getDownloadAssets(UserEntity user,
+                                  HttpServletResponse response) {
         downloadService.getFileToDownload(
+                user,
                 response,
                 DownloadSpecificationEnum.ASSETS,
                 null
@@ -28,33 +33,39 @@ public class DownloadController {
     }
 
     @GetMapping("/expenses")
-    public void getDownloadExpenses(HttpServletResponse response) {
+    @SetLoggedUser
+    public void getDownloadExpenses(UserEntity user,
+                                    HttpServletResponse response) {
         downloadService.getFileToDownload(
-                response,
+                user, response,
                 DownloadSpecificationEnum.EXPENSES,
                 null
         );
     }
 
     @GetMapping("/assets/filter")
+    @SetLoggedUser
     public void getDownloadFilteredAssets(
+            UserEntity user,
             HttpServletResponse response,
             @RequestParam Map<String, String> filter
     ) {
         downloadService.getFileToDownload(
-                response,
+                user, response,
                 DownloadSpecificationEnum.ASSETS,
                 filter
         );
     }
 
     @GetMapping("/expenses/filter")
+    @SetLoggedUser
     public void getDownloadFilteredExpenses(
+            UserEntity user,
             HttpServletResponse response,
             @RequestParam Map<String, String> filter
     ) {
         downloadService.getFileToDownload(
-                response,
+                user, response,
                 DownloadSpecificationEnum.EXPENSES,
                 filter
         );

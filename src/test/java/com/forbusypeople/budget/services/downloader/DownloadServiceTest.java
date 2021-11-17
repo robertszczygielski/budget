@@ -4,6 +4,7 @@ import com.forbusypeople.budget.configurations.DownloadConfiguration;
 import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.enums.DownloadSpecificationEnum;
 import com.forbusypeople.budget.enums.FilterParametersEnum;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.AssetsService;
 import com.forbusypeople.budget.services.ExpensesService;
 import com.forbusypeople.budget.services.dtos.AssetDto;
@@ -66,7 +67,7 @@ class DownloadServiceTest {
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         // when
-        downloadService.getFileToDownload(response, specificationEnum, null);
+        downloadService.getFileToDownload(null, response, specificationEnum, null);
 
         // then
         assertThat(response.getContentAsString()).contains(expectedHeader);
@@ -87,6 +88,7 @@ class DownloadServiceTest {
 
         // when
         downloadService.getFileToDownload(
+                new UserEntity(),
                 response,
                 DownloadSpecificationEnum.ASSETS,
                 testData.filter
@@ -101,7 +103,7 @@ class DownloadServiceTest {
     private void setMockWhenAssetsServiceIsCall(List<AssetDto> dtos,
                                                 Map<String, String> filter) {
         if (Objects.isNull(filter)) {
-            when(assetsService.getAllAssets()).thenReturn(dtos);
+            when(assetsService.getAllAssets(new UserEntity())).thenReturn(dtos);
         } else {
             when(assetsService.getAssetsByFilter(filter)).thenReturn(dtos);
         }

@@ -1,5 +1,6 @@
 package com.forbusypeople.budget.services.uploader;
 
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.AssetsService;
 import com.forbusypeople.budget.services.ExpensesService;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,8 @@ public class UploadService {
     private final ParseAssetsService parseAssetsService;
     private final ParseExpensesService parseExpensesService;
 
-    public void uploadFile(MultipartFile file) {
+    public void uploadFile(UserEntity user,
+                           MultipartFile file) {
         try {
             var inputCsv = file.getInputStream();
             var bufferedReader = new BufferedReader(
@@ -34,7 +36,7 @@ public class UploadService {
                     .collect(Collectors.toList());
 
             if (isAsset(bufferedReader)) {
-                saveAssets(bufferedReader);
+                saveAssets(user, bufferedReader);
             } else {
                 saveExpenses(bufferedReader);
             }
@@ -54,9 +56,10 @@ public class UploadService {
         return numbersOfColumns.length == numbersOfColumnsForAssets;
     }
 
-    private void saveAssets(List<String> bufferedReader) {
+    private void saveAssets(UserEntity user,
+                            List<String> bufferedReader) {
         var dtos = parseAssetsService.mapToDto(bufferedReader);
-        assetsService.setAsset(dtos);
+        assetsService.setAsset(user, dtos);
     }
 
     private void saveExpenses(List<String> bufferedReader) {

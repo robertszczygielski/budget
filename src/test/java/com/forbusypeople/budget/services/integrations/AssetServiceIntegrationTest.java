@@ -17,11 +17,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -30,11 +30,12 @@ public class AssetServiceIntegrationTest extends InitIntegrationTestData {
     @Test
     void shouldReturnListWithThreeElements() {
         // given
-        initDatabaseByDefaultMockUserAndHisAssets();
+        var userEntity = initDatabaseByPrimeUser();
+        initDatabaseByDefaultMockUserAndHisAssets(userEntity);
         initDatabaseBySecondMockUserAndHisAssets();
 
         // when
-        var allAssetsInDB = assetsService.getAllAssets();
+        var allAssetsInDB = assetsService.getAllAssets(userEntity);
 
         // then
         assertThat(allAssetsInDB).hasSize(3);
@@ -44,7 +45,7 @@ public class AssetServiceIntegrationTest extends InitIntegrationTestData {
     @Test
     void shouldAddAssetToDB() {
         // given
-        initDatabaseByPrimeUser();
+        var user = initDatabaseByPrimeUser();
         String desc = "some desc";
         AssetDto dto = AssetDto.builder()
                 .amount(new BigDecimal(11))
@@ -54,7 +55,7 @@ public class AssetServiceIntegrationTest extends InitIntegrationTestData {
                 .build();
 
         // when
-        assetsService.setAsset(asList(dto));
+        assetsService.setAsset(user, List.of(dto));
 
         // then
         var allAssetInDB = assetsRepository.findAll();
@@ -70,7 +71,8 @@ public class AssetServiceIntegrationTest extends InitIntegrationTestData {
     @Test
     void shouldReturnListOnlyWithOneCategory() {
         // given
-        initDatabaseByDefaultMockUserAndHisAssets();
+        var user = initDatabaseByPrimeUser();
+        initDatabaseByDefaultMockUserAndHisAssets(user);
         var category = AssetCategory.OTHER;
 
         // when
@@ -85,7 +87,8 @@ public class AssetServiceIntegrationTest extends InitIntegrationTestData {
     @Test
     void shouldDeleteAllAssetsOfChosenUser() {
         // given
-        initDatabaseByDefaultMockUserAndHisAssets();
+        var user = initDatabaseByPrimeUser();
+        initDatabaseByDefaultMockUserAndHisAssets(user);
         initDatabaseBySecondMockUserAndHisAssets();
         int numberOfAllAssets = 6;
         int numberOfLeaveAssets = 3;

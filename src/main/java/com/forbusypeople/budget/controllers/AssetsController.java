@@ -1,6 +1,8 @@
 package com.forbusypeople.budget.controllers;
 
+import com.forbusypeople.budget.aspects.annotations.SetLoggedUser;
 import com.forbusypeople.budget.enums.AssetCategory;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.AssetsService;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import org.springframework.web.bind.annotation.*;
@@ -20,18 +22,23 @@ public class AssetsController {
     }
 
     @GetMapping
-    public List<AssetDto> getAssets() {
-        return assetsService.getAllAssets();
+    @SetLoggedUser
+    public List<AssetDto> getAssets(UserEntity user) {
+        return assetsService.getAllAssets(user);
     }
 
     @PostMapping
-    public void setAsset(@RequestBody List<AssetDto> dtos) {
-        assetsService.setAsset(dtos);
+    @SetLoggedUser
+    public void setAsset(UserEntity user,
+                         @RequestBody List<AssetDto> dtos) {
+        assetsService.setAsset(user, dtos);
     }
 
     @DeleteMapping
-    public void deleteAsset(@RequestBody AssetDto dto) {
-        assetsService.deleteAsset(dto);
+    @SetLoggedUser
+    public void deleteAsset(UserEntity user,
+                            @RequestBody AssetDto dto) {
+        assetsService.deleteAsset(user, dto);
     }
 
     @PutMapping

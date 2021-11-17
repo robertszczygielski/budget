@@ -1,5 +1,7 @@
 package com.forbusypeople.budget.controllers;
 
+import com.forbusypeople.budget.aspects.annotations.SetLoggedUser;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.uploader.UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +18,11 @@ public class UploadController {
     private final UploadService uploadService;
 
     @PostMapping
-    private void uploadFile(@RequestParam("file")
-                                    MultipartFile file) {
-        uploadService.uploadFile(file);
+    @SetLoggedUser
+    private void uploadFile(
+            UserEntity user,
+            @RequestParam("file")
+                    MultipartFile file) {
+        uploadService.uploadFile(user, file);
     }
 }

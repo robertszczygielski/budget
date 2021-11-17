@@ -68,9 +68,8 @@ Content-Type: application/json
   {
     "amount": 100.00,
     "category": "RENT",
-    "currencyCode": "USD",
     "incomeDate": "2020-02-10T12:01:03.001Z",
-    "description": "rent in USD"
+    "description": "User in annotation"
   }
 ]
 

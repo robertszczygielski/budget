@@ -2,6 +2,7 @@ package com.forbusypeople.budget.services.downloader;
 
 import com.forbusypeople.budget.configurations.DownloadConfiguration;
 import com.forbusypeople.budget.enums.DownloadSpecificationEnum;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.AssetsService;
 import com.forbusypeople.budget.services.ExpensesService;
 import com.forbusypeople.budget.services.dtos.AssetDto;
@@ -26,18 +27,20 @@ public class DownloadService {
     private final ExpensesBufferDownloadBuilder expensesBufferDownloadBuilder;
     private final DownloadConfiguration downloadConfiguration;
 
-    public void getFileToDownload(HttpServletResponse response,
+    public void getFileToDownload(UserEntity user,
+                                  HttpServletResponse response,
                                   DownloadSpecificationEnum downloadSpecificationEnum,
                                   Map<String, String> filter) {
         switch (downloadSpecificationEnum) {
-            case ASSETS -> prepareResponseForAssets(response, filter);
-            case EXPENSES -> prepareResponseForExpenses(response, filter);
+            case ASSETS -> prepareResponseForAssets(user, response, filter);
+            case EXPENSES -> prepareResponseForExpenses(user, response, filter);
         }
     }
 
-    private void prepareResponseForAssets(HttpServletResponse response,
+    private void prepareResponseForAssets(UserEntity user,
+                                          HttpServletResponse response,
                                           Map<String, String> filter) {
-        var assets = getAllAssets(filter);
+        var assets = getAllAssets(user, filter);
         var assetsBuffer =
                 assetsBufferDownloadBuilder.prepareBuffer(
                         assets,
@@ -51,9 +54,10 @@ public class DownloadService {
         );
     }
 
-    private void prepareResponseForExpenses(HttpServletResponse response,
+    private void prepareResponseForExpenses(UserEntity user,
+                                            HttpServletResponse response,
                                             Map<String, String> filter) {
-        var expenses = getAllExpenses(filter);
+        var expenses = getAllExpenses(user, filter);
         var expensesBuffer =
                 expensesBufferDownloadBuilder.prepareBuffer(
                         expenses,
@@ -67,16 +71,18 @@ public class DownloadService {
         );
     }
 
-    private List<ExpensesDto> getAllExpenses(Map<String, String> filter) {
+    private List<ExpensesDto> getAllExpenses(UserEntity user,
+                                             Map<String, String> filter) {
         if (Objects.isNull(filter)) {
             return expensesService.getAllExpenses();
         }
         return expensesService.getFilteredExpenses(filter);
     }
 
-    private List<AssetDto> getAllAssets(Map<String, String> filter) {
+    private List<AssetDto> getAllAssets(UserEntity user,
+                                        Map<String, String> filter) {
         if (Objects.isNull(filter)) {
-            return assetsService.getAllAssets();
+            return assetsService.getAllAssets(user);
         }
         return assetsService.getAssetsByFilter(filter);
     }

@@ -128,8 +128,7 @@ public abstract class InitIntegrationTestData {
         return userRepository.save(user);
     }
 
-    protected void initDatabaseByDefaultMockUserAndHisAssets() {
-        var userEntity = initDatabaseByPrimeUser();
+    protected void initDatabaseByDefaultMockUserAndHisAssets(UserEntity userEntity) {
         AssetEntity entity1 = AssetEntity.builder()
                 .amount(new BigDecimal(1))
                 .incomeDate(Instant.now())
