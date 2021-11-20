@@ -1,4 +1,4 @@
-package com.forbusypeople.budget.services;
+package com.forbusypeople.budget.services.properties;
 
 import com.forbusypeople.budget.enums.RoomsType;
 import com.forbusypeople.budget.mappers.RoomsMapper;

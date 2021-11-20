@@ -37,3 +37,5 @@ databaseChangeLog:
       file: db/migration/018-propertyRoomAssociationSchemaAddCurrency.yaml
   - include:
       file: db/migration/019-propertyRoomAssociationSchemaUpdateCurrencyInDatabase.yaml
+  - include:
+      file: db/migration/020-housingMaintenanceCategorySchema.yaml

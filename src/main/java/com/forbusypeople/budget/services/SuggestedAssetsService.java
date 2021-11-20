@@ -4,6 +4,7 @@ import com.forbusypeople.budget.enums.AssetCategory;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.services.dtos.PropertyDto;
 import com.forbusypeople.budget.services.dtos.RoomsDto;
+import com.forbusypeople.budget.services.properties.PropertyService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,11 @@
-package com.forbusypeople.budget.services;
+package com.forbusypeople.budget.services.properties;
 
 import com.forbusypeople.budget.mappers.PropertyMapper;
 import com.forbusypeople.budget.repositories.PropertyRepository;
 import com.forbusypeople.budget.repositories.RoomsRepository;
 import com.forbusypeople.budget.repositories.entities.PropertyEntity;
 import com.forbusypeople.budget.repositories.entities.UserEntity;
+import com.forbusypeople.budget.services.AssociationPropertyRoomService;
 import com.forbusypeople.budget.services.dtos.PropertyDto;
 import com.forbusypeople.budget.services.users.UserLogInfoService;
 import lombok.RequiredArgsConstructor;

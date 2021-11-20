@@ -8,6 +8,9 @@ import com.forbusypeople.budget.enums.RoomsType;
 import com.forbusypeople.budget.repositories.*;
 import com.forbusypeople.budget.repositories.entities.*;
 import com.forbusypeople.budget.services.*;
+import com.forbusypeople.budget.services.properties.HousingMaintenanceCategoryService;
+import com.forbusypeople.budget.services.properties.PropertyService;
+import com.forbusypeople.budget.services.properties.RoomsService;
 import com.forbusypeople.budget.services.users.AdditionalUserDataService;
 import com.forbusypeople.budget.services.users.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +69,10 @@ public abstract class InitIntegrationTestData {
     protected AdditionalUserDataRepository additionalUserDataRepository;
     @Autowired
     protected AdditionalUserDataService additionalUserDataService;
+    @Autowired
+    protected HousingMaintenanceCategoryRepository housingMaintenanceCategoryRepository;
+    @Autowired
+    protected HousingMaintenanceCategoryService housingMaintenanceCategoryService;
 
 
     protected static final String USER_NAME_PRIME = "userNamePrime";

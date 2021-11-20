@@ -5,6 +5,7 @@ import com.forbusypeople.budget.enums.RoomsType;
 import com.forbusypeople.budget.services.dtos.AssetDto;
 import com.forbusypeople.budget.services.dtos.PropertyDto;
 import com.forbusypeople.budget.services.dtos.RoomsDto;
+import com.forbusypeople.budget.services.properties.PropertyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

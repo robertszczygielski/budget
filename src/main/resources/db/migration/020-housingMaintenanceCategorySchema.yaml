@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 020-housing-maintenance-category-schema
+      author: rs
+      changes:
+        - createTable:
+            tableName: housing_maintenance_category
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_housingmaintenancecategory
+                    reference: users(id)
+              - column:
+                  name: name
+                  type: text
+                  constraints:
+                    nullable: false

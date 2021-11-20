@@ -1,7 +1,7 @@
 package com.forbusypeople.budget.controllers;
 
-import com.forbusypeople.budget.services.RoomsService;
 import com.forbusypeople.budget.services.dtos.RoomsDto;
+import com.forbusypeople.budget.services.properties.RoomsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
