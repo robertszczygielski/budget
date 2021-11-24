@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: 021-housing-maintenance-expenses-schema
+      author: rs
+      changes:
+        - createTable:
+            tableName: housing_maintenance_expenses
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: amount
+                  type: numeric
+              - column:
+                  name: purchase_date
+                  type: timestamp
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: category_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_housingmaintenancecategory_id_housingmaintenanceexpenses
+                    references: housing_maintenance_category(id)
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_housingmaintenanceexpenses
+                    references: users(id)

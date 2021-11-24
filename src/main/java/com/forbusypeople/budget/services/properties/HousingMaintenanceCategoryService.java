@@ -7,6 +7,9 @@ import com.forbusypeople.budget.services.dtos.HousingMaintenanceCategoryDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class HousingMaintenanceCategoryService {
@@ -20,4 +23,10 @@ public class HousingMaintenanceCategoryService {
         housingMaintenanceCategoryRepository.save(entity);
     }
 
+    public List<HousingMaintenanceCategoryDto> findAll(UserEntity user) {
+        var allEntities = housingMaintenanceCategoryRepository.findAllByUser(user);
+        return allEntities.stream()
+                .map(housingMaintenanceCategoryMapper::fromEntityToDto)
+                .collect(Collectors.toList());
+    }
 }

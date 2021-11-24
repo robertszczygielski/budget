@@ -9,6 +9,7 @@ import com.forbusypeople.budget.repositories.*;
 import com.forbusypeople.budget.repositories.entities.*;
 import com.forbusypeople.budget.services.*;
 import com.forbusypeople.budget.services.properties.HousingMaintenanceCategoryService;
+import com.forbusypeople.budget.services.properties.HousingMaintenanceExpensesService;
 import com.forbusypeople.budget.services.properties.PropertyService;
 import com.forbusypeople.budget.services.properties.RoomsService;
 import com.forbusypeople.budget.services.users.AdditionalUserDataService;
@@ -73,6 +74,10 @@ public abstract class InitIntegrationTestData {
     protected HousingMaintenanceCategoryRepository housingMaintenanceCategoryRepository;
     @Autowired
     protected HousingMaintenanceCategoryService housingMaintenanceCategoryService;
+    @Autowired
+    protected HousingMaintenanceExpensesRepository housingMaintenanceExpensesRepository;
+    @Autowired
+    protected HousingMaintenanceExpensesService housingMaintenanceExpensesService;
 
 
     protected static final String USER_NAME_PRIME = "userNamePrime";
@@ -299,5 +304,14 @@ public abstract class InitIntegrationTestData {
                 .build();
 
         additionalUserDataRepository.save(entity);
+    }
+
+    protected void initDatabaseByHousingMaintenanceCategory(String categoryName,
+                                                            UserEntity user) {
+        var entity = HousingMaintenanceCategoryEntity.builder()
+                .user(user)
+                .name(categoryName)
+                .build();
+        housingMaintenanceCategoryRepository.save(entity);
     }
 }
