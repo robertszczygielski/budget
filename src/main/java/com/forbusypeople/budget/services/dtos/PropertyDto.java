@@ -21,5 +21,6 @@ public class PropertyDto {
     private String postCode;
     private String street;
     private String house;
+    private List<HousingMaintenanceExpensesDto> housingMaintenances;
 
 }

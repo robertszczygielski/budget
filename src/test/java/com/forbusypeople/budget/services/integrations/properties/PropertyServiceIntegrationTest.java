@@ -1,13 +1,15 @@
-package com.forbusypeople.budget.services.integrations;
+package com.forbusypeople.budget.services.integrations.properties;
 
 import com.forbusypeople.budget.enums.RoomsType;
 import com.forbusypeople.budget.services.dtos.PropertyDto;
 import com.forbusypeople.budget.services.dtos.RoomsDto;
+import com.forbusypeople.budget.services.integrations.InitIntegrationTestData;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
+import static com.forbusypeople.budget.services.integrations.properties.InitPropertyData.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -18,22 +20,11 @@ public class PropertyServiceIntegrationTest extends InitIntegrationTestData {
     @Test
     void shouldSaveBasicPropertyInDatabase() {
         // given
-        var postCode = "00-010";
-        var city = "Warsaw";
-        var street = "Smerfetki";
-        var house = "12A";
-        var single = false;
-        initDatabaseByPrimeUser();
-        PropertyDto property = PropertyDto.builder()
-                .postCode(postCode)
-                .city(city)
-                .street(street)
-                .house(house)
-                .single(single)
-                .build();
+        var user = initDatabaseByPrimeUser();
+        PropertyDto property = getPropertyDto();
 
         // when
-        var result = propertyService.addProperty(property);
+        var result = propertyService.saveProperty(user, property);
 
         // then
         assertThat(result).isNotNull();
@@ -41,10 +32,10 @@ public class PropertyServiceIntegrationTest extends InitIntegrationTestData {
         assertThat(entityList).hasSize(1);
         var entity = entityList.get(0);
         assertAll(
-                () -> assertThat(entity.getPostCode()).isEqualTo(postCode),
-                () -> assertThat(entity.getCity()).isEqualTo(city),
-                () -> assertThat(entity.getStreet()).isEqualTo(street),
-                () -> assertThat(entity.getHouse()).isEqualTo(house)
+                () -> assertThat(entity.getPostCode()).isEqualTo(POST_CODE),
+                () -> assertThat(entity.getCity()).isEqualTo(CITY),
+                () -> assertThat(entity.getStreet()).isEqualTo(STREET),
+                () -> assertThat(entity.getHouse()).isEqualTo(HOUSE)
         );
 
     }

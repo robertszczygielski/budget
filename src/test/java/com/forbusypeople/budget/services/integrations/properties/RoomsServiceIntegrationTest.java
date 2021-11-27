@@ -1,7 +1,8 @@
-package com.forbusypeople.budget.services.integrations;
+package com.forbusypeople.budget.services.integrations.properties;
 
 import com.forbusypeople.budget.enums.RoomsType;
 import com.forbusypeople.budget.services.dtos.RoomsDto;
+import com.forbusypeople.budget.services.integrations.InitIntegrationTestData;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

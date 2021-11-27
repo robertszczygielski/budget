@@ -41,3 +41,5 @@ databaseChangeLog:
       file: db/migration/020-housingMaintenanceCategorySchema.yaml
   - include:
       file: db/migration/021-housingMaintenanceExpensesSchema.yaml
+  - include:
+      file: db/migration/022-propertyShemaAddHousingMaintenanceExpenses.yaml

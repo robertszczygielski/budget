@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 022-property-shema-add-housing-maintenance-Expenses
+      author: rs
+      changes:
+        - addColumn:
+            tableName: property
+            columns:
+              - column:
+                  name: housing_maintenances_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_property_id_housingmaintenanceexpenses
+                    references: housing_maintenance_expenses(id)
+        - createTable:
+            tableName: property_housing_maintenances
+            columns:
+              - column:
+                  name: property_entity_id
+                  type: uuid
+              - column:
+                  name: housing_maintenances_id
+                  type: uuid
+

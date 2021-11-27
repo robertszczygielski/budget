@@ -1,5 +1,7 @@
 package com.forbusypeople.budget.controllers;
 
+import com.forbusypeople.budget.aspects.annotations.SetLoggedUser;
+import com.forbusypeople.budget.repositories.entities.UserEntity;
 import com.forbusypeople.budget.services.dtos.PropertyDto;
 import com.forbusypeople.budget.services.properties.PropertyService;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +28,10 @@ public class PropertyController {
     }
 
     @PostMapping
-    public void setProperty(@RequestBody PropertyDto dto) {
-        propertyService.addProperty(dto);
+    @SetLoggedUser
+    public void setProperty(UserEntity user,
+                            @RequestBody PropertyDto dto) {
+        propertyService.saveProperty(user, dto);
     }
 
     @PutMapping

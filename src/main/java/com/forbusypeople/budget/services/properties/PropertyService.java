@@ -1,5 +1,6 @@
 package com.forbusypeople.budget.services.properties;
 
+import com.forbusypeople.budget.mappers.HousingMaintenanceExpensesMapper;
 import com.forbusypeople.budget.mappers.PropertyMapper;
 import com.forbusypeople.budget.repositories.PropertyRepository;
 import com.forbusypeople.budget.repositories.RoomsRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,10 +27,18 @@ public class PropertyService {
     private final PropertyMapper propertyMapper;
     private final RoomsRepository roomsRepository;
     private final AssociationPropertyRoomService associationPropertyRoomService;
+    private final HousingMaintenanceExpensesMapper housingMaintenanceExpensesMapper;
 
-    public UUID addProperty(PropertyDto dto) {
-        UserEntity user = userLogInfoService.getLoggedUserEntity();
+    public UUID saveProperty(UserEntity user,
+                             PropertyDto dto) {
         PropertyEntity entity = propertyMapper.fromDtoToEntity(dto, user);
+        if (!Objects.isNull(dto.getHousingMaintenances())) {
+            entity.setHousingMaintenances(
+                    dto.getHousingMaintenances().stream()
+                            .map(it -> housingMaintenanceExpensesMapper.formDtoToEntity(it, user))
+                            .collect(Collectors.toList())
+            );
+        }
 
         var saveEntity = propertyRepository.save(entity);
         return saveEntity.getId();

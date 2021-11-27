@@ -30,5 +30,7 @@ public class PropertyEntity extends BaseBudgetEntity {
     private String street;
     private String house;
     private Boolean sold;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<HousingMaintenanceExpensesEntity> housingMaintenances;
 
 }
