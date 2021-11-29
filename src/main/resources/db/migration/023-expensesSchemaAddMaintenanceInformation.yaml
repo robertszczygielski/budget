@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 023-expenses-schema-add-maintenance-information
+      author: rs
+      changes:
+        - addColumn:
+            tableName: expenses
+            columns:
+              - column:
+                  name: maintenance
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false

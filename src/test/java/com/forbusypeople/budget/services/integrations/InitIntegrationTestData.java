@@ -191,6 +191,7 @@ public abstract class InitIntegrationTestData {
         var expenses = ExpensesEntity.builder()
                 .user(user)
                 .amount(BigDecimal.ONE)
+                .maintenance(false)
                 .build();
 
         var entity = expensesRepository.save(expenses);
@@ -205,6 +206,7 @@ public abstract class InitIntegrationTestData {
                 .user(user)
                 .amount(BigDecimal.ONE)
                 .purchaseDate(Instant.parse(date + dateSuffix))
+                .maintenance(false)
                 .build();
 
         var entity = expensesRepository.save(expenses);

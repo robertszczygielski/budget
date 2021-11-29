@@ -12,6 +12,7 @@ import java.util.List;
 public interface ExpensesMapper {
 
     @Mapping(source = "dto.id", target = "id")
+    @Mapping(target = "maintenance", expression = "java(false)")
     ExpensesEntity formDtoToEntity(ExpensesDto dto,
                                    UserEntity user);
 

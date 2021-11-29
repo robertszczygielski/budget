@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
 
     @Test
-    void shouldSaveOneExpensesInToDatabase() {
+    void shouldSaveOneExpensesDtoInToDatabase() {
         // given
         initDatabaseByPrimeUser();
         var dto = ExpensesDto.builder()
@@ -38,7 +38,11 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
         // then
         var entitiesInDatabase = expensesRepository.findAll();
         assertThat(entitiesInDatabase).hasSize(1);
-        assertThat(entitiesInDatabase.get(0).getAmount()).isEqualTo(BigDecimal.ONE);
+        var entityToCheck = entitiesInDatabase.get(0);
+        assertAll(
+                () -> assertThat(entityToCheck.getAmount()).isEqualTo(BigDecimal.ONE),
+                () -> assertThat(entityToCheck.getMaintenance()).isFalse()
+        );
     }
 
     @Test
