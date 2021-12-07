@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ExpensesRepository extends JpaRepository<ExpensesEntity, UUID> {
@@ -14,4 +15,8 @@ public interface ExpensesRepository extends JpaRepository<ExpensesEntity, UUID> 
 
     @Query("SELECT e FROM ExpensesEntity e WHERE e.user = :user AND e.purchaseDate >= :fromDate AND e.purchaseDate <= :toDate")
     List<ExpensesEntity> findAllByBetweenDate(UserEntity user, Instant fromDate, Instant toDate);
+
+    Optional<ExpensesEntity> findAllByUserAndPurchaseDateAndMaintenance(UserEntity user,
+                                                                        Instant now,
+                                                                        Boolean b);
 }

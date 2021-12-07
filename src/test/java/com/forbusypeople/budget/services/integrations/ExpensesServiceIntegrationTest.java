@@ -46,6 +46,43 @@ public class ExpensesServiceIntegrationTest extends InitIntegrationTestData {
     }
 
     @Test
+    void shouldSaveOneExpenseForHousingMaintenance() {
+        // given
+        var user = initDatabaseByPrimeUser();
+
+        // when
+        expensesService.saveExpensesForHousingMaintenance(user, BigDecimal.TEN);
+
+        // then
+        var allExpenses = expensesRepository.findAll();
+        assertThat(allExpenses).hasSize(1);
+        assertAll(
+                () -> assertThat(allExpenses.get(0).getMaintenance()).isTrue(),
+                () -> assertThat(allExpenses.get(0).getAmount()).isEqualTo(BigDecimal.TEN),
+                () -> assertThat(allExpenses.get(0).getCategory()).isEqualTo(ExpensesCategory.OTHERS)
+        );
+    }
+
+    @Test
+    void shouldSaveTwoExpenseForHousingMaintenance() {
+        // given
+        var user = initDatabaseByPrimeUser();
+
+        // when
+        expensesService.saveExpensesForHousingMaintenance(user, BigDecimal.TEN);
+        expensesService.saveExpensesForHousingMaintenance(user, BigDecimal.TEN);
+
+        // then
+        var allExpenses = expensesRepository.findAll();
+        assertThat(allExpenses).hasSize(1);
+        assertAll(
+                () -> assertThat(allExpenses.get(0).getMaintenance()).isTrue(),
+                () -> assertThat(allExpenses.get(0).getAmount()).isEqualTo(new BigDecimal("20")),
+                () -> assertThat(allExpenses.get(0).getCategory()).isEqualTo(ExpensesCategory.OTHERS)
+        );
+    }
+
+    @Test
     void shouldSaveOneFullInfillExpensesInToDatabase() {
         // given
         initDatabaseByPrimeUser();

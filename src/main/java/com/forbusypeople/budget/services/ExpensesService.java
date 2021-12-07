@@ -1,5 +1,6 @@
 package com.forbusypeople.budget.services;
 
+import com.forbusypeople.budget.enums.ExpensesCategory;
 import com.forbusypeople.budget.enums.FilterSpecification;
 import com.forbusypeople.budget.filters.FilterRangeStrategy;
 import com.forbusypeople.budget.mappers.ExpensesMapper;
@@ -11,6 +12,12 @@ import com.forbusypeople.budget.services.users.UserLogInfoService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -67,6 +74,40 @@ public class ExpensesService {
     public List<ExpensesDto> getFilteredExpenses(Map<String, String> filter) {
         var user = userLogInfoService.getLoggedUserEntity();
         return getFilteredExpenses(user, filter);
+    }
+
+    public void saveExpensesForHousingMaintenance(UserEntity user,
+                                                  BigDecimal amountToAdd) {
+        var dateForSave = ZonedDateTime
+                .ofInstant(Instant.now(), ZoneId.systemDefault())
+                .with(TemporalAdjusters.lastDayOfMonth())
+                .plusDays(1)
+                .truncatedTo(ChronoUnit.DAYS)
+                .toInstant();
+
+        var expensesEntity = expensesRepository
+                .findAllByUserAndPurchaseDateAndMaintenance(
+                        user,
+                        dateForSave,
+                        true
+                );
+
+        ExpensesEntity entity = expensesEntity.isEmpty()
+                ? ExpensesEntity.builder()
+                .maintenance(true)
+                .purchaseDate(dateForSave)
+                .category(ExpensesCategory.OTHERS)
+                .user(user)
+                .amount(BigDecimal.ZERO)
+                .description("Housing maintenance for date " + dateForSave)
+                .build()
+                : expensesEntity.get();
+
+        var entityAmount = entity.getAmount();
+        var newAmount = entityAmount.add(amountToAdd);
+        entity.setAmount(newAmount);
+
+        expensesRepository.save(entity);
     }
 
     public List<ExpensesDto> getFilteredExpenses(UserEntity user,
