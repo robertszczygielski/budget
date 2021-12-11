@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -19,9 +20,10 @@ import java.time.Instant;
 public class HousingMaintenanceExpensesEntity extends BaseBudgetEntity {
 
     private BigDecimal amount;
+    @Column(name = "purchase_date")
     private Instant purchaseDate;
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private HousingMaintenanceCategoryEntity category;
 
 }

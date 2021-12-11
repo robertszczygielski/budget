@@ -213,11 +213,11 @@ public abstract class InitIntegrationTestData {
         return entity.getId();
     }
 
-    protected void initDatabaseByProperty(UserEntity user) {
-        initDatabaseByProperty(user, null);
+    protected PropertyEntity initDatabaseByProperty(UserEntity user) {
+        return initDatabaseByProperty(user, null);
     }
 
-    protected void initDatabaseByProperty(UserEntity user,
+    protected PropertyEntity initDatabaseByProperty(UserEntity user,
                                           UUID... roomsId) {
         var postCode = "00-010";
         var city = "Warsaw";
@@ -243,7 +243,7 @@ public abstract class InitIntegrationTestData {
                 .rooms(roomsEntity)
                 .build();
 
-        propertyRepository.save(property);
+        return propertyRepository.save(property);
     }
 
     protected UUID initDatabaseByRoom(RoomsType type,

@@ -211,3 +211,32 @@ Authorization: Bearer {{token}}
 ### GET currency amount form NBP
 GET {{host}}:{{port}}/currency/amount/EUR
 Authorization: Bearer {{token}}
+
+### POST Own category
+POST {{host}}:{{port}}/maintenance/housing/category
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "furniture"
+}
+
+### GET Own category
+GET {{host}}:{{port}}/maintenance/housing/category
+Authorization: Bearer {{token}}
+
+### POST maintenance expenses
+POST {{host}}:{{port}}/maintenance/housing/expenses/178b87be-b56f-4e25-8376-e650edef0352
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "description": "table",
+  "amount": 123,
+  "purchaseDate": "2021-12-11T12:12:12.001Z",
+  "category":   {
+    "id": "fb6ffe0a-f90d-4dbe-936d-b2e58cebae04",
+    "name": "furniture"
+  }
+}
+

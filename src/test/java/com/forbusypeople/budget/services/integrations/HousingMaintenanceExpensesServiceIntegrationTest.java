@@ -16,6 +16,7 @@ public class HousingMaintenanceExpensesServiceIntegrationTest extends InitIntegr
         // given
         var user = initDatabaseByPrimeUser();
         initDatabaseByHousingMaintenanceCategory("some cat", user);
+        var property = initDatabaseByProperty(user);
         var categoryDto = housingMaintenanceCategoryService.findAll(user);
         var purchaseDate = Instant.now();
         var description = "some desc";
@@ -27,7 +28,7 @@ public class HousingMaintenanceExpensesServiceIntegrationTest extends InitIntegr
                 .build();
 
         // when
-        housingMaintenanceExpensesService.saveExpenses(user, dto);
+        housingMaintenanceExpensesService.saveExpenses(user, dto, property.getId());
 
         // then
         var entity = housingMaintenanceExpensesRepository.findAll();

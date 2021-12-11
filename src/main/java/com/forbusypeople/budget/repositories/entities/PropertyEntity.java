@@ -31,6 +31,11 @@ public class PropertyEntity extends BaseBudgetEntity {
     private String house;
     private Boolean sold;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "property_housing_maintenances",
+            joinColumns = {@JoinColumn(name = "property_entity_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "housing_maintenances_id", referencedColumnName = "id")}
+    )
     private List<HousingMaintenanceExpensesEntity> housingMaintenances;
 
 }
