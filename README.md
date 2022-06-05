@@ -53,3 +53,24 @@
     - Z AssetEntity do AssetDto
 - Pierwsza klasa testowa
 - Sztuczna, szybka, zaślepka Repozytorium
+
+### 007. Mockito - testy - klasy urojone
+
+- zależność mockito
+  - mockito.when
+  - mockito.thenReturn
+  - mockito.verify
+- @ExtendWith w testach
+- @BeforeEach w testach
+
+### 008 Json do objektu
+
+- Zamiana przychodzących danych na obiekt
+  - wysyłanie danych poprzez Postmana 
+- @RequestBody
+- @DeleteMapping
+
+### 009 Sprawdzenie danych przychodzących z frontu - validator, exception
+
+- Sprawdzenie czy przesyłany Json jest poprawyn
+- Stworzenie Exceptiona
