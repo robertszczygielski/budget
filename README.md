@@ -57,16 +57,16 @@
 ### 007. Mockito - testy - klasy urojone
 
 - zależność mockito
-  - mockito.when
-  - mockito.thenReturn
-  - mockito.verify
+    - mockito.when
+    - mockito.thenReturn
+    - mockito.verify
 - @ExtendWith w testach
 - @BeforeEach w testach
 
 ### 008 Json do objektu
 
 - Zamiana przychodzących danych na obiekt
-  - wysyłanie danych poprzez Postmana 
+    - wysyłanie danych poprzez Postmana
 - @RequestBody
 - @DeleteMapping
 
@@ -74,3 +74,56 @@
 
 - Sprawdzenie czy przesyłany Json jest poprawyn
 - Stworzenie Exceptiona
+
+### 010 Exception i sposób na zastąpienie domyślnego systemu wysyłania błędy
+
+- Klasa opakowująca Bład
+- Przechwytywacz (Handler) błędów w Springu
+- Przesłanie wybranego status Http, zamiast domyślengo
+
+### 011 Aktualizacja danych w bazie danych
+
+- Przesłanie listy obiektów do zapisu
+- Aktualizacja już zapisanych danych
+
+### 012 Java, Spring Boot, Logowanie zdarzeń
+
+- Dodanie zapisów tekstowych w logach konsoli
+
+### 013 Spring boot - aktualizacja tabelki w badzie danych, DTO, Encji, ...
+
+- Dodanie zapisu daty przychodu
+- Aktualizacja tabelki w bazie danych
+
+### 014 Łańcuch zobowiązań, wiele komunikatów o błędach
+
+- Budowanie informacji o błędach z wielu komunikatów z wykorzystaniem wzorca projektowego Łańcuch zobowiązań
+
+### 015 Dodanie Kategorii Przychodu
+
+- Nowy Enum
+- Aktualizacja Klas przychodów
+- Aktualizacja Bazy danych
+
+### 016 Liquibase - aktualizacja wpisów w bazie danych; poprawa nieprawidłowych changsetów
+
+- Aktualizacja już istniejących wpisów w bazie danych przy wykorzystaniu Liquibasa
+
+### 017 Testy integracyjne i Java
+
+- Dodanie konfiguracji Bazy danych H2 (inmemory)
+- Przygotowanie danych i uruchimienie pierwszego testu integracyjnego
+
+### 018 Spring Security - podstawowe, proste logowanie do aplikacji
+
+- Dodanie domyślnego użytkownika
+- Podstawowa konfiguracja Spring Security
+
+### 019 Generowanie Tokena JWT
+
+- Konfiguracja i wykorzystanie JWT
+
+### 020 Wykorzystanie tokena JWT do logowania do aplikacji
+
+- Rozpakowanie tokena JWT
+- 
